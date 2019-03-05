@@ -1,20 +1,27 @@
 import "package:flutter/material.dart";
-import "package:flutter_practice/Data/CachingData.dart";
-import "package:flutter_practice/Data/ListItem.dart";
-import "package:flutter_practice/MainMenu/ListItemWidget.dart";
+import "package:bunyang/Data/CachingData.dart";
+import "package:bunyang/Data/ListItem.dart";
+import "package:bunyang/MainMenu/ListItemWidget.dart";
+import 'package:bunyang/Util/Util.dart';
 
 enum LoadingState { DONE, LOADING, WAITING, ERROR }
 
 class MainMenu extends StatefulWidget
 {
+  MainMenu(this.requestCode);
+
+  final String requestCode;
   final CachingData cachingData = CachingData.instance();
 
   @override
-  MainMenuWidgetState createState() => MainMenuWidgetState();
+  MainMenuWidgetState createState() => MainMenuWidgetState(requestCode);
 }
 
 class MainMenuWidgetState extends State<MainMenu> 
 {
+  MainMenuWidgetState(this.requestCode);
+
+  final String requestCode;
   List<ListItem> _items = List();
   LoadingState _loadingState = LoadingState.LOADING;
 
@@ -22,7 +29,7 @@ class MainMenuWidgetState extends State<MainMenu>
   {
     try 
     {
-      var items = await widget.cachingData.requestTest();
+      var items = await widget.cachingData.request(requestCode);
       setState(() 
       {
         _loadingState =LoadingState.DONE;
@@ -45,13 +52,27 @@ class MainMenuWidgetState extends State<MainMenu>
   @override
   Widget build(BuildContext context)
   {
-    return Center(child: _getContentSection());
+    String _title = _items.isEmpty ? "" : _items[0] .typeString;
+    return Scaffold
+    (
+      appBar: new AppBar(title: MyText(_title)),
+      body: _getContentSection(),
+    );
   }
 
   Widget _getContentSection() 
   {
     switch (_loadingState) {
       case LoadingState.DONE:
+        if(_items.length == 0)
+          return Container
+          (
+
+            alignment: Alignment.center,
+            child: MyText("공고가 없어요!"),
+            color: Colors.white,
+          );
+
         return ListView.builder(
           itemCount: _items.length,
           itemBuilder: (BuildContext context, int index)
@@ -60,9 +81,9 @@ class MainMenuWidgetState extends State<MainMenu>
           }
         );
       case LoadingState.ERROR:
-        return Text('Sorry, there was an error loading the data!');
+      return MyText('데이터를 불러들이지 못했어요!');
       case LoadingState.LOADING:
-        return CircularProgressIndicator();
+        return CircularProgressIndicator(backgroundColor: Colors.white);
       default:
         return Container();
     }

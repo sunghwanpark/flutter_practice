@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_practice/Data/ListItem.dart';
+import 'package:bunyang/Data/ListItem.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
+import 'package:bunyang/Util/Util.dart';
 
 class WebViewWidget extends StatelessWidget 
 {
@@ -15,7 +16,7 @@ class WebViewWidget extends StatelessWidget
       url: _item.detailURL,
       appBar: new AppBar
       (
-        title: Text(_item.panName),
+        title: MyText(_item.panName),
       ),
     );
   }

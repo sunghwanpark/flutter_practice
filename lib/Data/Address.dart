@@ -1,21 +1,31 @@
+import 'package:flutter/material.dart';
+
 enum Notice_Code
 {
-  land,
-  installment_house,
-  lease_house,
-  house_welfare,
-  shopping_district,
-  public_installment_house
+  land,                       // 토지
+  installment_house,          // 분양주택
+  lease_house,                // 임대주택
+  house_welfare,              // 주거복지
+  shopping_district,          // 상가
+  public_installment_house    // 신혼희망타운
+}
+
+class MainMenuData
+{
+  const MainMenuData(this.code, this.image);
+
+  final String code;
+  final AssetImage image;
 }
 
 final constNoticeCodeMap = const 
 {
-  Notice_Code.land : "01",
-  Notice_Code.installment_house : "05",
-  Notice_Code.lease_house : "06",
-  Notice_Code.house_welfare : "13",
-  Notice_Code.shopping_district : "22",
-  Notice_Code.public_installment_house : "39"
+  Notice_Code.land : MainMenuData("01", AssetImage("assets/image/land.png")),
+  Notice_Code.installment_house : MainMenuData("05", AssetImage("assets/image/house.png")),
+  Notice_Code.lease_house : MainMenuData("06", AssetImage("assets/image/sublease.png")),
+  Notice_Code.house_welfare : MainMenuData("13", AssetImage("assets/image/family.png")),
+  Notice_Code.shopping_district : MainMenuData("22", AssetImage("assets/image/store.png")),
+  Notice_Code.public_installment_house : MainMenuData("39", AssetImage("assets/image/parents.png"))
 };
 
 getNoticeType(String typeString)
@@ -28,5 +38,18 @@ getNoticeType(String typeString)
     case "주거복지": return Notice_Code.house_welfare;
     case "상가": return Notice_Code.shopping_district;
     case "공공분양(신혼희망)": return Notice_Code.public_installment_house;
+  }
+}
+
+getNoticeString(Notice_Code code)
+{
+  switch(code)
+  {
+    case Notice_Code.land:                     return "토지";
+    case Notice_Code.installment_house:        return "분양주택";
+    case Notice_Code.lease_house:              return "임대주택";
+    case Notice_Code.house_welfare:            return "주거복지";
+    case Notice_Code.shopping_district:        return "상가";
+    case Notice_Code.public_installment_house: return "공공분양(신혼희망)";
   }
 }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_practice/MainMenu/MainMenu.dart';
-import 'package:flutter_practice/Data/CachingData.dart';
+import 'package:bunyang/MainMenu/SnapMenu.dart';
+import 'package:bunyang/Util/Util.dart';
 
 void main()
 {
@@ -16,22 +16,29 @@ class MyApp extends StatelessWidget
 
     return MaterialApp
     (
-      title: 'Flutter Demo',
+      title: '안녕? 분양',
       theme: ThemeData
       (
-        backgroundColor: Color.fromARGB(255, 0, 255, 0),
-        scaffoldBackgroundColor: Color.fromARGB(255, 0, 255, 0)
+        backgroundColor: Color.fromARGB(255, 255, 255, 255),
+        scaffoldBackgroundColor: Color.fromARGB(255, 255, 255, 255),
+        fontFamily: "TmonTium"
       ),
       home: MainPage(),
     );
   }
 }
 
-class MainPage extends StatelessWidget
+class MainPage extends StatefulWidget
+{
+  @override
+  MainPageState createState() => new MainPageState();
+}
+
+class MainPageState extends State<MainPage>
 {
   @override
   Widget build(BuildContext context) 
   {
-    return Scaffold(appBar: new AppBar(title: new Text("test")), body : MainMenu());
+    return Scaffold(body : SnapMenu());
   }
 }

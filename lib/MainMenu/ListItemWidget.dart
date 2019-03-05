@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_practice/Data/ListItem.dart';
+import 'package:bunyang/Data/ListItem.dart';
 import 'package:sticky_headers/sticky_headers.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
-import 'package:flutter_practice/MainMenu/WebViewWidget.dart';
+import 'package:bunyang/MainMenu/WebViewWidget.dart';
+import 'package:bunyang/Util/Util.dart';
 
 class ListItemWidget extends StatelessWidget 
 {
@@ -22,22 +23,14 @@ class ListItemWidget extends StatelessWidget
         color: Colors.blueGrey[700],
         padding: new EdgeInsets.symmetric(horizontal: 16.0),
         alignment: Alignment.centerLeft,
-        child: new Text
-        (
-          item.typeString,
-          style : const TextStyle(color: Colors.white),
-        ),
+        child: MyText(item.typeString),
       ),
       content: new MaterialButton
       (
         height: 200,
         minWidth: MediaQuery.of(context).size.width,
         color: Colors.blue,
-        child: new Text
-        (
-          item.panName,
-          style: const TextStyle(color: Colors.white),
-        ),
+        child: MyText(item.panName),
         onPressed: ()
         {
           Navigator.push

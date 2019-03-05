@@ -1,4 +1,4 @@
-import 'package:flutter_practice/Data/Address.dart';
+import 'package:bunyang/Data/Address.dart';
 
 class ListItem
 {
