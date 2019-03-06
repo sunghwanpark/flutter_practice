@@ -8,14 +8,17 @@ class SnapMenu extends StatelessWidget
   @override
   Widget build(BuildContext context)
   {
-    final Size cardSize = Size(300, 400);
+    final Size cardSize = Size(300, 500);
+    var contextSize = MediaQuery.of(context).size;
+
     return SnapList
     (
+      alignment: Alignment(0.0, 0.3),
       count: constNoticeCodeMap.length,
 
       padding: EdgeInsets.only
       (
-        left: (MediaQuery.of(context).size.width - cardSize.width) / 2
+        left: (contextSize.width - cardSize.width) / 2
       ),
       sizeProvider: (index, data) => cardSize,
       separatorProvider: (index, data) => Size(10, 10),
@@ -31,20 +34,37 @@ class SnapMenu extends StatelessWidget
         return ClipRRect
         (
           borderRadius: new BorderRadius.circular(16),
-          child: new MaterialButton
+          child: new Column
           (
-            child: materialImage,
-            onPressed: ()
-            {
-              Navigator.push
+            children: <Widget>
+            [
+              new MaterialButton
               (
-                context, 
-                new MaterialPageRoute
+                child: materialImage,
+                onPressed: ()
+                {
+                  Navigator.push
+                  (
+                    context, 
+                    new MaterialPageRoute
+                    (
+                      builder: (context) => new MainMenu(constNoticeCodeMap[Notice_Code.values[index]].code, getNoticeString(Notice_Code.values[index]))
+                    )
+                  );
+                }
+              ),
+              new Text
+              (
+                getNoticeString(Notice_Code.values[index]),
+                style:TextStyle
                 (
-                  builder: (context) => new MainMenu(constNoticeCodeMap[Notice_Code.values[index]].code)
-                )
-              );
-            }
+                  color: Colors.black38,
+                  fontSize: 50,
+                  fontFamily: "TmonTium"
+                ),
+                overflow: TextOverflow.fade,
+              ),
+            ]
           ),
         );
       },

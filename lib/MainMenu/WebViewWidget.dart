@@ -18,6 +18,7 @@ class WebViewWidget extends StatelessWidget
       (
         title: MyText(_item.panName),
       ),
+      withJavascript: true,
     );
   }
 }

@@ -3,77 +3,56 @@ import "package:bunyang/Data/CachingData.dart";
 import "package:bunyang/Data/ListItem.dart";
 import "package:bunyang/MainMenu/ListItemWidget.dart";
 import 'package:bunyang/Util/Util.dart';
+import 'package:bunyang/Abstract/LoadingStateWidget.dart';
 
-enum LoadingState { DONE, LOADING, WAITING, ERROR }
-
-class MainMenu extends StatefulWidget
+class MainMenu extends LoadingStateful
 {
-  MainMenu(this.requestCode);
+  MainMenu(this.requestCode, String appBarTitle) :super(appBarTitle);
 
   final String requestCode;
   final CachingData cachingData = CachingData.instance();
 
   @override
-  MainMenuWidgetState createState() => MainMenuWidgetState(requestCode);
+  MainMenuWidgetState createState() => MainMenuWidgetState(requestCode, appBarTitle);
 }
 
-class MainMenuWidgetState extends State<MainMenu> 
+class MainMenuWidgetState extends LoadingStateWidget<MainMenu> 
 {
-  MainMenuWidgetState(this.requestCode);
+  MainMenuWidgetState(this.requestCode, String appBarTitle) : super(appBarTitle);
 
   final String requestCode;
-  List<ListItem> _items = List();
-  LoadingState _loadingState = LoadingState.LOADING;
 
-  loadpage() async
+  List<ListItem> _items = List();
+
+  @override
+  void loadpage() async
   {
     try 
     {
-      var items = await widget.cachingData.request(requestCode);
+      var items = await cachingData.request(requestCode);
       setState(() 
       {
-        _loadingState =LoadingState.DONE;
+        loadingState =LoadingState.DONE;
         _items.addAll(items); 
       });  
     } 
     catch (e) 
     {
-      setState(() => _loadingState = LoadingState.ERROR);
+      setState(() => loadingState = LoadingState.ERROR);
     }
   }
 
   @override
-  void initState() {
-    super.initState();
-
-    loadpage();
-  }
-
-  @override
-  Widget build(BuildContext context)
+  Widget getContentSection() 
   {
-    String _title = _items.isEmpty ? "" : _items[0] .typeString;
-    return Scaffold
-    (
-      appBar: new AppBar(title: MyText(_title)),
-      body: _getContentSection(),
-    );
-  }
-
-  Widget _getContentSection() 
-  {
-    switch (_loadingState) {
+    switch (loadingState) 
+    {
       case LoadingState.DONE:
         if(_items.length == 0)
-          return Container
-          (
+          return MyText('데이터가 없어요!', Colors.black);
 
-            alignment: Alignment.center,
-            child: MyText("공고가 없어요!"),
-            color: Colors.white,
-          );
-
-        return ListView.builder(
+        return ListView.builder
+        (
           itemCount: _items.length,
           itemBuilder: (BuildContext context, int index)
           {
@@ -81,7 +60,7 @@ class MainMenuWidgetState extends State<MainMenu>
           }
         );
       case LoadingState.ERROR:
-      return MyText('데이터를 불러들이지 못했어요!');
+        return MyText('데이터를 불러들이지 못했어요!', Colors.black);
       case LoadingState.LOADING:
         return CircularProgressIndicator(backgroundColor: Colors.white);
       default:

@@ -1,6 +1,8 @@
 import "package:flutter/material.dart";
 
-Text MyText(String str, [Color textColor = Colors.white, double _fontSize = 20.0])
+enum LoadingState { DONE, LOADING, WAITING, ERROR }
+
+Text MyText(String str, [Color textColor = Colors.black, double _fontSize = 20.0])
 {
   return new Text
   (

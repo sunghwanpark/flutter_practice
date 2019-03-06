@@ -27,4 +27,19 @@ class ListItem
       detailNoticeCode = jsonMap['AIS_TP_CD_NM'],
       detailURL = jsonMap['DTL_URL'],
       rNum = jsonMap['RNUM'];    
+
+
+  getParameter(String param)
+  {
+    int findIdx = detailURL.lastIndexOf("gv_param=");
+    String subString = detailURL.substring(findIdx);
+    var splitData = subString.split(',');
+
+    var panId = splitData
+    .where((str) => str.contains(param))
+    .first
+    .split(':');
+
+    return panId[1];
+  }
 }
