@@ -28,13 +28,7 @@ class MyApp extends StatelessWidget
   }
 }
 
-class MainPage extends StatefulWidget
-{
-  @override
-  MainPageState createState() => new MainPageState();
-}
-
-class MainPageState extends State<MainPage>
+class MainPage extends StatelessWidget
 {
   @override
   Widget build(BuildContext context) 

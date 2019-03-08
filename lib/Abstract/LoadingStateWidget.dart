@@ -29,14 +29,36 @@ abstract class LoadingStateWidget<T> extends State<LoadingStateful>
   @override
   Widget build(BuildContext context)
   {
-    return Scaffold
+    return Container
     (
-      backgroundColor: Colors.white,
-      appBar: new AppBar(title: MyText(appBarTitle)),
-      body: Center
+      child: Stack
       (
-        child: getContentSection(),
-      ),
+        fit: StackFit.expand,
+        children: <Widget>
+        [
+          Image.asset("assets/image/bg3.jpg", fit: BoxFit.fitHeight),
+          Scaffold
+          (
+            backgroundColor: Colors.transparent,
+            appBar: AppBar
+            (
+              title: MyText(appBarTitle, Colors.white),
+              elevation: 0.0,
+              backgroundColor: const Color(0xFF353535).withOpacity(0.2),
+              centerTitle: true,
+            ),
+            body: Center
+            (
+              child: Container
+              (
+                margin: EdgeInsets.all(10.0),
+                padding: EdgeInsets.all(10.0),
+                child: getContentSection(),
+              ),
+            ),
+          )
+        ]
+      )
     );
   }
 

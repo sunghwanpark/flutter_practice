@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:bunyang/Data/Address.dart';
-import 'package:bunyang/MenuItem/LandPage.dart';
+import 'package:bunyang/MenuItem/Land/LandPage.dart';
 import 'package:bunyang/Data/ListItem.dart';
 import 'package:bunyang/Util/Util.dart';
 
@@ -11,7 +11,7 @@ class ItemWidgetFactory
     switch (item.type)
     {
       case Notice_Code.land:
-        return new LandPage(item, item.panName);
+        return LandPage(item, item.panName);
       default:
         return MyText('아직 개발중이야~');
     }

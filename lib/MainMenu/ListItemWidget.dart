@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:bunyang/Data/ListItem.dart';
-import 'package:sticky_headers/sticky_headers.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
-//import 'package:bunyang/MainMenu/WebViewWidget.dart';
 import 'package:bunyang/Util/Util.dart';
 import 'package:bunyang/MenuItem/ItemWidgetFactory.dart';
 
@@ -16,33 +14,71 @@ class ListItemWidget extends StatelessWidget
 
   Widget build(BuildContext context)
   {
-    return new StickyHeader
+    return Container
     (
-      header: new Container
+      child: Flex
       (
-        height: 50,
-        color: Colors.blueGrey[700],
-        padding: new EdgeInsets.symmetric(horizontal: 16.0),
-        alignment: Alignment.centerLeft,
-        child: MyText(item.detailNoticeCode),
-      ),
-      content: new MaterialButton
-      (
-        height: 200,
-        minWidth: MediaQuery.of(context).size.width,
-        color: Colors.blue,
-        child: MyText(item.panName),
-        onPressed: ()
-        {
-          Navigator.push
+        direction: Axis.vertical,
+        children: <Widget>
+        [
+          Container
           (
-            context,
-            new MaterialPageRoute
+            height: 50,
+            width: MediaQuery.of(context).size.width,
+            decoration: BoxDecoration
             (
-              builder: (context) => ItemWidgetFactory.buildItemWidget(item)
-            )
-          );
-        }
+              color: Colors.white24,
+              borderRadius: BorderRadius.circular(50),
+            ),
+            child: Row
+            (
+              children: <Widget>
+              [
+                SizedBox(width: 20),
+                Icon
+                (
+                  Icons.landscape,
+                  color: Colors.white,
+                ),
+                SizedBox(width: 20),
+                Text
+                (
+                  item.detailNoticeCode,
+                  textAlign: TextAlign.center,
+                  style: TextStyle
+                  (
+                    color: Colors.white,
+                    fontFamily: 'NanumGothic',
+                    fontWeight: FontWeight.w700,
+                    fontSize: 25
+                  ),
+                ),
+              ]
+            ),
+          ),
+          Container
+          (
+            height: 200,
+            width: MediaQuery.of(context).size.width,
+            child: MaterialButton
+            (
+              child: MyText(item.panName, Colors.white),
+              height: 200,
+              minWidth: MediaQuery.of(context).size.width,
+              onPressed: ()
+              {
+                Navigator.push
+                (
+                  context,
+                  MaterialPageRoute
+                  (
+                    builder: (context) => ItemWidgetFactory.buildItemWidget(item)
+                  )
+                );
+              }
+            ),
+          )
+        ]
       ),
     );
   }

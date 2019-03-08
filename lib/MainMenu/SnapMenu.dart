@@ -11,63 +11,70 @@ class SnapMenu extends StatelessWidget
     final Size cardSize = Size(300, 500);
     var contextSize = MediaQuery.of(context).size;
 
-    return SnapList
+    return Container
     (
-      alignment: Alignment(0.0, 0.3),
-      count: constNoticeCodeMap.length,
-
-      padding: EdgeInsets.only
+      child: Stack
       (
-        left: (contextSize.width - cardSize.width) / 2
-      ),
-      sizeProvider: (index, data) => cardSize,
-      separatorProvider: (index, data) => Size(10, 10),
-      builder: (context, index, data)
-      {
-        var materialImage = new Image
-        (
-          image: constNoticeCodeMap[Notice_Code.values[index]].image,
-          fit: BoxFit.fill,
-          semanticLabel: getNoticeString(Notice_Code.values[index]),
-        );
-
-        return ClipRRect
-        (
-          borderRadius: new BorderRadius.circular(16),
-          child: new Column
+        fit: StackFit.expand,
+        children : <Widget>
+        [
+          Image.asset("assets/image/bgblur.jpg", fit: BoxFit.fitHeight),
+          SnapList
           (
-            children: <Widget>
-            [
-              new MaterialButton
+            alignment: Alignment(0.0, 0.3),
+            count: constNoticeCodeMap.length,
+            padding: EdgeInsets.only(left: (contextSize.width - cardSize.width) / 2),
+            sizeProvider: (index, data) => cardSize,
+            separatorProvider: (index, data) => Size(10, 10),
+            builder: (context, index, data)
+            {
+              var materialImage = new Image
               (
-                child: materialImage,
-                onPressed: ()
-                {
-                  Navigator.push
-                  (
-                    context, 
-                    new MaterialPageRoute
-                    (
-                      builder: (context) => new MainMenu(constNoticeCodeMap[Notice_Code.values[index]].code, getNoticeString(Notice_Code.values[index]))
-                    )
-                  );
-                }
-              ),
-              new Text
+                image: constNoticeCodeMap[Notice_Code.values[index]].image,
+                fit: BoxFit.fill,
+                semanticLabel: getNoticeString(Notice_Code.values[index]),
+              );
+
+              return ClipRRect
               (
-                getNoticeString(Notice_Code.values[index]),
-                style:TextStyle
+                borderRadius: new BorderRadius.circular(16),
+                child: new Column
                 (
-                  color: Colors.black38,
-                  fontSize: 50,
-                  fontFamily: "TmonTium"
+                  children: <Widget>
+                  [
+                    new MaterialButton
+                    (
+                      child: materialImage,
+                      onPressed: ()
+                      {
+                        Navigator.push
+                        (
+                          context, 
+                          new MaterialPageRoute
+                          (
+                            builder: (context) => new MainMenu(constNoticeCodeMap[Notice_Code.values[index]].code, getNoticeString(Notice_Code.values[index]))
+                          )
+                        );
+                      }
+                    ),
+                    new Text
+                    (
+                      getNoticeString(Notice_Code.values[index]),
+                      style: TextStyle
+                      (
+                        color: Colors.black38,
+                        fontSize: 50,
+                        fontFamily: "TmonTium"
+                      ),
+                      overflow: TextOverflow.fade,
+                    ),
+                  ]
                 ),
-                overflow: TextOverflow.fade,
-              ),
-            ]
-          ),
-        );
-      },
+              );
+            },
+          )
+        ]
+      ),
     );
   }
 }

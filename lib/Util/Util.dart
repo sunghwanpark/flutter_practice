@@ -11,7 +11,8 @@ Text MyText(String str, [Color textColor = Colors.black, double _fontSize = 20.0
     (
       color: textColor,
       fontSize: _fontSize,
-      fontFamily: "TmonTium"
-    )
+      fontFamily: "TmonTium",
+      fontWeight: FontWeight.w500
+    ),
   );
 }
