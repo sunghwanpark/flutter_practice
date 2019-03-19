@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:bunyang/Util/Util.dart';
-import 'package:bunyang/Data/CachingData.dart';
 
 abstract class LoadingStateful extends StatefulWidget
 {
@@ -12,7 +11,6 @@ abstract class LoadingStateWidget<T> extends State<LoadingStateful>
 {
   LoadingStateWidget(this.appBarTitle);
 
-  final CachingData cachingData = CachingData.instance();
   final String appBarTitle;
 
   LoadingState loadingState = LoadingState.LOADING;

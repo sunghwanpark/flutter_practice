@@ -1,16 +1,14 @@
+import 'package:bunyang/Menu/Model/MenuModel.dart';
+import 'package:bunyang/MenuItem/NoticeElementRouteFactory.dart';
 import 'package:flutter/material.dart';
-import 'package:bunyang/Data/ListItem.dart';
-import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 import 'package:bunyang/Util/Util.dart';
-import 'package:bunyang/MenuItem/ItemWidgetFactory.dart';
 
 class ListItemWidget extends StatelessWidget 
 {
   ListItemWidget(this.item, this.index);
 
   final int index;
-  final ListItem item;
-  final flutterWebviewPlugin = new FlutterWebviewPlugin();
+  final MenuData item;
 
   Widget build(BuildContext context)
   {
@@ -72,7 +70,7 @@ class ListItemWidget extends StatelessWidget
                   context,
                   MaterialPageRoute
                   (
-                    builder: (context) => ItemWidgetFactory.buildItemWidget(item)
+                    builder: (context) => NoticeElementRouteFactory.buildElement(item)
                   )
                 );
               }

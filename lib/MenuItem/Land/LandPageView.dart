@@ -1,33 +1,47 @@
+import 'package:bunyang/Data/Address.dart';
 import 'package:flutter/material.dart';
-import 'package:bunyang/Data/ListItem.dart';
 import 'package:bunyang/Util/Util.dart';
-import 'package:bunyang/Abstract/LoadingStateWidget.dart';
 import 'package:bunyang/MenuItem/Land/SupplyDate.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
-class LandPage extends LoadingStateful
+class LandPage extends StatefulWidget
 {
-  LandPage(this.item, String appBarTitle) : super(appBarTitle);
+  LandPage(this.type, this.pan_id, this.ccr_cnnt_sys_ds_cd, this.appBarTitle);
 
-  final ListItem item;
+  final Notice_Code type;
+  final String pan_id;
+  final String ccr_cnnt_sys_ds_cd;
+  final String appBarTitle;
+
   @override
-  LandPageWidgetState createState() => LandPageWidgetState(item, appBarTitle);
+  LandPageView createState() => LandPageView(type, pan_id, ccr_cnnt_sys_ds_cd, appBarTitle);
 }
 
-class LandPageWidgetState extends LoadingStateWidget<LandPage> 
+class LandPageView extends State<LandPage> implements 
 {
-  LandPageWidgetState(this.item, String appBarTitle) : super(appBarTitle);
+  LandPageView(this.type, this.pan_id, this.ccr_cnnt_sys_ds_cd, this.appBarTitle);
 
-  final ListItem item;
+  final Notice_Code type;
+  final String pan_id;
+  final String ccr_cnnt_sys_ds_cd;
+  final String appBarTitle;
+
+  LoadingState loadingState = LoadingState.LOADING;
   Map<String, Map<String, String>> _dataSetMap = new Map<String, Map<String, String>>();
   List<Widget> _contents = new List<Widget>();
 
   @override
+  void initState() 
+  {
+    super.initState();
+    _menuPresenter.onRequestNotice(requestCode);
+  }
+  
   void loadpage() async
   {
     try 
     {
-      var xmldocument = await cachingData.requestItem(item.type, item.getParameter("PAN_ID"), item.getParameter("CCR_CNNT_SYS_DS_CD"));
+      var xmldocument = await cachingData.requestItem(type, pan_id, ccr_cnnt_sys_ds_cd);
 
       var dataSet = xmldocument.findAllElements("Dataset");
       dataSet.forEach((elem)
@@ -92,5 +106,39 @@ class LandPageWidgetState extends LoadingStateWidget<LandPage>
     }
   }
 
-  
+  @override
+  Widget build(BuildContext context)
+  {
+    return Container
+    (
+      child: Stack
+      (
+        fit: StackFit.expand,
+        children: <Widget>
+        [
+          Image.asset("assets/image/bg3.jpg", fit: BoxFit.fitHeight),
+          Scaffold
+          (
+            backgroundColor: Colors.transparent,
+            appBar: AppBar
+            (
+              title: MyText(appBarTitle, Colors.white),
+              elevation: 0.0,
+              backgroundColor: const Color(0xFF353535).withOpacity(0.2),
+              centerTitle: true,
+            ),
+            body: Center
+            (
+              child: Container
+              (
+                margin: EdgeInsets.all(10.0),
+                padding: EdgeInsets.all(10.0),
+                child: getContentSection(),
+              ),
+            ),
+          )
+        ]
+      )
+    );
+  }
 }

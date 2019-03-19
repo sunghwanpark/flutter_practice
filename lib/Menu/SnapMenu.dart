@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:snaplist/snaplist.dart';
-import 'package:bunyang/MainMenu/MainMenu.dart';
+import 'package:bunyang/Menu/View/MenuView.dart';
 import 'package:bunyang/Data/Address.dart';
 
 class SnapMenu extends StatelessWidget
@@ -52,7 +52,7 @@ class SnapMenu extends StatelessWidget
                           context, 
                           new MaterialPageRoute
                           (
-                            builder: (context) => new MainMenu(constNoticeCodeMap[Notice_Code.values[index]].code, getNoticeString(Notice_Code.values[index]))
+                            builder: (context) => new Menu(constNoticeCodeMap[Notice_Code.values[index]].code, getNoticeString(Notice_Code.values[index]))
                           )
                         );
                       }

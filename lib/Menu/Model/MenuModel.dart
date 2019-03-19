@@ -1,0 +1,67 @@
+import 'dart:convert';
+
+import 'package:bunyang/Data/Address.dart';
+import 'package:bunyang/Data/URL.dart';
+import 'package:http/http.dart' as http;
+
+class MenuData
+{
+  Notice_Code type;
+  String typeString;
+  String startDate;
+  String closeDate;
+  String panState;
+  String panName;
+  String locateName;
+  String detailNoticeCode;
+  String detailURL;
+  String rNum;
+
+  factory MenuData(Map jsonMap) =>
+      MenuData._internalFromJson(jsonMap);
+
+  MenuData._internalFromJson(Map jsonMap)
+      : type = getNoticeType(jsonMap['UPP_AIS_TP_NM']),
+      typeString = jsonMap['UPP_AIS_TP_NM'],
+      startDate = jsonMap['PAN_NT_ST_DT'],
+      closeDate = jsonMap['CLSG_DT'],
+      panState = jsonMap['PAN_SS'],
+      panName = jsonMap['PAN_NM'],
+      locateName = jsonMap['CNP_CD_NM'],
+      detailNoticeCode = jsonMap['AIS_TP_CD_NM'],
+      detailURL = jsonMap['DTL_URL'],
+      rNum = jsonMap['RNUM'];
+
+  getParameter(String param)
+  {
+    int findIdx = detailURL.lastIndexOf("gv_param=");
+    String subString = detailURL.substring(findIdx);
+    var splitData = subString.split(',');
+
+    var panId = splitData
+    .where((str) => str.contains(param))
+    .first
+    .split(':');
+
+    return panId[1];
+  }
+}
+
+class MenuModel
+{
+  Future<List<MenuData>> fetch(String code) async
+  {
+    String url = noticeURL + apiURL;
+    url = url + "?" + "apiKey=" + api_key;
+    url = url + "&PG_SZ=100";
+    url = url + "&PAGE=1";
+    url = url + "&PAN_SS=공고중";
+    url = url + "&UPP_AIS_TP_CD=" + code;
+
+    return await http.post(url)
+      .timeout(const Duration(seconds: 5))
+      .then((res) => json.decode(res.body)[1]["dsList"])
+      .then((json) => json.map<MenuData>((item) => MenuData(item))
+      .toList());
+  }
+}
