@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:bunyang/MainMenu/SnapMenu.dart';
-import 'package:bunyang/Util/Util.dart';
+import 'package:bunyang/Menu/SnapMenu.dart';
 
 void main()
 {

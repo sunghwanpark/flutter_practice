@@ -36,7 +36,7 @@ class CachingData
     .toList());
   }
 
-  Future<xml.XmlDocument> requestItem(Notice_Code notice_code, String panId, 
+  /*Future<xml.XmlDocument> requestItem(Notice_Code notice_code, String panId, 
   [String ccr_cnnt_sys_ds_cd = "", String upp_ais_tp_cd = ""]) async
   {
     StringBuffer stringBuffer = new StringBuffer();
@@ -52,5 +52,5 @@ class CachingData
       body: generateDetailBody(notice_code, panId, ccr_cnnt_sys_ds_cd, upp_ais_tp_cd)
     ).timeout(const Duration(seconds: 5))
     .then((res) => xml.parse(res.body));
-  }
+  }*/
 }

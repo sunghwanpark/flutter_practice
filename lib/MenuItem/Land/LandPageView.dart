@@ -1,7 +1,9 @@
 import 'package:bunyang/Data/Address.dart';
+import 'package:bunyang/MenuItem/Land/LandPageModel.dart';
+import 'package:bunyang/MenuItem/Land/LandPagePresenter.dart';
+import 'package:bunyang/MenuItem/Land/SupplyDateView.dart';
 import 'package:flutter/material.dart';
 import 'package:bunyang/Util/Util.dart';
-import 'package:bunyang/MenuItem/Land/SupplyDate.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 class LandPage extends StatefulWidget
@@ -17,69 +19,40 @@ class LandPage extends StatefulWidget
   LandPageView createState() => LandPageView(type, pan_id, ccr_cnnt_sys_ds_cd, appBarTitle);
 }
 
-class LandPageView extends State<LandPage> implements 
+class LandPageView extends State<LandPage> 
 {
   LandPageView(this.type, this.pan_id, this.ccr_cnnt_sys_ds_cd, this.appBarTitle);
 
+  LandPagePresenter _presenter;
+  
   final Notice_Code type;
   final String pan_id;
   final String ccr_cnnt_sys_ds_cd;
   final String appBarTitle;
 
   LoadingState loadingState = LoadingState.LOADING;
-  Map<String, Map<String, String>> _dataSetMap = new Map<String, Map<String, String>>();
+  
   List<Widget> _contents = new List<Widget>();
 
   @override
   void initState() 
   {
     super.initState();
-    _menuPresenter.onRequestNotice(requestCode);
+    _presenter = new LandPagePresenter(this);
+    _presenter.onRequestNotice(type, pan_id, ccr_cnnt_sys_ds_cd);
   }
-  
-  void loadpage() async
+
+  void onLoadComplete(SupplyDate supplyDate)
   {
-    try 
-    {
-      var xmldocument = await cachingData.requestItem(type, pan_id, ccr_cnnt_sys_ds_cd);
-
-      var dataSet = xmldocument.findAllElements("Dataset");
-      dataSet.forEach((elem)
-      {
-        _dataSetMap[elem.getAttribute('id')] = new Map<String, String>();
-        print(elem.getAttribute('id'));
-        elem.findAllElements('Col')
-        .forEach((colElem)
-        {
-          print(colElem.toString());
-          _dataSetMap[elem.getAttribute('id')][colElem.getAttribute('id')] = colElem.text;
-        });
-      });
-
-      _contents.add(SupplyDate
-            (
-              applyDate: _dataSetMap['dsSplScdList']['RQS_DTTM'],
-              applyReserveDepositEndDate: _dataSetMap['dsSplScdList']['CLSG_DTTM'],
-              pickDate: _dataSetMap['dsLndInf']['LTR_DTTM'],
-              resultNoticeDate: _dataSetMap['dsLndInf']['PZWR_NT_DTTM'],
-              contractDateStartAt: _dataSetMap['dsLndInf']['CTRT_ST_DT'],
-              contractDateEndAt: _dataSetMap['dsLndInf']['CTRT_ED_DT'],
-            ));
-
-      _contents.add(Text('haha', textAlign: TextAlign.center, style: TextStyle(color: Colors.white)));
-
-      setState(() 
-      {
-        loadingState = LoadingState.DONE;
-      });  
-    } 
-    catch (e) 
-    {
-      setState(() => loadingState = LoadingState.ERROR);
-    }
+    _contents.add(SupplyDateView(supplyDate));
+    setState(() => loadingState = LoadingState.DONE);
   }
 
-  @override
+  void onLoadError()
+  {
+    setState(() => loadingState = LoadingState.ERROR);
+  }
+
   Widget getContentSection()
   {
     switch (loadingState)

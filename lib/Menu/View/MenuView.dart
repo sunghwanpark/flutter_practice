@@ -26,30 +26,25 @@ class MenuView extends State<Menu>
 
   LoadingState loadingState = LoadingState.LOADING;
 
-  List<MenuData> _items;
+  List<MenuData> _items = new List<MenuData>();
 
   @override
   void initState() 
   {
     super.initState();
+    _menuPresenter = new MenuPresenter(this);
     _menuPresenter.onRequestNotice(requestCode);
   }
   
   void onLoadComplete(List<MenuData> items)
   {
-    setState(() 
-    {
-      loadingState = LoadingState.DONE;
-      _items.addAll(items); 
-    });
+    _items.addAll(items); 
+    setState(() => loadingState = LoadingState.DONE);
   }
 
   void onLoadError()
   {
-    setState(() 
-    {
-      loadingState = LoadingState.ERROR;
-    });
+    setState(() => loadingState = LoadingState.ERROR);
   }
 
   Widget getContentSection() 
