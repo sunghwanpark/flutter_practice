@@ -20,12 +20,12 @@ class MainMenuData
 
 final constNoticeCodeMap = const 
 {
-  Notice_Code.land : MainMenuData("01", AssetImage("assets/image/land.png")),
-  Notice_Code.installment_house : MainMenuData("05", AssetImage("assets/image/house.png")),
-  Notice_Code.lease_house : MainMenuData("06", AssetImage("assets/image/sublease.png")),
-  Notice_Code.house_welfare : MainMenuData("13", AssetImage("assets/image/family.png")),
-  Notice_Code.shopping_district : MainMenuData("22", AssetImage("assets/image/store.png")),
-  Notice_Code.public_installment_house : MainMenuData("39", AssetImage("assets/image/parents.png"))
+  Notice_Code.land : MainMenuData("01", AssetImage("assets/image/land.jpg")),
+  Notice_Code.installment_house : MainMenuData("05", AssetImage("assets/image/house.jpg")),
+  Notice_Code.lease_house : MainMenuData("06", AssetImage("assets/image/sublease.jpg")),
+  Notice_Code.house_welfare : MainMenuData("13", AssetImage("assets/image/family.jpg")),
+  Notice_Code.shopping_district : MainMenuData("22", AssetImage("assets/image/store.jpg")),
+  Notice_Code.public_installment_house : MainMenuData("39", AssetImage("assets/image/parents.jpg"))
 };
 
 getNoticeType(String typeString)

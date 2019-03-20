@@ -13,68 +13,68 @@ class SnapMenu extends StatelessWidget
 
     return Container
     (
-      child: Stack
+      color : Colors.white,
+      child: SnapList
       (
-        fit: StackFit.expand,
-        children : <Widget>
-        [
-          Image.asset("assets/image/bgblur.jpg", fit: BoxFit.fitHeight),
-          SnapList
+        alignment: Alignment(0.0, 0.1),
+        count: constNoticeCodeMap.length,
+        padding: EdgeInsets.only(left: (contextSize.width - cardSize.width) / 2),
+        sizeProvider: (index, data) => cardSize,
+        separatorProvider: (index, data) => Size(10, 10),
+        builder: (context, index, data)
+        {
+          var materialImage = new Image
           (
-            alignment: Alignment(0.0, 0.3),
-            count: constNoticeCodeMap.length,
-            padding: EdgeInsets.only(left: (contextSize.width - cardSize.width) / 2),
-            sizeProvider: (index, data) => cardSize,
-            separatorProvider: (index, data) => Size(10, 10),
-            builder: (context, index, data)
-            {
-              var materialImage = new Image
-              (
-                image: constNoticeCodeMap[Notice_Code.values[index]].image,
-                fit: BoxFit.fill,
-                semanticLabel: getNoticeString(Notice_Code.values[index]),
-              );
+            image: constNoticeCodeMap[Notice_Code.values[index]].image,
+            fit: BoxFit.fill,
+            semanticLabel: getNoticeString(Notice_Code.values[index]),
+          );
 
-              return ClipRRect
-              (
-                borderRadius: new BorderRadius.circular(16),
-                child: new Column
+          return Card
+          (
+
+            color: Colors.black26,
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            child: new Column
+            (
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>
+              [
+                new MaterialButton
                 (
-                  children: <Widget>
-                  [
-                    new MaterialButton
+                  child: materialImage,
+                  onPressed: ()
+                  {
+                    Navigator.push
                     (
-                      child: materialImage,
-                      onPressed: ()
-                      {
-                        Navigator.push
-                        (
-                          context, 
-                          new MaterialPageRoute
-                          (
-                            builder: (context) => new Menu(constNoticeCodeMap[Notice_Code.values[index]].code, getNoticeString(Notice_Code.values[index]))
-                          )
-                        );
-                      }
-                    ),
-                    new Text
-                    (
-                      getNoticeString(Notice_Code.values[index]),
-                      style: TextStyle
+                      context, 
+                      new MaterialPageRoute
                       (
-                        color: Colors.black38,
-                        fontSize: 50,
-                        fontFamily: "TmonTium"
-                      ),
-                      overflow: TextOverflow.fade,
-                    ),
-                  ]
+                        builder: (context) => new Menu
+                        (
+                          constNoticeCodeMap[Notice_Code.values[index]].code,
+                          getNoticeString(Notice_Code.values[index])
+                        )
+                      )
+                    );
+                  }
                 ),
-              );
-            },
-          )
-        ]
-      ),
+                new Text
+                (
+                  getNoticeString(Notice_Code.values[index]),
+                  style: TextStyle
+                  (
+                    color: Colors.black38,
+                    fontSize: 50,
+                    fontFamily: "TmonTium"
+                  ),
+                  overflow: TextOverflow.fade,
+                ),
+              ]
+            ),
+          );
+        },
+      )
     );
   }
 }
