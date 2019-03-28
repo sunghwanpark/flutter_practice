@@ -69,7 +69,7 @@ class LandPageView extends State<LandPage>
         );
 
       case LoadingState.ERROR:
-        return MyText("데이터를 불러오지 못했습니다!");
+        return myText("데이터를 불러오지 못했습니다!");
 
       case LoadingState.LOADING:
         return CircularProgressIndicator(backgroundColor: Colors.white);
@@ -95,7 +95,7 @@ class LandPageView extends State<LandPage>
             backgroundColor: Colors.transparent,
             appBar: AppBar
             (
-              title: MyText(appBarTitle, Colors.white),
+              title: myText(appBarTitle, Colors.white),
               elevation: 0.0,
               backgroundColor: const Color(0xFF353535).withOpacity(0.2),
               centerTitle: true,

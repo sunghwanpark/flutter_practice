@@ -1,3 +1,4 @@
+import 'package:bunyang/Data/Address.dart';
 import 'package:bunyang/Menu/Model/MenuModel.dart';
 import 'package:bunyang/Menu/Presenter/MenuPresenter.dart';
 import "package:flutter/material.dart";
@@ -6,21 +7,21 @@ import 'package:bunyang/Util/Util.dart';
 
 class Menu extends StatefulWidget
 {
-  Menu(this.requestCode, this.appBarTitle);
+  Menu(this.appBarTitle, this.menuData);
 
-  final String requestCode;
   final String appBarTitle;
+  final MainMenuData menuData;
 
   @override
-  MenuView createState() => MenuView(requestCode, appBarTitle);
+  MenuView createState() => MenuView(appBarTitle, menuData);
 }
 
 class MenuView extends State<Menu>
 {
-  MenuView(this.requestCode, this.appBarTitle);
+  MenuView(this.appBarTitle, this.menuData);
 
-  final String requestCode;
   final String appBarTitle;
+  final MainMenuData menuData;
 
   MenuPresenter _menuPresenter;
 
@@ -33,7 +34,7 @@ class MenuView extends State<Menu>
   {
     super.initState();
     _menuPresenter = new MenuPresenter(this);
-    _menuPresenter.onRequestNotice(requestCode);
+    _menuPresenter.onRequestNotice(menuData.code);
   }
   
   void onLoadComplete(List<MenuData> items)
@@ -53,7 +54,7 @@ class MenuView extends State<Menu>
     {
       case LoadingState.DONE:
         if(_items.length == 0)
-          return MyText('데이터가 없어요!', Colors.black);
+          return myText('데이터가 없어요!', Colors.black);
 
         return ListView.builder
         (
@@ -64,9 +65,9 @@ class MenuView extends State<Menu>
           }
         );
       case LoadingState.ERROR:
-        return MyText('데이터를 불러들이지 못했어요!', Colors.black);
+        return myText('데이터를 불러들이지 못했어요!', Colors.black);
       case LoadingState.LOADING:
-        return CircularProgressIndicator(backgroundColor: Colors.white);
+        return CircularProgressIndicator(strokeWidth: 1.0);
       default:
         return Container();
     }
@@ -82,15 +83,31 @@ class MenuView extends State<Menu>
         fit: StackFit.expand,
         children: <Widget>
         [
-          Image.asset("assets/image/bg3.jpg", fit: BoxFit.fitHeight),
+          Positioned.fill
+          (
+            child: Hero
+            (
+              tag: menuData.code,
+              child: FadeInImage
+              ( 
+                placeholder: AssetImage("assets/image/placeholder.jpg"),
+                image: menuData.image,
+                fit: BoxFit.cover,
+              )
+            ),
+          ),
           Scaffold
           (
             backgroundColor: Colors.transparent,
             appBar: AppBar
             (
-              title: MyText(appBarTitle, Colors.white),
+              title: myText(appBarTitle, Colors.black),
+              iconTheme: IconThemeData
+              (
+                color: Colors.black
+              ),
               elevation: 0.0,
-              backgroundColor: const Color(0xFF353535).withOpacity(0.2),
+              backgroundColor: Colors.transparent,
               centerTitle: true,
             ),
             body: Center

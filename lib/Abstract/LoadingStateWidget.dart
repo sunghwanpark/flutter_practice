@@ -40,7 +40,7 @@ abstract class LoadingStateWidget<T> extends State<LoadingStateful>
             backgroundColor: Colors.transparent,
             appBar: AppBar
             (
-              title: MyText(appBarTitle, Colors.white),
+              title: myText(appBarTitle, Colors.white),
               elevation: 0.0,
               backgroundColor: const Color(0xFF353535).withOpacity(0.2),
               centerTitle: true,

@@ -16,64 +16,81 @@ class SnapMenu extends StatelessWidget
       color : Colors.white,
       child: SnapList
       (
+        axis: Axis.vertical,
         alignment: Alignment(0.0, 0.1),
         count: constNoticeCodeMap.length,
-        padding: EdgeInsets.only(left: (contextSize.width - cardSize.width) / 2),
+        padding: EdgeInsets.only(top: (contextSize.height - cardSize.height) / 2),
         sizeProvider: (index, data) => cardSize,
         separatorProvider: (index, data) => Size(10, 10),
         builder: (context, index, data)
         {
-          var materialImage = new Image
+          var materialImage = new Hero
           (
-            image: constNoticeCodeMap[Notice_Code.values[index]].image,
-            fit: BoxFit.fill,
-            semanticLabel: getNoticeString(Notice_Code.values[index]),
+            child: FadeInImage
+            ( 
+              placeholder: AssetImage("assets/image/placeholder.jpg"),
+              image: constNoticeCodeMap[Notice_Code.values[index]].image,
+              fit: BoxFit.fitHeight,
+              width: 300,
+              height: 420,
+            ),
+            tag: constNoticeCodeMap[Notice_Code.values[index]].code
           );
 
           return Card
           (
-
-            color: Colors.black26,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-            child: new Column
+            shape: RoundedRectangleBorder
             (
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>
+              borderRadius: BorderRadius.circular(10),
+              side: BorderSide(color: Colors.black12)
+            ),
+            child: Column
+            (
+              children : <Widget>
               [
-                new MaterialButton
+                InkWell
                 (
-                  child: materialImage,
-                  onPressed: ()
+                  child: ClipRRect
+                  (
+                    borderRadius: BorderRadius.circular(10),
+                    child: materialImage,
+                  ),
+                  onTap: ()
                   {
-                    Navigator.push
+                    Navigator.of(context).push
                     (
-                      context, 
-                      new MaterialPageRoute
+                      PageRouteBuilder
                       (
-                        builder: (context) => new Menu
-                        (
-                          constNoticeCodeMap[Notice_Code.values[index]].code,
-                          getNoticeString(Notice_Code.values[index])
-                        )
+                        transitionsBuilder: (context, animation, secondaryAnimation, child) =>
+                          FadeTransition(opacity: animation, child: child),
+                        pageBuilder: (BuildContext context, Animation animation, Animation secondaryAnimation)
+                        {
+                          return Menu(getNoticeString(Notice_Code.values[index]), constNoticeCodeMap[Notice_Code.values[index]]);
+                        }
                       )
                     );
                   }
                 ),
-                new Text
+                SizedBox
+                (
+                  height: 10
+                ),
+                Text
                 (
                   getNoticeString(Notice_Code.values[index]),
                   style: TextStyle
                   (
-                    color: Colors.black38,
-                    fontSize: 50,
-                    fontFamily: "TmonTium"
+                    color: Colors.black,
+                    fontSize: 30,
+                    fontFamily: "TmonTium",
+                    fontWeight: FontWeight.w500
                   ),
-                  overflow: TextOverflow.fade,
+                  overflow: TextOverflow.clip,
                 ),
               ]
-            ),
+            )
           );
-        },
+        }
       )
     );
   }

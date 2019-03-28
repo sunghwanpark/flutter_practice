@@ -16,7 +16,7 @@ class WebViewWidget extends StatelessWidget
       url: _item.detailURL,
       appBar: new AppBar
       (
-        title: MyText(_item.panName),
+        title: myText(_item.panName),
       ),
       withJavascript: true,
     );

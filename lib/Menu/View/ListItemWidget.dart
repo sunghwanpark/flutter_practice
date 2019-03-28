@@ -12,8 +12,17 @@ class ListItemWidget extends StatelessWidget
 
   Widget build(BuildContext context)
   {
-    return Container
+    return Card
     (
+      shape: RoundedRectangleBorder
+      (
+        borderRadius: BorderRadius.circular(20),
+        side: BorderSide(color: Colors.black12)
+      ),
+      //child: ,
+    //);
+    //return Container
+    //(
       child: Flex
       (
         direction: Axis.vertical,
@@ -25,8 +34,8 @@ class ListItemWidget extends StatelessWidget
             width: MediaQuery.of(context).size.width,
             decoration: BoxDecoration
             (
-              color: Colors.white24,
-              borderRadius: BorderRadius.circular(50),
+              color: Colors.black12.withAlpha(50),
+              borderRadius: BorderRadius.circular(20),
             ),
             child: Row
             (
@@ -60,7 +69,7 @@ class ListItemWidget extends StatelessWidget
             width: MediaQuery.of(context).size.width,
             child: MaterialButton
             (
-              child: MyText(item.panName, Colors.white),
+              child: myText(item.panName, Colors.black),
               height: 200,
               minWidth: MediaQuery.of(context).size.width,
               onPressed: ()
