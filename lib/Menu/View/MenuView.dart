@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:bunyang/Data/Address.dart';
 import 'package:bunyang/Menu/Model/MenuModel.dart';
 import 'package:bunyang/Menu/Presenter/MenuPresenter.dart';
@@ -76,52 +78,57 @@ class MenuView extends State<Menu>
   @override
   Widget build(BuildContext context)
   {
-    return Container
+    return Stack
     (
-      child: Stack
-      (
-        fit: StackFit.expand,
-        children: <Widget>
-        [
-          Positioned.fill
+      fit: StackFit.expand,
+      children: <Widget>
+      [
+        Positioned.fill
+        (
+          child: Hero
           (
-            child: Hero
-            (
-              tag: menuData.code,
-              child: FadeInImage
-              ( 
-                placeholder: AssetImage("assets/image/placeholder.jpg"),
-                image: menuData.image,
-                fit: BoxFit.cover,
-              )
-            ),
+            tag: menuData.code,
+            child: FadeInImage
+            ( 
+              placeholder: AssetImage("assets/image/placeholder.jpg"),
+              image: menuData.image,
+              fit: BoxFit.cover,
+            )
           ),
-          Scaffold
+        ),
+        BackdropFilter
+        (
+          filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+          child: new Container
           (
-            backgroundColor: Colors.transparent,
-            appBar: AppBar
-            (
-              title: myText(appBarTitle, Colors.black),
-              iconTheme: IconThemeData
-              (
-                color: Colors.black
-              ),
-              elevation: 0.0,
-              backgroundColor: Colors.transparent,
-              centerTitle: true,
-            ),
-            body: Center
-            (
-              child: Container
-              (
-                margin: EdgeInsets.all(10.0),
-                padding: EdgeInsets.all(10.0),
-                child: getContentSection(),
-              ),
-            ),
+            color: Colors.black.withOpacity(0.2)
           )
-        ]
-      )
+        ),
+        Scaffold
+        (
+          backgroundColor: Colors.transparent,
+          appBar: AppBar
+          (
+            title: myText(appBarTitle, Colors.black),
+            iconTheme: IconThemeData
+            (
+              color: Colors.black
+            ),
+            elevation: 0.0,
+            backgroundColor: Colors.transparent,
+            centerTitle: true,
+          ),
+          body: Center
+          (
+            child: Container
+            (
+              margin: EdgeInsets.all(10.0),
+              padding: EdgeInsets.all(10.0),
+              child: getContentSection()
+            )
+          )
+        )
+      ],
     );
   }
 }

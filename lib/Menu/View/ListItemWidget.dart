@@ -1,3 +1,6 @@
+import 'dart:ui';
+
+import 'package:bunyang/Data/Address.dart';
 import 'package:bunyang/Menu/Model/MenuModel.dart';
 import 'package:bunyang/MenuItem/NoticeElementRouteFactory.dart';
 import 'package:flutter/material.dart';
@@ -10,51 +13,63 @@ class ListItemWidget extends StatelessWidget
   final int index;
   final MenuData item;
 
+  IconData getIcon()
+  {
+    switch (item.type)
+    {
+      case Notice_Code.land:
+        return Icons.landscape;
+      case Notice_Code.installment_house:
+        return Icons.grid_on;
+      case Notice_Code.lease_house:
+        return Icons.home;
+      case Notice_Code.house_welfare:
+        return Icons.favorite;
+      case Notice_Code.shopping_district:
+        return Icons.shopping_cart;
+      case Notice_Code.public_installment_house:
+        return Icons.group;
+      default:
+        return Icons.perm_device_information;
+    }
+  }
+
   Widget build(BuildContext context)
   {
     return Card
     (
+      margin: EdgeInsets.only(left: 10, right: 10),
+      color: Colors.white.withOpacity(0.5),
       shape: RoundedRectangleBorder
       (
         borderRadius: BorderRadius.circular(20),
-        side: BorderSide(color: Colors.black12)
+        //side: BorderSide(color: Colors.black12)
       ),
-      //child: ,
-    //);
-    //return Container
-    //(
-      child: Flex
+      child: Container
       (
-        direction: Axis.vertical,
-        children: <Widget>
-        [
-          Container
-          (
-            height: 50,
-            width: MediaQuery.of(context).size.width,
-            decoration: BoxDecoration
-            (
-              color: Colors.black12.withAlpha(50),
-              borderRadius: BorderRadius.circular(20),
-            ),
-            child: Row
+        child: Column
+        (
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>
+          [
+            Row
             (
               children: <Widget>
               [
-                SizedBox(width: 20),
                 Icon
                 (
-                  Icons.landscape,
-                  color: Colors.white,
+                  getIcon(),
+                  color: Colors.black,
+                  size: 20,
                 ),
-                SizedBox(width: 20),
                 Text
                 (
                   item.detailNoticeCode,
                   textAlign: TextAlign.center,
                   style: TextStyle
                   (
-                    color: Colors.white,
+                    color: Colors.black,
                     fontFamily: 'NanumGothic',
                     fontWeight: FontWeight.w700,
                     fontSize: 25
@@ -62,31 +77,29 @@ class ListItemWidget extends StatelessWidget
                 ),
               ]
             ),
-          ),
-          Container
-          (
-            height: 200,
-            width: MediaQuery.of(context).size.width,
-            child: MaterialButton
+            Container
             (
-              child: myText(item.panName, Colors.black),
               height: 200,
-              minWidth: MediaQuery.of(context).size.width,
-              onPressed: ()
-              {
-                Navigator.push
-                (
-                  context,
-                  MaterialPageRoute
+              width: MediaQuery.of(context).size.width,
+              child: InkWell
+              (
+                child: myText(item.panName, Colors.black),
+                onTap: ()
+                {
+                  Navigator.push
                   (
-                    builder: (context) => NoticeElementRouteFactory.buildElement(item)
-                  )
-                );
-              }
-            ),
-          )
-        ]
-      ),
+                    context,
+                    MaterialPageRoute
+                    (
+                      builder: (context) => NoticeElementRouteFactory.buildElement(item)
+                    )
+                  );
+                }
+              ),
+            )
+          ],
+        )
+      )
     );
   }
 }
