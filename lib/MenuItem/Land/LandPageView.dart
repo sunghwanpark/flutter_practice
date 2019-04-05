@@ -5,6 +5,7 @@ import 'package:bunyang/MenuItem/Land/LandPagePresenter.dart';
 import 'package:bunyang/MenuItem/Land/SupplyDateView.dart';
 import 'package:flutter/material.dart';
 import 'package:bunyang/Util/Util.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 
 class LandPage extends StatefulWidget
 {
@@ -43,7 +44,12 @@ class LandPageView extends State<LandPage>
   {
     super.initState();
     _presenter = new LandPagePresenter(this);
-    _presenter.onRequestNotice(type, pan_id, ccr_cnnt_sys_ds_cd);
+    _presenter.onRequestPanInfo(type, pan_id, ccr_cnnt_sys_ds_cd);
+  }
+
+  void onResponseSuccessPanInfo(PanInfo panInfo)
+  {
+    _presenter.onRequestNotice(type, pan_id, ccr_cnnt_sys_ds_cd, panInfo);
   }
 
   void onLoadComplete(SupplyDate supplyDate)
@@ -121,8 +127,20 @@ class LandPageView extends State<LandPage>
             ),
             flexibleSpace: FlexibleSpaceBar
             (
+              titlePadding: EdgeInsets.only(top: 200, left: 80, right: 80),
               centerTitle: true,
-              title: myText(appBarTitle, Colors.white),
+              title: AutoSizeText
+              (
+                appBarTitle,
+                style: TextStyle
+                (
+                  color: Colors.white,
+                  fontFamily: "TmonTium",
+                  fontSize: 25,
+                  fontWeight: FontWeight.w800
+                ),
+                maxLines: 3,
+              ),
               background: Stack
               (
                 fit: StackFit.expand,

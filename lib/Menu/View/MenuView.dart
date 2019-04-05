@@ -90,6 +90,8 @@ class MenuView extends State<Menu>
             tag: menuData.code,
             child: FadeInImage
             ( 
+              fadeInDuration: Duration(seconds: 0),
+              fadeOutDuration: Duration(seconds: 0),
               placeholder: AssetImage("assets/image/placeholder.jpg"),
               image: menuData.image,
               fit: BoxFit.cover,
@@ -109,7 +111,16 @@ class MenuView extends State<Menu>
           backgroundColor: Colors.transparent,
           appBar: AppBar
           (
-            title: myText(appBarTitle, Colors.black),
+            title: Text
+            (
+              appBarTitle,
+              style: TextStyle
+              (
+                color: Colors.black,
+                fontSize: 18,
+                fontWeight: FontWeight.w700
+              ) 
+            ),
             iconTheme: IconThemeData
             (
               color: Colors.black

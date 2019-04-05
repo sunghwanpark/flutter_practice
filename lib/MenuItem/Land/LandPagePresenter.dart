@@ -12,10 +12,18 @@ class LandPagePresenter
     _model = new LandPageModel();
   }
 
-  void onRequestNotice(Notice_Code code, String panId, String ccrCnntSysDsCd)
+  void onRequestPanInfo(Notice_Code code, String panId, String ccrCnntSysDsCd)
   {
     _model
-      .fetch(code, panId, ccrCnntSysDsCd)
+      .fetchPanInfo(code, panId, ccrCnntSysDsCd)
+      .then((panInfo) => _view.onResponseSuccessPanInfo(panInfo))
+      .catchError((onError) => _view.onLoadError());
+  }
+
+  void onRequestNotice(Notice_Code code, String panId, String ccrCnntSysDsCd, PanInfo panInfo)
+  {
+    _model
+      .fetchData(code, panId, ccrCnntSysDsCd, panInfo)
       .then((res) => _view.onLoadComplete(res))
       .catchError((onError) => _view.onLoadError());
   }

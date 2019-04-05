@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:bunyang/Data/Address.dart';
 import 'package:bunyang/Menu/Model/MenuModel.dart';
 import 'package:bunyang/MenuItem/NoticeElementRouteFactory.dart';
@@ -84,7 +85,18 @@ class ListItemWidget extends StatelessWidget
                   width: MediaQuery.of(context).size.width - 150,
                   child: InkWell
                   (
-                    child: myText(item.panName, Colors.black),
+                    child: AutoSizeText
+                    (
+                      item.panName,
+                      maxLines: 4,
+                      style: TextStyle
+                      (
+                        color: Colors.black,
+                        fontFamily: "TmonTium",
+                        fontSize: 20,
+                        fontWeight: FontWeight.w600
+                      )
+                    ),
                     onTap: ()
                     {
                       Navigator.push
