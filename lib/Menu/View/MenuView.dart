@@ -120,12 +120,7 @@ class MenuView extends State<Menu>
           ),
           body: Center
           (
-            child: Container
-            (
-              margin: EdgeInsets.all(10.0),
-              padding: EdgeInsets.all(10.0),
-              child: getContentSection()
-            )
+            child: getContentSection()
           )
         )
       ],

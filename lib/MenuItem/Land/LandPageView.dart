@@ -1,34 +1,38 @@
 import 'package:bunyang/Data/Address.dart';
+import 'package:bunyang/Menu/Model/MenuModel.dart';
 import 'package:bunyang/MenuItem/Land/LandPageModel.dart';
 import 'package:bunyang/MenuItem/Land/LandPagePresenter.dart';
 import 'package:bunyang/MenuItem/Land/SupplyDateView.dart';
 import 'package:flutter/material.dart';
 import 'package:bunyang/Util/Util.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 class LandPage extends StatefulWidget
 {
-  LandPage(this.type, this.pan_id, this.ccr_cnnt_sys_ds_cd, this.appBarTitle);
+  LandPage(this.data);
 
-  final Notice_Code type;
-  final String pan_id;
-  final String ccr_cnnt_sys_ds_cd;
-  final String appBarTitle;
+  final MenuData data;
 
   @override
-  LandPageView createState() => LandPageView(type, pan_id, ccr_cnnt_sys_ds_cd, appBarTitle);
+  LandPageView createState() => LandPageView(data);
 }
 
 class LandPageView extends State<LandPage> 
 {
-  LandPageView(this.type, this.pan_id, this.ccr_cnnt_sys_ds_cd, this.appBarTitle);
+  LandPageView(this.data)
+  {
+    type = this.data.type;
+    pan_id = this.data.getParameter("PAN_ID");
+    ccr_cnnt_sys_ds_cd = this.data.getParameter("CCR_CNNT_SYS_DS_CD");
+    appBarTitle = this.data.panName;
+  }
 
   LandPagePresenter _presenter;
   
-  final Notice_Code type;
-  final String pan_id;
-  final String ccr_cnnt_sys_ds_cd;
-  final String appBarTitle;
+  final MenuData data;
+  Notice_Code type;
+  String pan_id;
+  String ccr_cnnt_sys_ds_cd;
+  String appBarTitle;
 
   LoadingState loadingState = LoadingState.LOADING;
   
@@ -58,60 +62,89 @@ class LandPageView extends State<LandPage>
     switch (loadingState)
     {
       case LoadingState.DONE:
-        return StaggeredGridView.countBuilder
+        return SliverList
         (
-          primary: false,
-          crossAxisCount: 1,
-          mainAxisSpacing: 4,
-          itemCount: _contents.length,
-          itemBuilder: (context, index) => _contents[index],
-          staggeredTileBuilder: (index) => StaggeredTile.fit(1),
+          delegate: SliverChildBuilderDelegate
+          (
+            (context, index) => _contents[index],
+            childCount: _contents.length
+          ),
         );
-
       case LoadingState.ERROR:
-        return myText("데이터를 불러오지 못했습니다!");
-
+        return SliverList
+        (
+          delegate: SliverChildListDelegate(<Widget>
+          [
+            myText("데이터를 불러오지 못했습니다!")
+          ])
+        );
       case LoadingState.LOADING:
-        return CircularProgressIndicator(backgroundColor: Colors.white);
-
+        return SliverList
+        (
+          delegate: SliverChildListDelegate(<Widget>
+          [
+            Container
+            (
+              alignment: Alignment.center,
+              child: CircularProgressIndicator(backgroundColor: Colors.white)
+            )
+          ])
+        );
       default:
-        return Container();
+        return SliverList
+        (
+          delegate: SliverChildListDelegate(<Widget>
+          [
+            Container()
+          ])
+        );
     }
   }
 
   @override
   Widget build(BuildContext context)
   {
-    return Container
+    return Scaffold
     (
-      child: Stack
+      backgroundColor: Colors.white,
+      body: CustomScrollView
       (
-        fit: StackFit.expand,
-        children: <Widget>
+        primary: false,
+        slivers: <Widget>
         [
-          Image.asset("assets/image/bg3.jpg", fit: BoxFit.fitHeight),
-          Scaffold
+          SliverAppBar
           (
-            backgroundColor: Colors.transparent,
-            appBar: AppBar
+            expandedHeight: 300,
+            iconTheme: IconThemeData
             (
-              title: myText(appBarTitle, Colors.white),
-              elevation: 0.0,
-              backgroundColor: const Color(0xFF353535).withOpacity(0.2),
+              color: Colors.black
+            ),
+            flexibleSpace: FlexibleSpaceBar
+            (
               centerTitle: true,
-            ),
-            body: Center
-            (
-              child: Container
+              title: myText(appBarTitle, Colors.white),
+              background: Stack
               (
-                margin: EdgeInsets.all(10.0),
-                padding: EdgeInsets.all(10.0),
-                child: getContentSection(),
-              ),
+                fit: StackFit.expand,
+                children: <Widget>
+                [
+                  Hero
+                  (
+                    tag: constNoticeCodeMap[type].code,
+                    child: FadeInImage
+                    (
+                      fit: BoxFit.cover,
+                      placeholder: AssetImage("assets/image/placeholder.jpg"),
+                      image: constNoticeCodeMap[type].image
+                    )
+                  )
+                ]
+              )
             ),
-          )
-        ]
-      )
+          ),
+          getContentSection()
+        ], 
+      ),
     );
   }
 }

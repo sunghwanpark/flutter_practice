@@ -36,33 +36,35 @@ class ListItemWidget extends StatelessWidget
 
   Widget build(BuildContext context)
   {
-    return Card
+    return Row
     (
-      margin: EdgeInsets.only(left: 10, right: 10),
-      color: Colors.white.withOpacity(0.5),
-      shape: RoundedRectangleBorder
-      (
-        borderRadius: BorderRadius.circular(20),
-        //side: BorderSide(color: Colors.black12)
-      ),
-      child: Container
-      (
-        child: Column
+      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisSize: MainAxisSize.min,
+      children: <Widget>
+      [
+        Icon
         (
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>
-          [
-            Row
+          getIcon(),
+          color: Colors.white.withOpacity(0.5),
+          size: 80,
+        ),
+        Card
+        (
+          elevation: 2,
+          margin: EdgeInsets.only(top: 10, bottom: 10, left: 0, right: 0),
+          color: Colors.white.withOpacity(0.5),
+          shape: RoundedRectangleBorder
+          (
+            borderRadius: BorderRadius.circular(20),
+          ),
+          child: Container
+          (
+            child: Column
             (
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>
               [
-                Icon
-                (
-                  getIcon(),
-                  color: Colors.black,
-                  size: 20,
-                ),
                 Text
                 (
                   item.detailNoticeCode,
@@ -75,31 +77,33 @@ class ListItemWidget extends StatelessWidget
                     fontSize: 25
                   ),
                 ),
-              ]
-            ),
-            Container
-            (
-              height: 200,
-              width: MediaQuery.of(context).size.width,
-              child: InkWell
-              (
-                child: myText(item.panName, Colors.black),
-                onTap: ()
-                {
-                  Navigator.push
+                Container
+                (
+                  padding: EdgeInsets.all(10),
+                  height: 150,
+                  width: MediaQuery.of(context).size.width - 150,
+                  child: InkWell
                   (
-                    context,
-                    MaterialPageRoute
-                    (
-                      builder: (context) => NoticeElementRouteFactory.buildElement(item)
-                    )
-                  );
-                }
-              ),
+                    child: myText(item.panName, Colors.black),
+                    onTap: ()
+                    {
+                      Navigator.push
+                      (
+                        context,
+                        MaterialPageRoute
+                        (
+                          builder: (context) => 
+                            NoticeElementRouteFactory.buildElement(item)
+                        )
+                      );
+                    }
+                  ),
+                )
+              ],
             )
-          ],
+          )
         )
-      )
+      ]
     );
   }
 }
