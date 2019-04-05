@@ -52,14 +52,23 @@ class SupplyLotOfLandInfo
     }
   );
 
+  /// 공급용도
   final String supplyPurpose;
+  /// 소재지
   final String locate;
+  /// 지번
   final String number;
+  /// 면적
   final String extent;
+  /// 필지군
   final String aLotOfLand;
+  /// 공급가격(원)
   final String supplyPrice;
+  /// 신청예약금(원)
   final String reservePrice;
+  /// 예정가격(원)
   final String duePrice;
+  /// 인터넷 청약
   final String state;
 }
 

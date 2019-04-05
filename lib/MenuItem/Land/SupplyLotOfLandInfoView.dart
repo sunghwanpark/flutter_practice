@@ -18,26 +18,42 @@ class SupplyLotOfLandInfoView extends StatelessWidget
     ));
       
     infos.forEach((info) =>
-    {
-      landInfosCards.add(Card
+    { 
+      landInfosCards.add(GestureDetector
       (
-        elevation: 2,
-        shape: RoundedRectangleBorder
+        child: Container
         (
-          borderRadius: BorderRadius.all(Radius.circular(5)),
-          side: BorderSide
+          decoration: ShapeDecoration
           (
-            color: Colors.grey,
-            style: BorderStyle.solid
+            color: Colors.lightGreen[100],
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10))
+          ),
+          child: Column
+          (
+            children: <Widget>
+            [
+              info.supplyPurpose.isNotEmpty ? Align
+              (
+                alignment: Alignment.centerLeft,
+                child: Text(sprintf('공급용도 : %s', [info.supplyPurpose]), textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'TmonTium'))
+              ) : SizedBox(),
+              info.locate.isNotEmpty ? Align
+              (
+                alignment: Alignment.centerLeft,
+                child: Text(sprintf('소재지 : %s', [info.locate]), textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'TmonTium'))
+              ) : SizedBox(),
+              Align
+              (
+                alignment: Alignment.centerLeft,
+                child: Text(sprintf('지번 : %s', [info.number]), textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'TmonTium'))
+              ),
+              Align
+              (
+                alignment: Alignment.centerLeft,
+                child: Text(sprintf('지번 : %s', [info.number]), textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'TmonTium'))
+              )
+            ],
           )
-        ),
-        color: Colors.lightGreen[100],
-        child: Column
-        (
-          children: <Widget>
-          [
-            Text(sprintf('공급용도 : %s', [info.supplyPurpose]), textAlign: TextAlign.left, style: TextStyle(color: Colors.white, fontSize: 20, fontFamily: 'TmonTium'))
-          ],
         )
       ))
     });

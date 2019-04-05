@@ -56,8 +56,11 @@ class LandPageView extends State<LandPage>
 
   void onLoadComplete(Tuple2<SupplyDate, List<SupplyLotOfLandInfo>> landDatas)
   {
-    _contents.add(SupplyDateView(landDatas.item1));
-    _contents.add(SupplyLotOfLandInfoView(landDatas.item2));
+    if(landDatas.item1 != null)
+      _contents.add(SupplyDateView(landDatas.item1));
+    if(landDatas.item2 != null && landDatas.item2.length > 0)
+      _contents.add(SupplyLotOfLandInfoView(landDatas.item2));
+      
     setState(() => loadingState = LoadingState.DONE);
   }
 
