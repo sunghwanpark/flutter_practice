@@ -12,9 +12,9 @@ class SupplyDateView extends StatelessWidget
       (
         children : <Widget>
         [
-          Icon(Icons.stars, color: Colors.white),
-          //SizedBox(width: 10),
-          Text('공급일정(추첨)', textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 25, fontFamily: 'TmonTium'))
+          Icon(Icons.date_range, color: Colors.black),
+          SizedBox(width: 10),
+          Text('공급일정(일정)', textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 25, fontFamily: 'TmonTium'))
         ]
       ));
       

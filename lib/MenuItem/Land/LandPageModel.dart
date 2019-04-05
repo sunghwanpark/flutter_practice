@@ -1,6 +1,7 @@
 import 'package:bunyang/Data/Address.dart';
 import 'package:bunyang/Data/URL.dart';
 import 'package:bunyang/MenuItem/MenuItemModel.dart';
+import 'package:tuple/tuple.dart';
 import 'package:xml/xml.dart' as xml;
 import 'package:http/http.dart' as http;
 
@@ -46,7 +47,8 @@ class SupplyLotOfLandInfo
       this.aLotOfLand = '',
       this.supplyPrice = '',
       this.reservePrice = '',
-      this.state = ''
+      this.duePrice = '',
+      this.state = '',
     }
   );
 
@@ -57,6 +59,7 @@ class SupplyLotOfLandInfo
   final String aLotOfLand;
   final String supplyPrice;
   final String reservePrice;
+  final String duePrice;
   final String state;
 }
 
@@ -204,29 +207,58 @@ class LandPageModel extends MenuItemModel
     return PanInfo(dataSetMap["dsPanInfo"]["OTXT_PAN_ID"], dataSetMap["dsPanInfo"]["PAN_KD_CD"]);
   }
 
-  SupplyDate getSupplyDate(Iterable<xml.XmlElement> iterator)
+  Tuple2<SupplyDate, List<SupplyLotOfLandInfo>> getSupplyDate(Iterable<xml.XmlElement> iterator)
   {
     Map<String, Map<String, String>> dataSetMap = new Map<String, Map<String, String>>();
+    List<SupplyLotOfLandInfo> bidList = new List<SupplyLotOfLandInfo>();
     iterator.forEach((elem)
       {
-        dataSetMap[elem.getAttribute('id')] = new Map<String, String>();
-        print(elem.getAttribute('id'));
-        elem.findAllElements('Col')
-        .forEach((colElem)
+        var id = elem.getAttribute('id');
+        if(id == "dsSplInfBidList")
         {
-          print(colElem.toString());
-          dataSetMap[elem.getAttribute('id')][colElem.getAttribute('id')] = colElem.text;
-        });
+          elem.findAllElements("Row")
+          .forEach((row)
+          {
+            Map<String, String> infoMap = new Map<String, String>();
+            row.findElements("Col").forEach((col)
+            {
+              infoMap[col.getAttribute("id")] = col.text;
+            });
+
+            bidList.add(SupplyLotOfLandInfo
+            (
+              supplyPurpose: infoMap["LND_US_DS_CD_NM"],
+              locate: infoMap["LGDN_DTL_ADR"],
+              number: infoMap["LNO"],
+              extent: infoMap["AR"],
+              duePrice: infoMap["SPL_XPC_AMT"],
+              state: infoMap["BTN_NM"]
+            ));
+          });
+        }
+        else if(id == "dsSplScdList" || id == "dsLndInf")
+        {
+          dataSetMap[id] = new Map<String, String>();
+          elem.findAllElements('Col')
+          .forEach((colElem)
+          {
+            dataSetMap[id][colElem.getAttribute('id')] = colElem.text;
+          });
+        }
       });
 
-    return SupplyDate
+    return Tuple2
     (
-      applyDate: dataSetMap['dsSplScdList']['RQS_DTTM'],
-      applyReserveDepositEndDate: dataSetMap['dsSplScdList']['CLSG_DTTM'],
-      pickDate: dataSetMap['dsLndInf']['LTR_DTTM'],
-      resultNoticeDate: dataSetMap['dsLndInf']['PZWR_NT_DTTM'],
-      contractDateStartAt: dataSetMap['dsLndInf']['CTRT_ST_DT'],
-      contractDateEndAt: dataSetMap['dsLndInf']['CTRT_ED_DT'],
+      SupplyDate
+      (
+        applyDate: dataSetMap['dsSplScdList']['RQS_DTTM'],
+        applyReserveDepositEndDate: dataSetMap['dsSplScdList']['CLSG_DTTM'],
+        pickDate: dataSetMap['dsLndInf']['LTR_DTTM'],
+        resultNoticeDate: dataSetMap['dsLndInf']['PZWR_NT_DTTM'],
+        contractDateStartAt: dataSetMap['dsLndInf']['CTRT_ST_DT'],
+        contractDateEndAt: dataSetMap['dsLndInf']['CTRT_ED_DT'],
+      ),
+      bidList
     );
   }
 
@@ -248,7 +280,7 @@ class LandPageModel extends MenuItemModel
     .then((xmlDocument) => setContextData(xmlDocument.findAllElements("Dataset")));
   }
 
-  Future<SupplyDate> fetchData(Notice_Code noticeCode, String panId, String ccrCnntSysDsCd, PanInfo panInfo) async
+  Future<Tuple2<SupplyDate, List<SupplyLotOfLandInfo>>> fetchData(Notice_Code noticeCode, String panId, String ccrCnntSysDsCd, PanInfo panInfo) async
   {
     StringBuffer stringBuffer = new StringBuffer();
     stringBuffer.write(noticeURL);

@@ -3,9 +3,11 @@ import 'package:bunyang/Menu/Model/MenuModel.dart';
 import 'package:bunyang/MenuItem/Land/LandPageModel.dart';
 import 'package:bunyang/MenuItem/Land/LandPagePresenter.dart';
 import 'package:bunyang/MenuItem/Land/SupplyDateView.dart';
+import 'package:bunyang/MenuItem/Land/SupplyLotOfLandInfoView.dart';
 import 'package:flutter/material.dart';
 import 'package:bunyang/Util/Util.dart';
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:tuple/tuple.dart';
 
 class LandPage extends StatefulWidget
 {
@@ -52,9 +54,10 @@ class LandPageView extends State<LandPage>
     _presenter.onRequestNotice(type, pan_id, ccr_cnnt_sys_ds_cd, panInfo);
   }
 
-  void onLoadComplete(SupplyDate supplyDate)
+  void onLoadComplete(Tuple2<SupplyDate, List<SupplyLotOfLandInfo>> landDatas)
   {
-    _contents.add(SupplyDateView(supplyDate));
+    _contents.add(SupplyDateView(landDatas.item1));
+    _contents.add(SupplyLotOfLandInfoView(landDatas.item2));
     setState(() => loadingState = LoadingState.DONE);
   }
 
