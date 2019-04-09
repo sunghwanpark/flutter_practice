@@ -54,13 +54,13 @@ class LandPageView extends State<LandPage>
     _presenter.onRequestNotice(type, pan_id, ccr_cnnt_sys_ds_cd, panInfo);
   }
 
-  void onLoadComplete(Tuple2<SupplyDate, List<SupplyLotOfLandInfo>> landDatas)
+  void onLoadComplete(Tuple3<PageState, SupplyDate, List<SupplyLotOfLandInfo>> landDatas)
   {
-    if(landDatas.item1 != null)
-      _contents.add(SupplyDateView(landDatas.item1));
-    if(landDatas.item2 != null && landDatas.item2.length > 0)
-      _contents.add(SupplyLotOfLandInfoView(landDatas.item2));
-      
+    if(landDatas.item1 != null && landDatas.item2 != null)
+      _contents.add(SupplyDateView(landDatas.item1, landDatas.item2));
+    if(landDatas.item1 != null && landDatas.item3 != null && landDatas.item3.length > 0)
+      _contents.add(SupplyLotOfLandInfoView(landDatas.item1, landDatas.item3));
+
     setState(() => loadingState = LoadingState.DONE);
   }
 
