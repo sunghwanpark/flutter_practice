@@ -253,7 +253,7 @@ class LandPageModel extends MenuItemModel
     return PanInfo(dataSetMap["dsPanInfo"]["OTXT_PAN_ID"], dataSetMap["dsPanInfo"]["PAN_KD_CD"]);
   }
 
-  Tuple3<PageState, SupplyDate, List<SupplyLotOfLandInfo>> getSupplyDate(Iterable<xml.XmlElement> iterator)
+  Tuple4<PageState, SupplyDate, List<SupplyLotOfLandInfo>, String> getSupplyDate(Iterable<xml.XmlElement> iterator)
   {
     res.clear();
 
@@ -359,7 +359,12 @@ class LandPageModel extends MenuItemModel
       });
     }
 
-    return Tuple3(pageState, supplyDate, solInfo);
+    StringBuffer addressBuffer = StringBuffer();
+    addressBuffer.write(res["dsLndInf"].first["CTRT_PLC_ADR"]);
+    addressBuffer.write(" ");
+    addressBuffer.write(res["dsLndInf"].first["CTRT_PLC_DTL_ADR"]);
+
+    return Tuple4(pageState, supplyDate, solInfo, addressBuffer.toString());
   }
 
   Tuple2<double, double> getLatLng(String body)
@@ -391,7 +396,7 @@ class LandPageModel extends MenuItemModel
     .then((xmlDocument) => setContextData(xmlDocument.findAllElements("Dataset")));
   }
 
-  Future<Tuple3<PageState, SupplyDate, List<SupplyLotOfLandInfo>>> fetchData(Notice_Code noticeCode, String panId, String ccrCnntSysDsCd, PanInfo panInfo) async
+  Future<Tuple4<PageState, SupplyDate, List<SupplyLotOfLandInfo>, String>> fetchData(Notice_Code noticeCode, String panId, String ccrCnntSysDsCd, PanInfo panInfo) async
   {
     StringBuffer stringBuffer = new StringBuffer();
     stringBuffer.write(noticeURL);

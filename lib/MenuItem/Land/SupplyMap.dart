@@ -3,23 +3,27 @@ import 'package:bunyang/Util/Util.dart';
 import 'package:tuple/tuple.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 
 typedef void GetLatLngRequestFunction(LatLngResponseFunction onResponse, VoidCallback onError);
 typedef void LatLngResponseFunction(Tuple2<double, double> res);
 
 class SupplyMap extends StatefulWidget
 {
-  SupplyMap(this.requestFunction);
+  SupplyMap(this.address, this.requestFunction);
 
+  final String address;
   final GetLatLngRequestFunction requestFunction;
+
   @override
-  State<StatefulWidget> createState() => SupplyMapWidget(this.requestFunction);
+  State<StatefulWidget> createState() => SupplyMapWidget(this.address, this.requestFunction);
 }
 
 class SupplyMapWidget extends State<SupplyMap>
 {
-  SupplyMapWidget(this.requestFunction);
+  SupplyMapWidget(this.address, this.requestFunction);
 
+  final String address;
   final GetLatLngRequestFunction requestFunction;
   final Completer<GoogleMapController> _controller = Completer();
   final Set<Marker> _markers = {};
@@ -80,6 +84,12 @@ class SupplyMapWidget extends State<SupplyMap>
                     SizedBox(width: 10),
                     Text("계약장소 정보", textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 25, fontFamily: 'TmonTium'))
                   ]
+                ),
+                AutoSizeText
+                (
+                  this.address,
+                  textAlign: TextAlign.left,
+                  style: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'TmonTium')
                 ),
                 Container
                 (
