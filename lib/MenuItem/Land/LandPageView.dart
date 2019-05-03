@@ -4,6 +4,7 @@ import 'package:bunyang/MenuItem/Land/LandPageModel.dart';
 import 'package:bunyang/MenuItem/Land/LandPagePresenter.dart';
 import 'package:bunyang/MenuItem/Land/SupplyDateView.dart';
 import 'package:bunyang/MenuItem/Land/SupplyLotOfLandInfoView.dart';
+import 'package:bunyang/MenuItem/Land/SupplyMap.dart';
 import 'package:flutter/material.dart';
 import 'package:bunyang/Util/Util.dart';
 import 'package:auto_size_text/auto_size_text.dart';
@@ -60,6 +61,8 @@ class LandPageView extends State<LandPage>
       _contents.add(SupplyDateView(landDatas.item1, landDatas.item2));
     if(landDatas.item1 != null && landDatas.item3 != null && landDatas.item3.length > 0)
       _contents.add(SupplyLotOfLandInfoView(landDatas.item1, landDatas.item3));
+
+    _contents.add(SupplyMap(_presenter.onRequestLatLng));
 
     setState(() => loadingState = LoadingState.DONE);
   }
