@@ -52,10 +52,22 @@ class PanInfo
   final String panKDCD;
 }
 
+class DetailPageData
+{
+  DetailPageData(this.ccrCnntSysDsCd, this.aisInfSn, this.bzdtCd, this.loldNo, this.panId);
+
+  final String ccrCnntSysDsCd;
+  final String aisInfSn;
+  final String bzdtCd;
+  final String loldNo;
+  final String panId;
+}
+
 class SupplyLotOfLandInfo
 {
   SupplyLotOfLandInfo
   (
+    this.detailPageData, 
     {
       this.supplyPurpose = '',
       this.locate = '',
@@ -87,6 +99,8 @@ class SupplyLotOfLandInfo
   final String duePrice;
   /// 인터넷 청약
   final String state;
+
+  final DetailPageData detailPageData;
 }
 
 class PageState
@@ -113,7 +127,7 @@ class LandPageModel extends MenuItemModel
   
   String _requestPanInfo = "OCMC_LCC_SIL_PAN_IFNO_R0001";
 
-  Map<String, List<Map<String, String>>> res = new Map<String, List<Map<String, String>>>();
+  Map<String, List<Map<String, String>>> cachedLandInfos;
 
   generateRequestBody(String panId, String ccrCnntSysDsCd)
   {
@@ -237,54 +251,23 @@ class LandPageModel extends MenuItemModel
     return document.toXmlString(pretty: true, indent: '\t');
   }
 
-  PanInfo setContextData(Iterable<xml.XmlElement> iterator)
+  PanInfo getPanInfo(Iterable<xml.XmlElement> iterator)
   {
-    Map<String, Map<String, String>> dataSetMap = new Map<String, Map<String, String>>();
-    iterator.forEach((elem)
-      {
-        dataSetMap[elem.getAttribute('id')] = new Map<String, String>();
-        elem.findAllElements('Col')
-        .forEach((colElem)
-        {
-          dataSetMap[elem.getAttribute('id')][colElem.getAttribute('id')] = colElem.text;
-        });
-      });
-
-    return PanInfo(dataSetMap["dsPanInfo"]["OTXT_PAN_ID"], dataSetMap["dsPanInfo"]["PAN_KD_CD"]);
+    var res = this.setContextData(iterator);
+    return PanInfo(res["dsPanInfo"].first["OTXT_PAN_ID"], res["dsPanInfo"].first["PAN_KD_CD"]);
   }
 
   Tuple4<PageState, SupplyDate, List<SupplyLotOfLandInfo>, String> getSupplyDate(Iterable<xml.XmlElement> iterator)
   {
-    res.clear();
-
-    iterator.forEach((elem)
-      {
-        var id = elem.getAttribute('id');
-        elem.findAllElements('Rows')
-          .forEach((rows)
-          {
-            res[id] = new List<Map<String, String>>();
-            rows.findAllElements("Row")
-              .forEach((row)
-              {
-                Map<String, String> infoMap = new Map<String, String>();
-                row.findElements("Col").forEach((col)
-                {
-                  infoMap[col.getAttribute("id")] = col.text;
-                });
-
-                res[id].add(infoMap);
-              });
-          });
-      });
+    cachedLandInfos = setContextData(iterator);
 
     var pageState = PageState
       (
-        isBid: res["dsLndInf"].first["SPL_MD_BID_YN"] == "Y",
-        isLtr: res["dsLndInf"].first["SPL_MD_LTR_YN"] == "Y",
-        isCtp: res["dsLndInf"].first["SPL_MD_CTP_YN"] == "Y",
-        isHndcLtr: res["dsLndInf"].first["SPL_MD_HNDC_LTR_YN"] == "Y",
-        isPvtc: res["dsLndInf"].first["SPL_MD_PVTC_YN"] == "Y"
+        isBid: cachedLandInfos["dsLndInf"].first["SPL_MD_BID_YN"] == "Y",
+        isLtr: cachedLandInfos["dsLndInf"].first["SPL_MD_LTR_YN"] == "Y",
+        isCtp: cachedLandInfos["dsLndInf"].first["SPL_MD_CTP_YN"] == "Y",
+        isHndcLtr: cachedLandInfos["dsLndInf"].first["SPL_MD_HNDC_LTR_YN"] == "Y",
+        isPvtc: cachedLandInfos["dsLndInf"].first["SPL_MD_PVTC_YN"] == "Y"
       );
 
     bool isDraw = (pageState.isLtr || pageState.isCtp || pageState.isHndcLtr) && !pageState.isPvtc;
@@ -293,7 +276,7 @@ class LandPageModel extends MenuItemModel
     SupplyDate supplyDate;
 
     List<RankDate> rankDate = new List<RankDate>();
-    res["dsSplScdList"].forEach((row) =>
+    cachedLandInfos["dsSplScdList"].forEach((row) =>
     {
       rankDate.add(RankDate
       (
@@ -308,10 +291,10 @@ class LandPageModel extends MenuItemModel
       supplyDate = SupplyDate
       (
         rankDate: rankDate,
-        pickDate: res["dsLndInf"].first['LTR_DTTM'],
-        resultNoticeDate: res["dsLndInf"].first['PZWR_NT_DTTM'],
-        contractDateStartAt: res["dsLndInf"].first['CTRT_ST_DT'],
-        contractDateEndAt: res["dsLndInf"].first['CTRT_ED_DT'],
+        pickDate: cachedLandInfos["dsLndInf"].first['LTR_DTTM'],
+        resultNoticeDate: cachedLandInfos["dsLndInf"].first['PZWR_NT_DTTM'],
+        contractDateStartAt: cachedLandInfos["dsLndInf"].first['CTRT_ST_DT'],
+        contractDateEndAt: cachedLandInfos["dsLndInf"].first['CTRT_ED_DT'],
       );
     }
     else if(isTender)
@@ -319,20 +302,28 @@ class LandPageModel extends MenuItemModel
       supplyDate = SupplyDate
       (
         rankDate: rankDate,
-        pickDate: res["dsSplScdList"].first['OPB_DTTM'],
-        resultNoticeDate: res["dsSplScdList"].first['OPB_RSL_NT_DTTM'],
-        contractDateStartAt: res["dsLndInf"].first['CTRT_ST_DT'],
-        contractDateEndAt: res["dsLndInf"].first['CTRT_ED_DT'],
+        pickDate: cachedLandInfos["dsSplScdList"].first['OPB_DTTM'],
+        resultNoticeDate: cachedLandInfos["dsSplScdList"].first['OPB_RSL_NT_DTTM'],
+        contractDateStartAt: cachedLandInfos["dsLndInf"].first['CTRT_ST_DT'],
+        contractDateEndAt: cachedLandInfos["dsLndInf"].first['CTRT_ED_DT'],
       );
     }
 
     List<SupplyLotOfLandInfo> solInfo = new List<SupplyLotOfLandInfo>();
     if(isDraw)
     {
-      res["dsSplInfLtrList"].forEach((row) =>
+      cachedLandInfos["dsSplInfLtrList"].forEach((row) =>
       {
         solInfo.add(SupplyLotOfLandInfo
         (
+          DetailPageData
+          (
+            row["CCR_CNNT_SYS_DS_CD"],
+            row["AIS_INF_SN"],
+            row["BZTD_CD"],
+            row["LOLD_NO"],
+            row["PAN_ID"]
+          ),
           supplyPurpose: row["LND_US_DS_CD_NM"],
           locate: row["LGDN_DTL_ADR"],
           number: row["LNO"],
@@ -345,10 +336,18 @@ class LandPageModel extends MenuItemModel
     }
     else if(isTender)
     {
-      res["dsSplInfBidList"].forEach((row) =>
+      cachedLandInfos["dsSplInfBidList"].forEach((row) =>
       {
         solInfo.add(SupplyLotOfLandInfo
         (
+          DetailPageData
+          (
+            row["CCR_CNNT_SYS_DS_CD"],
+            row["AIS_INF_SN"],
+            row["BZTD_CD"],
+            row["LOLD_NO"],
+            row["PAN_ID"]
+          ),
           supplyPurpose: row["LND_US_DS_CD_NM"],
           locate: row["LGDN_DTL_ADR"],
           number: row["LNO"],
@@ -360,9 +359,9 @@ class LandPageModel extends MenuItemModel
     }
 
     StringBuffer addressBuffer = StringBuffer();
-    addressBuffer.write(res["dsLndInf"].first["CTRT_PLC_ADR"]);
+    addressBuffer.write(cachedLandInfos["dsLndInf"].first["CTRT_PLC_ADR"]);
     addressBuffer.write(" ");
-    addressBuffer.write(res["dsLndInf"].first["CTRT_PLC_DTL_ADR"]);
+    addressBuffer.write(cachedLandInfos["dsLndInf"].first["CTRT_PLC_DTL_ADR"]);
 
     return Tuple4(pageState, supplyDate, solInfo, addressBuffer.toString());
   }
@@ -393,7 +392,7 @@ class LandPageModel extends MenuItemModel
       body: generateRequestBody(panId, ccrCnntSysDsCd)
     ).timeout(const Duration(seconds: 5))
     .then((res) => xml.parse(res.body))
-    .then((xmlDocument) => setContextData(xmlDocument.findAllElements("Dataset")));
+    .then((xmlDocument) => getPanInfo(xmlDocument.findAllElements("Dataset")));
   }
 
   Future<Tuple4<PageState, SupplyDate, List<SupplyLotOfLandInfo>, String>> fetchData(Notice_Code noticeCode, String panId, String ccrCnntSysDsCd, PanInfo panInfo) async
@@ -416,7 +415,7 @@ class LandPageModel extends MenuItemModel
 
   Future<Tuple2<double, double>> fetchGeocode() async
   {
-    String encodeAddress = Uri.encodeComponent(res["dsLndInf"].first["CTRT_PLC_ADR"]);
+    String encodeAddress = Uri.encodeComponent(cachedLandInfos["dsLndInf"].first["CTRT_PLC_ADR"]);
 
     StringBuffer stringBuffer = new StringBuffer();
     stringBuffer.write("https://maps.googleapis.com/maps/api/geocode/json?sensor=false&language=ko&address=");

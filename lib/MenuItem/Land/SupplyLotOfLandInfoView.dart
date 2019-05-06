@@ -1,4 +1,5 @@
 import 'package:bunyang/MenuItem/Land/LandPageModel.dart';
+import 'package:bunyang/MenuItem/Land/ProductDetail/ProductDetailView.dart';
 import 'package:flutter/material.dart';
 import 'package:sprintf/sprintf.dart';
 import 'package:intl/intl.dart';
@@ -36,6 +37,7 @@ class SupplyLotOfLandInfoView extends StatelessWidget
         padding: EdgeInsets.only(top: 10, bottom: 10),
         child: GestureDetector
         (
+          onLongPress: () => onLongPressDetail(info.detailPageData),
           child: Container
           (
             decoration: ShapeDecoration
@@ -106,9 +108,24 @@ class SupplyLotOfLandInfoView extends StatelessWidget
 
   final List<Widget> landInfosCards = new List<Widget>();
 
+  BuildContext _context;
+
+  void onLongPressDetail(DetailPageData requestDetailData)
+  {
+    Navigator.push
+    (
+      _context,
+      MaterialPageRoute
+      (
+        builder: (context) => ProductDetail(requestDetailData)
+      )
+    );
+  }
+
   @override
   Widget build(BuildContext context)
   {
+    _context = context;
     return Container
     (
       width: MediaQuery.of(context).size.width,
