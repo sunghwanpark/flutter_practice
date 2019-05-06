@@ -3,11 +3,9 @@ import 'package:bunyang/MenuItem/MenuItemModel.dart';
 import 'package:xml/xml.dart' as xml;
 import 'package:http/http.dart' as http;
 
-class ProductDetailModel extends MenuItemModel
+class ContractScheduleModel extends MenuItemModel
 {
-  ProductDetailModel() : super("OCMC_LCC_SIL_AIS_R0001");
-
-  Map<String, List<Map<String, String>>> cachedDetailInfos;
+  ContractScheduleModel() : super("OCMC_LCC_SIL_AIS_R0002");
 
   @override
   String defaultDetailFormXml = '''<?xml version="1.0" encoding="UTF-8"?>
@@ -16,26 +14,11 @@ class ProductDetailModel extends MenuItemModel
 		    <ColumnInfo>
 			  <Column id="CCR_CNNT_SYS_DS_CD" type="STRING" size="256"  />
 			  <Column id="AIS_INF_SN" type="STRING" size="256"  />
-			  <Column id="BZDT_CD" type="STRING" size="256"  />
-			  <Column id="LOLD_NO" type="STRING" size="256"  />
-			  <Column id="PAN_ID" type="STRING" size="256"  />
-			  <Column id="PAN_TYPE" type="STRING" size="256"  />
-			  <Column id="STL_BLTR_DS_CD" type="STRING" size="256"  />
-			  <Column id="SL_CST_NO" type="STRING" size="256"  />
-			  <Column id="STL_SST_LTR_GRP_CD" type="STRING" size="256"  />
-			  <Column id="STL_LOLD_RQS_DS_CD" type="STRING" size="256"  />
-			  <Column id="JNU" type="STRING" size="256"  />
-			  <Column id="SNG_BID_YN" type="STRING" size="256"  />
-			  <Column id="PREVIEW" type="STRING" size="256"  />
-			  <Column id="LGR_NO" type="STRING" size="256"  />
-			  <Column id="CST_IDN_NO" type="STRING" size="256"  />
-			  <Column id="CORP_RPSV_JNU" type="STRING" size="256"  />
-			  <Column id="CHK_DUP_PAN" type="STRING" size="256"  />
 		  </ColumnInfo>
     </Dataset>
   </Root>''';
   
-  generateRequestBody(String ccrCnntSysDsCd, String aisInfSn, String bzdtCd, String loldNo, String panId)
+  generateRequestBody(String ccrCnntSysDsCd, String aisInfSn)
   {
     var document = xml.parse(defaultDetailFormXml);
 
@@ -52,26 +35,6 @@ class ProductDetailModel extends MenuItemModel
         builder.element("Col", attributes: {"id": "AIS_INF_SN"}, nest: ()
         {
           builder.text(aisInfSn);
-        });
-
-        builder.element("Col", attributes: {"id": "BZDT_CD"}, nest: ()
-        {
-          builder.text(bzdtCd);
-        });
-
-        builder.element("Col", attributes: {"id": "LOLD_NO"}, nest: ()
-        {
-          builder.text(loldNo);
-        });
-
-        builder.element("Col", attributes: {"id": "PAN_ID"}, nest: ()
-        {
-          builder.text(panId);
-        });
-
-        builder.element("Col", attributes: {"id": "PREVIEW"}, nest: ()
-        {
-          builder.text("N");
         });
       });
     });
@@ -96,7 +59,7 @@ class ProductDetailModel extends MenuItemModel
     return document.toXmlString(pretty: true, indent: '\t');
   }
 
-  Future<Map<String, List<Map<String, String>>>> fetchDetailInfo(String ccrCnntSysDsCd, String aisInfSn, String bzdtCd, String loldNo, String panId) async
+  Future<Map<String, List<Map<String, String>>>> fetchContractInfo(String ccrCnntSysDsCd, String aisInfSn) async
   {
     StringBuffer stringBuffer = new StringBuffer();
     stringBuffer.write(noticeURL);
@@ -108,7 +71,7 @@ class ProductDetailModel extends MenuItemModel
     (
       stringBuffer.toString(),
       headers: {"Content-Type" : "application/xml"},
-      body: generateRequestBody(ccrCnntSysDsCd, aisInfSn, bzdtCd, loldNo, panId)
+      body: generateRequestBody(ccrCnntSysDsCd, aisInfSn)
     ).timeout(const Duration(seconds: 5))
     .then((res) => xml.parse(res.body))
     .then((xmlDocument) => setContextData(xmlDocument.findAllElements("Dataset")));

@@ -5,7 +5,6 @@ import 'package:bunyang/Data/Address.dart';
 import 'package:bunyang/Menu/Model/MenuModel.dart';
 import 'package:bunyang/MenuItem/NoticeElementRouteFactory.dart';
 import 'package:flutter/material.dart';
-import 'package:bunyang/Util/Util.dart';
 
 class ListItemWidget extends StatelessWidget 
 {

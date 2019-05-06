@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'package:bunyang/Data/Address.dart';
 import 'package:bunyang/Data/URL.dart';
 import 'package:bunyang/MenuItem/MenuItemModel.dart';
@@ -320,7 +319,7 @@ class LandPageModel extends MenuItemModel
           (
             row["CCR_CNNT_SYS_DS_CD"],
             row["AIS_INF_SN"],
-            row["BZTD_CD"],
+            row["BZDT_CD"],
             row["LOLD_NO"],
             row["PAN_ID"]
           ),
@@ -344,7 +343,7 @@ class LandPageModel extends MenuItemModel
           (
             row["CCR_CNNT_SYS_DS_CD"],
             row["AIS_INF_SN"],
-            row["BZTD_CD"],
+            row["BZDT_CD"],
             row["LOLD_NO"],
             row["PAN_ID"]
           ),
@@ -364,17 +363,6 @@ class LandPageModel extends MenuItemModel
     addressBuffer.write(cachedLandInfos["dsLndInf"].first["CTRT_PLC_DTL_ADR"]);
 
     return Tuple4(pageState, supplyDate, solInfo, addressBuffer.toString());
-  }
-
-  Tuple2<double, double> getLatLng(String body)
-  {
-    var jsonMap = json.decode(body)["results"];
-    var geometry = jsonMap[0]["geometry"];
-    var location = geometry["location"];
-    var lat = location["lat"];
-    var lng = location["lng"];
-    
-    return Tuple2(lat, lng);
   }
 
   Future<PanInfo> fetchPanInfo(Notice_Code noticeCode, String panId, String ccrCnntSysDsCd) async
@@ -411,20 +399,5 @@ class LandPageModel extends MenuItemModel
     ).timeout(const Duration(seconds: 5))
     .then((res) => xml.parse(res.body))
     .then((xmlDocument) => getSupplyDate(xmlDocument.findAllElements("Dataset")));
-  }
-
-  Future<Tuple2<double, double>> fetchGeocode() async
-  {
-    String encodeAddress = Uri.encodeComponent(cachedLandInfos["dsLndInf"].first["CTRT_PLC_ADR"]);
-
-    StringBuffer stringBuffer = new StringBuffer();
-    stringBuffer.write("https://maps.googleapis.com/maps/api/geocode/json?sensor=false&language=ko&address=");
-    stringBuffer.write(encodeAddress);
-    stringBuffer.write("&key=");
-    stringBuffer.write(googleMapApiKey);
-
-    return await http.post(stringBuffer.toString())
-      .timeout(const Duration(seconds: 5))
-      .then((res) => getLatLng(res.body));
   }
 }

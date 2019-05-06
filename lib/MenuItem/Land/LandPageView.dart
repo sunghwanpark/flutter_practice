@@ -1,10 +1,10 @@
 import 'package:bunyang/Data/Address.dart';
+import 'package:bunyang/Map/MyGoogleMapView.dart';
 import 'package:bunyang/Menu/Model/MenuModel.dart';
 import 'package:bunyang/MenuItem/Land/LandPageModel.dart';
 import 'package:bunyang/MenuItem/Land/LandPagePresenter.dart';
 import 'package:bunyang/MenuItem/Land/SupplyDateView.dart';
 import 'package:bunyang/MenuItem/Land/SupplyLotOfLandInfoView.dart';
-import 'package:bunyang/MenuItem/Land/SupplyMap.dart';
 import 'package:flutter/material.dart';
 import 'package:bunyang/Util/Util.dart';
 import 'package:auto_size_text/auto_size_text.dart';
@@ -62,7 +62,7 @@ class LandPageView extends State<LandPage>
     if(landDatas.item1 != null && landDatas.item3 != null && landDatas.item3.length > 0)
       _contents.add(SupplyLotOfLandInfoView(landDatas.item1, landDatas.item3));
     if(landDatas.item4 != null)
-      _contents.add(SupplyMap(landDatas.item4, _presenter.onRequestLatLng));
+      _contents.add(MyGoogleMap("계약장소 정보", landDatas.item4));
 
     setState(() => loadingState = LoadingState.DONE);
   }

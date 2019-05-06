@@ -1,9 +1,6 @@
-import 'dart:ui';
-
 import 'package:bunyang/Data/Address.dart';
 import 'package:bunyang/MenuItem/Land/LandPageModel.dart';
 import 'package:bunyang/MenuItem/Land/LandPageView.dart';
-import 'package:bunyang/MenuItem/Land/SupplyMap.dart';
 
 class LandPagePresenter
 {
@@ -29,13 +26,5 @@ class LandPagePresenter
       .fetchData(code, panId, ccrCnntSysDsCd, panInfo)
       .then((res) => _view.onLoadComplete(res))
       .catchError((onError) => _view.onLoadError());
-  }
-
-  void onRequestLatLng(LatLngResponseFunction onResponse, VoidCallback onErrorCallback)
-  {
-    _model
-      .fetchGeocode()
-      .then((res) => onResponse(res))
-      .catchError((onError) => onErrorCallback());
   }
 }

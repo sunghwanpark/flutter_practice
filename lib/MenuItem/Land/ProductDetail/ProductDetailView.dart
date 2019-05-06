@@ -1,5 +1,8 @@
 import 'package:bunyang/Data/Address.dart';
 import 'package:bunyang/MenuItem/Land/LandPageModel.dart';
+import 'package:bunyang/MenuItem/Land/ProductDetail/BusinessShortInfoView.dart';
+import 'package:bunyang/MenuItem/Land/ProductDetail/LocateInfoView.dart';
+import 'package:bunyang/MenuItem/Land/ProductDetail/PlanView.dart';
 import 'package:bunyang/MenuItem/Land/ProductDetail/ProductDetailPresenter.dart';
 import 'package:bunyang/Util/Util.dart';
 import 'package:flutter/material.dart';
@@ -14,9 +17,16 @@ class ProductDetail extends StatefulWidget
   ProductDetailView createState() => ProductDetailView(requestPageData);
 }
 
-class ProductDetailView extends State<ProductDetail>
+class ProductDetailView extends State<ProductDetail> with SingleTickerProviderStateMixin
 {
   ProductDetailView(this.requestPageData);
+
+  final int _tabCount = 2;
+  var tabs = const <Tab>
+  [
+    Tab(icon: Text('사업개요')),
+    Tab(icon: Text('필지안내'))
+  ];
 
   final DetailPageData requestPageData;
 
@@ -24,67 +34,76 @@ class ProductDetailView extends State<ProductDetail>
 
   LoadingState loadingState = LoadingState.LOADING;
 
-  List<Widget> _contents = new List<Widget>();
+  List<Widget> _businessView = new List<Widget>();
+  List<Widget> _locateInfoView = new List<Widget>();
+
+  ScrollController _scrollController;
+  TabController _tabController;
   
   @override
   void initState() 
   {
     super.initState();
+
+    _scrollController = ScrollController();
+    _tabController = TabController(length: _tabCount, vsync: this, initialIndex: 0);
+
     _presenter = new ProductDetailPresenter(this);
     _presenter.onRequestDetailinfo(requestPageData);
+  }
+
+  @override
+  void dispose()
+  {
+    _scrollController.dispose();
+    _tabController.dispose();
+
+    super.dispose();
   }
   
   void onComplete(Map<String, List<Map<String, String>>> res)
   {
+    _makeBusinessView(res);
+    _makeLocateInfoView(res);
 
+    setState(() => loadingState = LoadingState.DONE);
   }
 
   void onError()
   {
-
+    setState(() => loadingState = LoadingState.ERROR);
   }
 
-  Widget getContentSection()
+  void _makeBusinessView(Map<String, List<Map<String, String>>> res)
+  {
+    _businessView.add(BusinessShortInfoView(res["dsLndInf"].first));
+    if(res["dsLndHsList"].length > 0)
+      _businessView.add(PlanView(res["dsLndHsList"]));
+  }
+
+  void _makeLocateInfoView(Map<String, List<Map<String, String>>> res)
+  {
+    _locateInfoView.add(LocateInfoView(res["dsLoldInf"].first));
+  }
+
+  Widget _getContentSection(int idx)
   {
     switch (loadingState)
     {
       case LoadingState.DONE:
-        return SliverList
-        (
-          delegate: SliverChildBuilderDelegate
-          (
-            (context, index) => _contents[index],
-            childCount: _contents.length
-          ),
-        );
+        if(idx == 0)
+          return ListView(children: _businessView);
+        return ListView(children: _locateInfoView);
       case LoadingState.ERROR:
-        return SliverList
-        (
-          delegate: SliverChildListDelegate(<Widget>
-          [
-            myText("데이터를 불러오지 못했습니다!")
-          ])
-        );
+        return myText("데이터를 불러오지 못했습니다!");
       case LoadingState.LOADING:
-        return SliverList
+        return Container
         (
-          delegate: SliverChildListDelegate(<Widget>
-          [
-            Container
-            (
-              alignment: Alignment.center,
-              child: CircularProgressIndicator(backgroundColor: Colors.white)
-            )
-          ])
+          alignment: Alignment.center,
+          child: CircularProgressIndicator(backgroundColor: Colors.white)
         );
       default:
-        return SliverList
-        (
-          delegate: SliverChildListDelegate(<Widget>
-          [
-            Container()
-          ])
-        );
+        return(Container());
     }
   }
 
@@ -94,54 +113,70 @@ class ProductDetailView extends State<ProductDetail>
     return Scaffold
     (
       backgroundColor: Colors.white,
-      body: CustomScrollView
+      body: NestedScrollView
       (
-        primary: false,
-        slivers: <Widget>
-        [
-          SliverAppBar
-          (
-            expandedHeight: 300,
-            iconTheme: IconThemeData
+        controller: _scrollController,
+        headerSliverBuilder: (BuildContext context, bool boxIsScrolled)
+        {
+          return <Widget>
+          [
+            SliverAppBar
             (
-              color: Colors.black
-            ),
-            flexibleSpace: FlexibleSpaceBar
-            (
-              titlePadding: EdgeInsets.only(top: 200, left: 80, right: 80),
-              centerTitle: true,
-              title: Text
+              pinned: true,
+              floating: true,
+              forceElevated: boxIsScrolled,
+              expandedHeight: 200,
+              iconTheme: IconThemeData
               (
-                "토지 상세 정보",
-                style: TextStyle
+                color: Colors.black
+              ),
+              bottom: TabBar(tabs: tabs, controller: _tabController),
+              flexibleSpace: FlexibleSpaceBar
+              (
+                titlePadding: EdgeInsets.only(top: 100, bottom: 100, left: 80, right: 80),
+                centerTitle: true,
+                title: Text
                 (
-                  color: Colors.white,
-                  fontFamily: "TmonTium",
-                  fontSize: 25,
-                  fontWeight: FontWeight.w800
+                  "토지 상세 정보",
+                  style: TextStyle
+                  (
+                    color: Colors.white,
+                    fontFamily: "TmonTium",
+                    fontSize: 25,
+                    fontWeight: FontWeight.w800
+                  )
+                ),
+                background: Stack
+                (
+                fit: StackFit.expand,
+                  children: <Widget>
+                  [
+                    Hero
+                    (
+                      tag: constNoticeCodeMap[Notice_Code.land].code,
+                      child: FadeInImage
+                      (
+                        fit: BoxFit.cover,
+                        placeholder: AssetImage("assets/image/placeholder.jpg"),
+                        image: constNoticeCodeMap[Notice_Code.land].image
+                      )
+                    )
+                  ]
                 )
               ),
-              background: Stack
-              (
-                fit: StackFit.expand,
-                children: <Widget>
-                [
-                  Hero
-                  (
-                    tag: constNoticeCodeMap[Notice_Code.land].code,
-                    child: FadeInImage
-                    (
-                      fit: BoxFit.cover,
-                      placeholder: AssetImage("assets/image/placeholder.jpg"),
-                      image: constNoticeCodeMap[Notice_Code.land].image
-                    )
-                  )
-                ]
-              )
             ),
-          ),
-          getContentSection()
-        ], 
+          ];
+        },
+
+        body: TabBarView
+        (
+          controller: _tabController,
+          children: <Widget>
+          [
+            _getContentSection(0),
+            _getContentSection(1)
+          ]
+        ),
       ),
     );
   }
