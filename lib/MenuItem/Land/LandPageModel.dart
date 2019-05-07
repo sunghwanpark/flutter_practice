@@ -5,119 +5,12 @@ import 'package:tuple/tuple.dart';
 import 'package:xml/xml.dart' as xml;
 import 'package:http/http.dart' as http;
 
-class RankDate
-{
-  RankDate
-  (
-    {
-      this.rank = 0,
-      this.applyDate = '',
-      this.applyReserveDepositEndDate = ''
-    }
-  );
-
-  final int rank;
-  /// 신청일시
-  final String applyDate;
-  /// 납부마감일시
-  final String applyReserveDepositEndDate;
-}
-
-class SupplyDate
-{
-  SupplyDate
-  (
-    {
-      this.rankDate,
-      this.pickDate = '',
-      this.resultNoticeDate = '',
-      this.contractDateStartAt = '',
-      this.contractDateEndAt = ''
-      }
-  );
-
-  final List<RankDate> rankDate;
-  final String pickDate;
-  final String resultNoticeDate;
-  final String contractDateStartAt;
-  final String contractDateEndAt;
-}
-
 class PanInfo
 {
   PanInfo(this.otxtPanId, this.panKDCD);
 
   final String otxtPanId;
   final String panKDCD;
-}
-
-class DetailPageData
-{
-  DetailPageData(this.ccrCnntSysDsCd, this.aisInfSn, this.bzdtCd, this.loldNo, this.panId);
-
-  final String ccrCnntSysDsCd;
-  final String aisInfSn;
-  final String bzdtCd;
-  final String loldNo;
-  final String panId;
-}
-
-class SupplyLotOfLandInfo
-{
-  SupplyLotOfLandInfo
-  (
-    this.detailPageData, 
-    {
-      this.supplyPurpose = '',
-      this.locate = '',
-      this.number = '',
-      this.extent = '',
-      this.aLotOfLand = '',
-      this.supplyPrice = '',
-      this.reservePrice = '',
-      this.duePrice = '',
-      this.state = '',
-    }
-  );
-
-  /// 공급용도
-  final String supplyPurpose;
-  /// 소재지
-  final String locate;
-  /// 지번
-  final String number;
-  /// 면적
-  final String extent;
-  /// 필지군
-  final String aLotOfLand;
-  /// 공급가격(원)
-  final String supplyPrice;
-  /// 신청예약금(원)
-  final String reservePrice;
-  /// 예정가격(원)
-  final String duePrice;
-  /// 인터넷 청약
-  final String state;
-
-  final DetailPageData detailPageData;
-}
-
-class PageState
-{
-  PageState
-  (
-    { this.isBid, this.isLtr, this.isCtp, this.isHndcLtr, this.isPvtc }
-  );
-  /// 입찰여부
-  final bool isBid;
-  /// 추첨여부
-  final bool isLtr;
-  /// 고객제안여부
-  final bool isCtp;
-  /// 수기추첨여부
-  final bool isHndcLtr;
-  /// 수의계약여부
-  final bool isPvtc;
 }
 
 class LandPageModel extends MenuItemModel
@@ -256,11 +149,11 @@ class LandPageModel extends MenuItemModel
     return PanInfo(res["dsPanInfo"].first["OTXT_PAN_ID"], res["dsPanInfo"].first["PAN_KD_CD"]);
   }
 
-  Tuple4<PageState, SupplyDate, List<SupplyLotOfLandInfo>, String> getSupplyDate(Iterable<xml.XmlElement> iterator)
+  Map<String, List<Map<String, String>>> getSupplyDate(Iterable<xml.XmlElement> iterator)
   {
     cachedLandInfos = setContextData(iterator);
-
-    var pageState = PageState
+    return cachedLandInfos;
+    /*var pageState = PageState
       (
         isBid: cachedLandInfos["dsLndInf"].first["SPL_MD_BID_YN"] == "Y",
         isLtr: cachedLandInfos["dsLndInf"].first["SPL_MD_LTR_YN"] == "Y",
@@ -362,7 +255,7 @@ class LandPageModel extends MenuItemModel
     addressBuffer.write(" ");
     addressBuffer.write(cachedLandInfos["dsLndInf"].first["CTRT_PLC_DTL_ADR"]);
 
-    return Tuple4(pageState, supplyDate, solInfo, addressBuffer.toString());
+    return Tuple4(pageState, supplyDate, solInfo, addressBuffer.toString());*/
   }
 
   Future<PanInfo> fetchPanInfo(Notice_Code noticeCode, String panId, String ccrCnntSysDsCd) async
@@ -383,7 +276,7 @@ class LandPageModel extends MenuItemModel
     .then((xmlDocument) => getPanInfo(xmlDocument.findAllElements("Dataset")));
   }
 
-  Future<Tuple4<PageState, SupplyDate, List<SupplyLotOfLandInfo>, String>> fetchData(Notice_Code noticeCode, String panId, String ccrCnntSysDsCd, PanInfo panInfo) async
+  Future<Map<String, List<Map<String, String>>>> fetchData(Notice_Code noticeCode, String panId, String ccrCnntSysDsCd, PanInfo panInfo) async
   {
     StringBuffer stringBuffer = new StringBuffer();
     stringBuffer.write(noticeURL);

@@ -1,22 +1,15 @@
+import 'package:bunyang/Util/Util.dart';
 import 'package:flutter/material.dart';
 import 'package:sprintf/sprintf.dart';
-import 'package:bunyang/MenuItem/Land/LandPageModel.dart';
 
 class SupplyDateView extends StatelessWidget
 {
-  SupplyDateView(PageState pageState, SupplyDate supplyDate)
+  SupplyDateView(bool isTender, Map<String, String> landInfo, Map<String, String> data)
   {
     widgets.clear();
+
+    String typeString = isTender ? "입찰" : "추첨";;
     
-    bool isDraw = (pageState.isLtr || pageState.isCtp || pageState.isHndcLtr) && !pageState.isPvtc;
-    bool isTender = pageState.isBid && !pageState.isPvtc;
-
-    String typeString = "";
-    if(isDraw)
-      typeString = "추첨";
-    if(isTender)
-      typeString = "입찰";
-
     widgets.add(
       Row
       (
@@ -28,83 +21,43 @@ class SupplyDateView extends StatelessWidget
         ]
       ));
 
-    if(supplyDate.rankDate.length > 1)
-    {
-      supplyDate.rankDate
-        .forEach((data) =>
-        {
-          widgets.add
-          (
-            Card
-            (
-              color: Colors.lightBlueAccent,
-              child: Column
-              (
-                children: <Widget>
-                [
-                  Align
-                  (
-                    alignment: Alignment.center,
-                    child: Text(sprintf('%s 순위', [data.rank]), textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 22, fontFamily: 'TmonTium', fontWeight: FontWeight.w600))
-                  ),
-                  Align
-                  (
-                    alignment: Alignment.centerLeft,
-                    child: Text(sprintf('신청일시 : %s', [supplyDate.rankDate.first.applyDate]), textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'TmonTium'))
-                  ),
-                  Align
-                  (
-                    alignment: Alignment.centerLeft,
-                    child: Text(sprintf('신청예약금 입금마감일시 : %s', [supplyDate.rankDate.first.applyReserveDepositEndDate]), textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'TmonTium'))
-                  )
-                ],
-              ),
-            )
-          )
-        });
-    }
-    else
-    {
-      widgets.add(
-        Align
-        (
-          alignment: Alignment.centerLeft,
-          child: Text(sprintf('신청일시 : %s', [supplyDate.rankDate.first.applyDate]), textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'TmonTium'))
-        ));
+    widgets.add(
+      Align
+      (
+        alignment: Alignment.centerLeft,
+        child: Text(sprintf('신청일시 : %s', [data["RQS_DTTM"]]), textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'TmonTium'))
+      ));
 
-      widgets.add(
-        Align
-        (
-          alignment: Alignment.centerLeft,
-          child: Text(sprintf(isDraw ? '신청예약금 입금마감일시 : %s' : "입찰보증금 납부마감일시 : %s",
-           [supplyDate.rankDate.first.applyReserveDepositEndDate]), textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'TmonTium'))
-        ));
-    }
+    widgets.add(
+      Align
+      (
+        alignment: Alignment.centerLeft,
+        child: Text(sprintf(isTender ? "입찰보증금 납부마감일시 : %s" : '신청예약금 입금마감일시 : %s',
+           [data["CLSG_DTTM"]]), textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'TmonTium'))
+      ));
+    
+    widgets.add(
+      Align
+      (
+        alignment: Alignment.centerLeft,
+        child: Text(sprintf(isTender ? '개찰일시 : %s' : '추첨일정 : %s',
+         [data["OPB_DTTM"].isNotEmpty ? data["OPB_DTTM"] : landInfo["LTR_DTTM"]]), textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'TmonTium'))
+      ));
 
-    if(supplyDate.pickDate.isNotEmpty)
-      widgets.add(
-        Align
-        (
-          alignment: Alignment.centerLeft,
-          child: Text(sprintf(isDraw ? '추첨일정 : %s' : '개찰일시 : %s',
-           [supplyDate.pickDate]), textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'TmonTium'))
-        ));
+    widgets.add(
+      Align
+      (
+        alignment: Alignment.centerLeft,
+        child: Text(sprintf(isTender ?  '개찰결과게시일시 : %s' : '결과게시일정 : %s',
+         [data["OPB_RSL_NT_DTTM"].isNotEmpty ? data["OPB_RSL_NT_DTTM"] : landInfo["PZWR_NT_DTTM"]]), textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'TmonTium'))
+      ));
 
-    if(supplyDate.resultNoticeDate.isNotEmpty)
+    if(landInfo["CTRT_ST_DT"].isNotEmpty && landInfo["CTRT_ED_DT"].isNotEmpty)
       widgets.add(
         Align
         (
           alignment: Alignment.centerLeft,
-          child: Text(sprintf(isDraw ? '결과게시일정 : %s' : '개찰결과게시일시 : %s',
-           [supplyDate.resultNoticeDate]), textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'TmonTium'))
-        ));
-
-    if(supplyDate.contractDateStartAt.isNotEmpty && supplyDate.contractDateEndAt.isNotEmpty)
-      widgets.add(
-        Align
-        (
-          alignment: Alignment.centerLeft,
-          child: Text(sprintf('계약체결일정 : %s ~ %s', [supplyDate.contractDateStartAt, supplyDate.contractDateEndAt]), textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'TmonTium'))
+          child: Text(sprintf('계약체결일정 : %s ~ %s', [getDateFormat(landInfo["CTRT_ST_DT"]), getDateFormat(landInfo["CTRT_ED_DT"])]), textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'TmonTium'))
         ));
   }
 

@@ -154,7 +154,12 @@ class LocateInfoView extends StatelessWidget
               backgroundColor: Colors.white,
               elevation: 0.2,
               contentPadding: EdgeInsets.all(0),
-              content: ContractSchedule(ccrCnntSysDsCd, aisInfSn),
+              content: Container
+              (
+                width: double.maxFinite,
+                height: MediaQuery.of(context).size.height,
+                child: ContractSchedule(ccrCnntSysDsCd, aisInfSn)
+              ),
               actions: <Widget>
               [
                 FlatButton

@@ -55,14 +55,29 @@ class LandPageView extends State<LandPage>
     _presenter.onRequestNotice(type, pan_id, ccr_cnnt_sys_ds_cd, panInfo);
   }
 
-  void onLoadComplete(Tuple4<PageState, SupplyDate, List<SupplyLotOfLandInfo>, String> landDatas)
+  void onLoadComplete(Map<String, List<Map<String, String>>> landDatas)
   {
-    if(landDatas.item1 != null && landDatas.item2 != null)
-      _contents.add(SupplyDateView(landDatas.item1, landDatas.item2));
-    if(landDatas.item1 != null && landDatas.item3 != null && landDatas.item3.length > 0)
-      _contents.add(SupplyLotOfLandInfoView(landDatas.item1, landDatas.item3));
-    if(landDatas.item4 != null)
-      _contents.add(MyGoogleMap("계약장소 정보", landDatas.item4));
+    if(landDatas["dsSplInfBidList"].length > 0)
+    {
+      _contents.add(SupplyDateView(true, landDatas["dsLndInf"].first, landDatas["dsSplScdList"].where((data) => data["RNK_TYPE"] == "01").first));
+      _contents.add(SupplyLotOfLandInfoView(true, landDatas["dsSplInfBidList"]));
+    }
+
+    if(landDatas["dsSplInfLtrList"].length > 0)
+    {
+      _contents.add(SupplyDateView(false, landDatas["dsLndInf"].first, landDatas["dsSplScdList"].where((data) => data["RNK_TYPE"] == "02").first));
+      _contents.add(SupplyLotOfLandInfoView(false, landDatas["dsSplInfLtrList"]));
+    }
+    
+    if(landDatas["dsLndInf"].first["CTRT_PLC_ADR"].isNotEmpty && landDatas["dsLndInf"].first["CTRT_PLC_DTL_ADR"].isNotEmpty)
+    {
+      StringBuffer addressBuffer = StringBuffer();
+      addressBuffer.write(landDatas["dsLndInf"].first["CTRT_PLC_ADR"]);
+      addressBuffer.write(" ");
+      addressBuffer.write(landDatas["dsLndInf"].first["CTRT_PLC_DTL_ADR"]);
+
+      _contents.add(MyGoogleMap("계약장소 정보", addressBuffer.toString()));
+    }
 
     setState(() => loadingState = LoadingState.DONE);
   }

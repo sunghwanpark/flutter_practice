@@ -1,6 +1,6 @@
-import 'package:bunyang/MenuItem/Land/LandPageModel.dart';
 import 'package:bunyang/MenuItem/Land/ProductDetail/ProductDetailModel.dart';
 import 'package:bunyang/MenuItem/Land/ProductDetail/ProductDetailView.dart';
+import 'package:bunyang/MenuItem/Land/SupplyLotOfLandInfoView.dart';
 
 class ProductDetailPresenter
 {

@@ -61,6 +61,7 @@ class ContractScheduleView extends State<ContractSchedule>
       case LoadingState.DONE:
         return ListView
         (
+          padding: EdgeInsets.only(bottom: 10),
           children: <Widget>
           [
             cachedDatas['SLLN_AMT'].isNotEmpty ? Align
@@ -68,7 +69,7 @@ class ContractScheduleView extends State<ContractSchedule>
               alignment: Alignment.center,
               child: Text(sprintf('매각금액 %s', [_format.format(int.parse(cachedDatas['SLLN_AMT']))]), textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontWeight: FontWeight.w600, fontSize: 20, fontFamily: 'TmonTium'))
             ) : SizedBox(),
-            /*cachedDatas['STL_PC_RCP_MD_DS_CD_NM'].isNotEmpty ? Align
+            cachedDatas['STL_PC_RCP_MD_DS_CD_NM'].isNotEmpty ? Align
             (
               alignment: Alignment.center,
               child: Text(sprintf('수납방법 %s', [cachedDatas['STL_PC_RCP_MD_DS_CD_NM']]), textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontWeight: FontWeight.w600, fontSize: 20, fontFamily: 'TmonTium'))
@@ -92,7 +93,7 @@ class ContractScheduleView extends State<ContractSchedule>
                 textAlign: TextAlign.left,
                 style: TextStyle(color: Colors.black, fontWeight: FontWeight.w600, fontSize: 20, fontFamily: 'TmonTium')
               )
-            ) : SizedBox()*/
+            ) : SizedBox()
           ],
         );
       case LoadingState.LOADING:

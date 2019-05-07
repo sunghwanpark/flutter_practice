@@ -1,9 +1,9 @@
 import 'package:bunyang/Data/Address.dart';
-import 'package:bunyang/MenuItem/Land/LandPageModel.dart';
 import 'package:bunyang/MenuItem/Land/ProductDetail/BusinessShortInfoView.dart';
 import 'package:bunyang/MenuItem/Land/ProductDetail/LocateInfoView.dart';
 import 'package:bunyang/MenuItem/Land/ProductDetail/PlanView.dart';
 import 'package:bunyang/MenuItem/Land/ProductDetail/ProductDetailPresenter.dart';
+import 'package:bunyang/MenuItem/Land/SupplyLotOfLandInfoView.dart';
 import 'package:bunyang/Util/Util.dart';
 import 'package:flutter/material.dart';
 

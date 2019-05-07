@@ -1,24 +1,26 @@
-import 'package:bunyang/MenuItem/Land/LandPageModel.dart';
 import 'package:bunyang/MenuItem/Land/ProductDetail/ProductDetailView.dart';
 import 'package:flutter/material.dart';
 import 'package:sprintf/sprintf.dart';
 import 'package:intl/intl.dart';
 
+class DetailPageData
+{
+  DetailPageData(this.ccrCnntSysDsCd, this.aisInfSn, this.bzdtCd, this.loldNo, this.panId);
+
+  final String ccrCnntSysDsCd;
+  final String aisInfSn;
+  final String bzdtCd;
+  final String loldNo;
+  final String panId;
+}
+
 class SupplyLotOfLandInfoView extends StatelessWidget
 {
-  SupplyLotOfLandInfoView(PageState pageState, List<SupplyLotOfLandInfo> infos)
+  SupplyLotOfLandInfoView(bool isTender, List<Map<String, String>> data)
   {    
     landInfosCards.clear();
 
-    bool isDraw = (pageState.isLtr || pageState.isCtp || pageState.isHndcLtr) && !pageState.isPvtc;
-    bool isTender = pageState.isBid && !pageState.isPvtc;
-
-    String typeString = "";
-    if(isDraw)
-      typeString = "추첨";
-    if(isTender)
-      typeString = "입찰";
-
+    String typeString = isTender ? "입찰" : "추첨";
     landInfosCards.add(Row
     (
       children : <Widget>
@@ -30,14 +32,21 @@ class SupplyLotOfLandInfoView extends StatelessWidget
     ));
 
     final f = NumberFormat("#,###");
-    infos.forEach((info) =>
+    data.forEach((info) =>
     { 
       landInfosCards.add(Padding
       (
         padding: EdgeInsets.only(top: 10, bottom: 10),
         child: GestureDetector
         (
-          onLongPress: () => onLongPressDetail(info.detailPageData),
+          onLongPress: () => onLongPressDetail(DetailPageData
+          (
+            info["CCR_CNNT_SYS_DS_CD"],
+            info["AIS_INF_SN"],
+            info["BZDT_CD"],
+            info["LOLD_NO"],
+            info["PAN_ID"]
+          )),
           child: Container
           (
             decoration: ShapeDecoration
@@ -58,45 +67,45 @@ class SupplyLotOfLandInfoView extends StatelessWidget
             (
               children: <Widget>
               [
-                info.supplyPurpose.isNotEmpty ? Align
+                info["LND_US_DS_CD_NM"].isNotEmpty ? Align
                 (
                   alignment: Alignment.centerLeft,
-                  child: Text(sprintf('공급용도 : %s', [info.supplyPurpose]), textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'TmonTium'))
+                  child: Text(sprintf('공급용도 : %s', [info["LND_US_DS_CD_NM"]]), textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'TmonTium'))
                 ) : SizedBox(),
-                info.locate.isNotEmpty ? Align
+                info["LND_US_DS_CD_NM"].isNotEmpty ? Align
                 (
                   alignment: Alignment.centerLeft,
-                  child: Text(sprintf('소재지 : %s', [info.locate]), textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'TmonTium'))
+                  child: Text(sprintf('소재지 : %s', [info["LND_US_DS_CD_NM"]]), textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'TmonTium'))
                 ) : SizedBox(),
-                info.number.isNotEmpty ? Align
+                info["LNO"].isNotEmpty ? Align
                 ( 
                   alignment: Alignment.centerLeft,
-                  child: Text(sprintf('지번 : %s', [info.number]), textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'TmonTium'))
+                  child: Text(sprintf('지번 : %s', [info["LNO"]]), textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'TmonTium'))
                 ) : SizedBox(),
-                info.extent.isNotEmpty ? Align
+                info["AR"].isNotEmpty ? Align
                 (
                   alignment: Alignment.centerLeft,
-                  child: Text(sprintf('면적 : %s', [info.extent]), textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'TmonTium'))
+                  child: Text(sprintf('면적 : %s', [info["AR"]]), textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'TmonTium'))
                 ) : SizedBox(),
-                info.supplyPrice.isNotEmpty && info.supplyPrice != "0" ? Align
+                info["SPL_AMT"].isNotEmpty && info["SPL_AMT"] != "0" ? Align
                 (
                   alignment: Alignment.centerLeft,
-                  child: Text(sprintf('공급가격(원) : %s', [f.format(int.parse(info.supplyPrice))]), textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'TmonTium'))
+                  child: Text(sprintf('공급가격(원) : %s', [f.format(int.parse(info["SPL_AMT"]))]), textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'TmonTium'))
                 ) : SizedBox(),
-                info.reservePrice.isNotEmpty && info.reservePrice != "0" ? Align
+                info["RQS_BAM"].isNotEmpty && info["LND_US_DS_CD_NM"] != "0" ? Align
                 (
                   alignment: Alignment.centerLeft,
-                  child: Text(sprintf('신청예약금(원) : %s', [f.format(int.parse(info.reservePrice))]), textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'TmonTium'))
+                  child: Text(sprintf('신청예약금(원) : %s', [f.format(int.parse(info["RQS_BAM"]))]), textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'TmonTium'))
                 ) : SizedBox(),
-                info.duePrice.isNotEmpty && info.duePrice != "0" ? Align
+                info["SPL_XPC_AMT"].isNotEmpty && info["LND_US_DS_CD_NM"] != "0" ? Align
                 (
                   alignment: Alignment.centerLeft,
-                  child: Text(sprintf('예정가격(원) : %s', [f.format(int.parse(info.duePrice))]), textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'TmonTium'))
+                  child: Text(sprintf('예정가격(원) : %s', [f.format(int.parse(info["SPL_XPC_AMT"]))]), textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'TmonTium'))
                 ) : SizedBox(),
-                info.state.isNotEmpty ? Align
+                info["BTN_NM"].isNotEmpty ? Align
                 (
                   alignment: Alignment.centerLeft,
-                  child: Text(sprintf('인터넷청약 : %s', [info.state]), textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'TmonTium'))
+                  child: Text(sprintf('인터넷청약 : %s', [info["BTN_NM"]]), textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'TmonTium'))
                 ) : SizedBox()
               ],
             )

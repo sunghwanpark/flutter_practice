@@ -1,3 +1,4 @@
+import 'package:bunyang/Util/Util.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:sprintf/sprintf.dart';
@@ -57,21 +58,9 @@ class BusinessShortInfoView extends StatelessWidget
         Align
         (
           alignment: Alignment.centerLeft,
-          child: Text(sprintf('사업기간 : %s ~ %s', [_getDate(data["EPZ_TR_ST_DT"]), _getDate(data["EPZ_TR_ED_DT"])]), textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'TmonTium'))
+          child: Text(sprintf('사업기간 : %s ~ %s', [getDateFormat(data["EPZ_TR_ST_DT"]), getDateFormat(data["EPZ_TR_ED_DT"])]), textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'TmonTium'))
         ));
     }
-  }
-
-  String _getDate(String dateString)
-  {
-    StringBuffer sb = new StringBuffer();
-    sb.write(dateString.substring(0, 4));
-    sb.write('.');
-    sb.write(dateString.substring(4, 6));
-    sb.write('.');
-    sb.write(dateString.substring(6, 8));
-
-    return sb.toString();
   }
 
   final List<Widget> widgets = new List<Widget>();
