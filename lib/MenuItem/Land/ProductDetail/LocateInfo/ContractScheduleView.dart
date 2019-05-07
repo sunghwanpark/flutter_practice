@@ -29,6 +29,7 @@ class ContractScheduleView extends State<ContractSchedule>
   ContractSchedulePresenter _presenter;
   Map<String, String> cachedDatas;
   LoadingState _loadingState = LoadingState.LOADING;
+  DateTime _checkDate = null;
 
   @override
   void initState() 
@@ -54,7 +55,15 @@ class ContractScheduleView extends State<ContractSchedule>
     });
   }
 
-  Widget getContents()
+  void onCheckDate(DateTime time)
+  {
+    _checkDate = time;
+    setState(() {
+      _loadingState = LoadingState.DONE;
+    });
+  }
+
+  Widget getContents(BuildContext context)
   {
     switch(_loadingState)
     {
@@ -93,7 +102,53 @@ class ContractScheduleView extends State<ContractSchedule>
                 textAlign: TextAlign.left,
                 style: TextStyle(color: Colors.black, fontWeight: FontWeight.w600, fontSize: 20, fontFamily: 'TmonTium')
               )
-            ) : SizedBox()
+            ) : SizedBox(),
+            FlatButton
+            (
+              shape: RoundedRectangleBorder
+              (
+                borderRadius: BorderRadius.circular(10),
+                side: BorderSide(color: Colors.black)
+              ),
+              child: Row
+              (
+                children : <Widget>
+                [
+                  Icon
+                  (
+                    Icons.calendar_today,
+                    color: Colors.black
+                  ),
+                  SizedBox(width: 5),
+                  myText('계약가능일(예정)')
+                ]
+              ),
+              onPressed: () => showDatePicker
+              (
+                context: context,
+                initialDate: DateTime.now(),
+                firstDate: DateTime(2019),
+                lastDate: DateTime(2030),
+                builder: (BuildContext context, Widget child) 
+                {
+                  return Theme
+                  (
+                    data: ThemeData.dark(),
+                    child: child,
+                  );
+                },
+              ).then((date) => onCheckDate(date)),
+            ),
+            _checkDate != null ? Align
+            (
+              alignment: Alignment.center,
+              child: Text
+              (
+                DateFormat.yMEd().format(_checkDate),
+                textAlign: TextAlign.left,
+                style: TextStyle(color: Colors.black, fontWeight: FontWeight.w600, fontSize: 20, fontFamily: 'TmonTium')
+              )
+            ) : SizedBox(),
           ],
         );
       case LoadingState.LOADING:
@@ -111,7 +166,7 @@ class ContractScheduleView extends State<ContractSchedule>
     return Container
     (
       alignment: Alignment.center,
-      child: getContents(),
+      child: getContents(context),
     );
   }
 }
