@@ -145,7 +145,7 @@ class LocateInfoView extends StatelessWidget
           {
             return AlertDialog
             (
-              title: Center(child: Text('예정약정사항', textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontWeight: FontWeight.w600, fontSize: 20, fontFamily: 'TmonTium'))),
+              title: Center(child: Text('예정약정사항', textAlign: TextAlign.left, style: TextStyle(color: Colors.deepPurpleAccent[800], fontWeight: FontWeight.w600, fontSize: 30, fontFamily: 'TmonTium'))),
               shape: RoundedRectangleBorder
               (
                 borderRadius: BorderRadius.circular(15),

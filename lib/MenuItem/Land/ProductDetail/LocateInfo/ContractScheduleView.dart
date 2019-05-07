@@ -58,6 +58,13 @@ class ContractScheduleView extends State<ContractSchedule>
   void onCheckDate(DateTime time)
   {
     _checkDate = time;
+
+    int nNot = int.parse(cachedDatas['XCPC_RCP_NOT']);
+    double nCtrtAmt = int.parse(cachedDatas['SLLN_AMT']) * 0.1; //계약금액
+    double nSllnAmt2 = int.parse(cachedDatas['SLLN_AMT']) - nCtrtAmt; //계약금액을 뺀 남은금액
+    double nToyAmt = nSllnAmt2 / nNot; //분할금액
+    double nToyInt =  (nToyAmt * (int.parse(cachedDatas['STPL_INT_RT']) / 100 )); //분할이자
+
     setState(() {
       _loadingState = LoadingState.DONE;
     });
@@ -105,6 +112,7 @@ class ContractScheduleView extends State<ContractSchedule>
             ) : SizedBox(),
             FlatButton
             (
+              color: Colors.black.withOpacity(0.1),
               shape: RoundedRectangleBorder
               (
                 borderRadius: BorderRadius.circular(10),
@@ -144,7 +152,7 @@ class ContractScheduleView extends State<ContractSchedule>
               alignment: Alignment.center,
               child: Text
               (
-                DateFormat.yMEd().format(_checkDate),
+                _checkDate.toString().substring(0, 10),
                 textAlign: TextAlign.left,
                 style: TextStyle(color: Colors.black, fontWeight: FontWeight.w600, fontSize: 20, fontFamily: 'TmonTium')
               )
