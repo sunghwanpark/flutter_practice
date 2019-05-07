@@ -1,13 +1,17 @@
 import 'package:bunyang/Map/MyGoogleMapView.dart';
+import 'package:bunyang/MenuItem/Land/ProductDetail/LocateInfo/ContractScheduleView.dart';
+import 'package:bunyang/Util/Util.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:sprintf/sprintf.dart';
 
 class LocateInfoView extends StatelessWidget
 {
-  LocateInfoView(Map<String, String> data)
+  LocateInfoView(this.cachedData, this.ccrCnntSysDsCd, this.aisInfSn);
+
+  List<Widget> _makeWidgets(BuildContext context)
   {
-    widgets.clear();
+    List<Widget> widgets = new List<Widget>();
     widgets.add(
       Row
       (
@@ -19,126 +23,181 @@ class LocateInfoView extends StatelessWidget
         ]
       ));
 
-    if(data["BZDT_NM"].isNotEmpty)
+    if(cachedData["BZDT_NM"].isNotEmpty)
       widgets.add(
         Align
         (
           alignment: Alignment.centerLeft,
-          child: Text(sprintf('사업지구명 : %s', [data["BZDT_NM"]]), textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'TmonTium'))
+          child: Text(sprintf('사업지구명 : %s', [cachedData["BZDT_NM"]]), textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'TmonTium'))
         ));
 
-    if(data["BZDT_SS"].isNotEmpty)
+    if(cachedData["BZDT_SS"].isNotEmpty)
       widgets.add(
         Align
         (
           alignment: Alignment.centerLeft,
-          child: Text(sprintf('상태 : %s', [data["BZDT_SS"]]), textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'TmonTium'))
+          child: Text(sprintf('상태 : %s', [cachedData["BZDT_SS"]]), textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'TmonTium'))
         ));
     
-    if(data["LCT_ARA_NM"].isNotEmpty)
-      widgets.add(MyGoogleMap("소재지", data["LCT_ARA_NM"]));
+    if(cachedData["LCT_ARA_NM"].isNotEmpty)
+      widgets.add(MyGoogleMap("소재지", cachedData["LCT_ARA_NM"]));
 
-    if(data["LNO"].isNotEmpty)
+    if(cachedData["LNO"].isNotEmpty)
       widgets.add(
         Align
         (
           alignment: Alignment.centerLeft,
-          child: Text(sprintf('지번 : %s', [data["LNO"]]), textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'TmonTium'))
-        ));
-
-    if(data["IQY_TLNO"].isNotEmpty)
-      widgets.add(
-        Align
-        (
-          alignment: Alignment.centerLeft,
-          child: Text(sprintf('문의처 : %s', [data["IQY_TLNO"]]), textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'TmonTium'))
-        ));
-    
-    if(data["LNCT_CD_NM"].isNotEmpty)
-      widgets.add(
-        Align
-        (
-          alignment: Alignment.centerLeft,
-          child: Text(sprintf('지목 : %s', [data["LNCT_CD_NM"]]), textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'TmonTium'))
+          child: Text(sprintf('지번 : %s', [cachedData["LNO"]]), textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'TmonTium'))
         ));
 
-    if(data["AR"].isNotEmpty)
+    if(cachedData["IQY_TLNO"].isNotEmpty)
       widgets.add(
         Align
         (
           alignment: Alignment.centerLeft,
-          child: Text(sprintf('면적(㎡) : %s', [data["AR"]]), textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'TmonTium'))
+          child: Text(sprintf('문의처 : %s', [cachedData["IQY_TLNO"]]), textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'TmonTium'))
         ));
     
-    if(data["STL_SPL_PP_CD_NM"].isNotEmpty)
+    if(cachedData["LNCT_CD_NM"].isNotEmpty)
       widgets.add(
         Align
         (
           alignment: Alignment.centerLeft,
-          child: Text(sprintf('공급용도 : %s', [data["STL_SPL_PP_CD_NM"]]), textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'TmonTium'))
-        ));
-    
-    if(data["STL_PP_ARA_CD_NM"].isNotEmpty)
-      widgets.add(
-        Align
-        (
-          alignment: Alignment.centerLeft,
-          child: Text(sprintf('용도지역 : %s', [data["STL_PP_ARA_CD_NM"]]), textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'TmonTium'))
-        ));
-    
-    if(data["BUK_RT"].isNotEmpty)
-      widgets.add(
-        Align
-        (
-          alignment: Alignment.centerLeft,
-          child: Text(sprintf('용적율(%) : %s', [data["BUK_RT"]]), textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'TmonTium'))
-        ));
-    
-    if(data["BTLR_RT"].isNotEmpty)
-      widgets.add(
-        Align
-        (
-          alignment: Alignment.centerLeft,
-          child: Text(sprintf('건폐율 : %s', [data["BUK_RT"]]), textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'TmonTium'))
-        ));
-    
-    if(data["CON_CCW_DT"].isNotEmpty)
-      widgets.add(
-        Align
-        (
-          alignment: Alignment.centerLeft,
-          child: Text(sprintf('공사준공일 : %s', [data["CON_CCW_DT"]]), textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'TmonTium'))
+          child: Text(sprintf('지목 : %s', [cachedData["LNCT_CD_NM"]]), textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'TmonTium'))
         ));
 
-    if(data["SPL_OTST_DT"].isNotEmpty)
+    if(cachedData["AR"].isNotEmpty)
       widgets.add(
         Align
         (
           alignment: Alignment.centerLeft,
-          child: Text(sprintf('공급개시일 : %s', [data["SPL_OTST_DT"]]), textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'TmonTium'))
+          child: Text(sprintf('면적(㎡) : %s', [cachedData["AR"]]), textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'TmonTium'))
+        ));
+    
+    if(cachedData["STL_SPL_PP_CD_NM"].isNotEmpty)
+      widgets.add(
+        Align
+        (
+          alignment: Alignment.centerLeft,
+          child: Text(sprintf('공급용도 : %s', [cachedData["STL_SPL_PP_CD_NM"]]), textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'TmonTium'))
+        ));
+    
+    if(cachedData["STL_PP_ARA_CD_NM"].isNotEmpty)
+      widgets.add(
+        Align
+        (
+          alignment: Alignment.centerLeft,
+          child: Text(sprintf('용도지역 : %s', [cachedData["STL_PP_ARA_CD_NM"]]), textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'TmonTium'))
+        ));
+    
+    if(cachedData["BUK_RT"].isNotEmpty)
+      widgets.add(
+        Align
+        (
+          alignment: Alignment.centerLeft,
+          child: Text(sprintf('용적율(%) : %s', [cachedData["BUK_RT"]]), textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'TmonTium'))
+        ));
+    
+    if(cachedData["BTLR_RT"].isNotEmpty)
+      widgets.add(
+        Align
+        (
+          alignment: Alignment.centerLeft,
+          child: Text(sprintf('건폐율 : %s', [cachedData["BUK_RT"]]), textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'TmonTium'))
+        ));
+    
+    if(cachedData["CON_CCW_DT"].isNotEmpty)
+      widgets.add(
+        Align
+        (
+          alignment: Alignment.centerLeft,
+          child: Text(sprintf('공사준공일 : %s', [cachedData["CON_CCW_DT"]]), textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'TmonTium'))
+        ));
+
+    if(cachedData["SPL_OTST_DT"].isNotEmpty)
+      widgets.add(
+        Align
+        (
+          alignment: Alignment.centerLeft,
+          child: Text(sprintf('공급개시일 : %s', [cachedData["SPL_OTST_DT"]]), textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'TmonTium'))
         ));
 
     var f = NumberFormat('#,###');
-    if(data["SPL_XPC_AMT"].isNotEmpty)
+    if(cachedData["SPL_XPC_AMT"].isNotEmpty)
       widgets.add(
         Align
         (
           alignment: Alignment.centerLeft,
-          child: Text(sprintf('공급(예정)금액(원) : %s', [f.format(int.parse(data["SPL_XPC_AMT"]))]), textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'TmonTium'))
+          child: Text(sprintf('공급(예정)금액(원) : %s', [f.format(int.parse(cachedData["SPL_XPC_AMT"]))]), textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'TmonTium'))
         ));
 
     // 분할납부조건
+    widgets.add(FlatButton
+    (
+      textTheme: ButtonTextTheme.accent,
+      onPressed: () =>
+      {
+        showDialog
+        (
+          context: context,
+          barrierDismissible: false,
+          builder: (BuildContext context)
+          {
+            return AlertDialog
+            (
+              title: Center(child: Text('예정약정사항', textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontWeight: FontWeight.w600, fontSize: 20, fontFamily: 'TmonTium'))),
+              shape: RoundedRectangleBorder
+              (
+                borderRadius: BorderRadius.circular(15),
+                side: BorderSide(style: BorderStyle.solid, color: Colors.black.withOpacity(0.2))
+              ),
+              backgroundColor: Colors.white,
+              elevation: 0.2,
+              contentPadding: EdgeInsets.all(0),
+              content: ContractSchedule(ccrCnntSysDsCd, aisInfSn),
+              actions: <Widget>
+              [
+                FlatButton
+                (
+                  child: myText('확인'),
+                  onPressed: () => Navigator.of(context).pop(),
+                )
+              ],
+            );
+          }
+        )
+      },
+      child: Container
+      (
+        alignment: Alignment.centerLeft,
+        decoration: BoxDecoration
+        (
+          color: Colors.black.withOpacity(0.2),
+          border: Border.all(color: Colors.black)
+        ),
+        child: Align
+        (
+          alignment: Alignment.center,
+          child: Text('예정약정사항조회', textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontWeight: FontWeight.w600, fontSize: 20, fontFamily: 'TmonTium'))
+        )
+      )
+    ));
 
-    if(data["STL_PR_STGY_DS_CD_NM"].isNotEmpty)
+    if(cachedData["STL_PR_STGY_DS_CD_NM"].isNotEmpty)
       widgets.add(
         Align
         (
           alignment: Alignment.centerLeft,
-          child: Text(sprintf('가격전략구분 : %s', [data["STL_PR_STGY_DS_CD_NM"]]), textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'TmonTium'))
+          child: Text(sprintf('가격전략구분 : %s', [cachedData["STL_PR_STGY_DS_CD_NM"]]), textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'TmonTium'))
         ));
+
+    return widgets;
   }
-  
-  final List<Widget> widgets = new List<Widget>();
+
+  final String ccrCnntSysDsCd;
+  final String aisInfSn;
+  final Map<String, String> cachedData;
+
   @override
   Widget build(BuildContext context)
   {
@@ -149,7 +208,7 @@ class LocateInfoView extends StatelessWidget
       (
         child: Column
         (
-          children: widgets,
+          children: _makeWidgets(context),
         ),
         padding: EdgeInsets.only(left: 10, right: 10)
       )

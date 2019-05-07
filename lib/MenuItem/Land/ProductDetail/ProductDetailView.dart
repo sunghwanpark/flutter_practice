@@ -83,7 +83,9 @@ class ProductDetailView extends State<ProductDetail> with SingleTickerProviderSt
 
   void _makeLocateInfoView(Map<String, List<Map<String, String>>> res)
   {
-    _locateInfoView.add(LocateInfoView(res["dsLoldInf"].first));
+    _locateInfoView.add(LocateInfoView(res["dsLoldInf"].first,
+      res["dsLndInf"].first["CCR_CNNT_SYS_DS_CD"],
+      res["dsLndInf"].first["AIS_INF_SN"]));
   }
 
   Widget _getContentSection(int idx)
