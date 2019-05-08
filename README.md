@@ -1,3 +1,3 @@
 # Flutter App
 
-![app gif](https://github.com/sunghwanpark/flutter_practice/blob/master/untitled.gif)
+<img src="https://raw.githubusercontent.com/sunghwanpark/flutter_practice/master/untitled.gif" alt="pin usage" width="500"/>
