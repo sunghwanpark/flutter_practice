@@ -1,6 +1,8 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:bunyang/Data/Address.dart';
 import 'package:bunyang/Menu/Model/MenuModel.dart';
+import 'package:bunyang/MenuItem/MenuItemModel.dart';
+import 'package:bunyang/MenuItem/MenuItemPresenter.dart';
 import 'package:bunyang/Util/Util.dart';
 import 'package:flutter/material.dart';
 
@@ -32,12 +34,64 @@ abstract class MenuItemPageView<T extends MenuItemPage> extends State<T>
   String ccr_cnnt_sys_ds_cd;
   String appBarTitle;
   
+  List<Widget> contents = new List<Widget>();
+
   LoadingState loadingState = LoadingState.LOADING;
 
+  MenuItemPresenter presenter;
+
   @protected
+  void onResponseSuccessPanInfo(PanInfo panInfo);
+
+  void onError()
+  {
+    setState(() {
+      loadingState = LoadingState.ERROR; 
+    });
+  }
+
   Widget getContentSection()
   {
-    return Container();
+    switch (loadingState)
+    {
+      case LoadingState.DONE:
+        return SliverList
+        (
+          delegate: SliverChildBuilderDelegate
+          (
+            (context, index) => contents[index],
+            childCount: contents.length
+          ),
+        );
+      case LoadingState.ERROR:
+        return SliverList
+        (
+          delegate: SliverChildListDelegate(<Widget>
+          [
+            myText("데이터를 불러오지 못했습니다!")
+          ])
+        );
+      case LoadingState.LOADING:
+        return SliverList
+        (
+          delegate: SliverChildListDelegate(<Widget>
+          [
+            Container
+            (
+              alignment: Alignment.center,
+              child: CircularProgressIndicator(backgroundColor: Colors.white)
+            )
+          ])
+        );
+      default:
+        return SliverList
+        (
+          delegate: SliverChildListDelegate(<Widget>
+          [
+            Container()
+          ])
+        );
+    }
   }
 
   @override

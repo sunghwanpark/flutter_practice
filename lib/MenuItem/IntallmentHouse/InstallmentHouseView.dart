@@ -1,9 +1,8 @@
 import 'package:bunyang/Menu/Model/MenuModel.dart';
 import 'package:bunyang/MenuItem/IntallmentHouse/InstallmentHousePresenter.dart';
-import 'package:bunyang/MenuItem/Land/LandPagePresenter.dart';
+import 'package:bunyang/MenuItem/MenuItemModel.dart';
 import 'package:bunyang/MenuItem/MenuItemPageView.dart';
 import 'package:flutter/material.dart';
-import 'package:bunyang/Util/Util.dart';
 
 class InstallmentHousePage extends MenuItemPage
 {
@@ -15,18 +14,24 @@ class InstallmentHousePage extends MenuItemPage
 
 class InstallmentHouseView extends MenuItemPageView<InstallmentHousePage> 
 {
-  InstallmentHouseView(MenuData data) : super(data);
+  InstallmentHouseView(MenuData data) : super(data)
+  {
+    _uppAisTpCd = this.data.getUppAisTPCD();
+  }
 
-  InstallmentHousePresenter _presenter;
-  
-  LoadingState loadingState = LoadingState.LOADING;
-  
+  String _uppAisTpCd;
+
   List<Widget> _contents = new List<Widget>();
 
   @override
   void initState() 
   {
     super.initState();
-    _presenter = new InstallmentHousePresenter(this);
+    presenter = new InstallmentHousePresenter(this);
+    presenter.onRequestPanInfo(type, RequestPanInfo(pan_id, ccr_cnnt_sys_ds_cd, _uppAisTpCd));
+  }
+
+  @override
+  void onResponseSuccessPanInfo(PanInfo panInfo) {
   }
 }

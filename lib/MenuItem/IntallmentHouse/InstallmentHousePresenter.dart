@@ -1,14 +1,8 @@
-import 'package:bunyang/Data/Address.dart';
 import 'package:bunyang/MenuItem/IntallmentHouse/InstallmentHouseModel.dart';
 import 'package:bunyang/MenuItem/IntallmentHouse/InstallmentHouseView.dart';
+import 'package:bunyang/MenuItem/MenuItemPresenter.dart';
 
-class InstallmentHousePresenter
+class InstallmentHousePresenter extends MenuItemPresenter<InstallmentHouseModel>
 {
-  InstallmentHouseModel _model;
-  InstallmentHouseView _view;
-
-  InstallmentHousePresenter(this._view)
-  {
-    _model = new InstallmentHouseModel();
-  }
+  InstallmentHousePresenter(InstallmentHouseView view) : super(new InstallmentHouseModel(), view);
 }

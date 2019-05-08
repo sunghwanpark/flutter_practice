@@ -45,6 +45,18 @@ class MenuData
 
     return panId[1];
   }
+
+  getUppAisTPCD()
+  {
+    assert(detailURL.contains('gv_menuId'));
+
+    var menuId = detailURL.split('&')
+    .firstWhere((str) => str.contains('gv_menuId'))
+    .split('=')
+    .toList()[1];
+
+    return menuId == '1010202' ? "05" : "06";
+  }
 }
 
 class MenuModel

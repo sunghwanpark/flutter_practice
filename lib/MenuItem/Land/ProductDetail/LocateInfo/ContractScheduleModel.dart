@@ -76,4 +76,10 @@ class ContractScheduleModel extends MenuItemModel
     .then((res) => xml.parse(res.body))
     .then((xmlDocument) => setContextData(xmlDocument.findAllElements("Dataset")));
   }
+
+  @override
+  generateRequestPanInfoBody(String panId, String ccrCnntSysDsCd) {
+    // TODO: implement generateRequestPanInfoBody
+    return null;
+  }
 }

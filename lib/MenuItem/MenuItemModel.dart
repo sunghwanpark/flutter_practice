@@ -1,4 +1,25 @@
+import 'package:bunyang/Data/Address.dart';
+import 'package:bunyang/Data/URL.dart';
+import 'package:meta/meta.dart';
 import 'package:xml/xml.dart' as xml;
+import 'package:http/http.dart' as http;
+
+class PanInfo
+{
+  PanInfo(this.otxtPanId, this.panKDCD);
+
+  final String otxtPanId;
+  final String panKDCD;
+}
+
+class RequestPanInfo
+{
+  RequestPanInfo(this.panId, this.ccrCnntSysDsCd, this.uppAisTpCd);
+
+  final String panId;
+  final String ccrCnntSysDsCd;
+  final String uppAisTpCd;
+}
 
 abstract class MenuItemModel
 {
@@ -6,24 +27,25 @@ abstract class MenuItemModel
 
   final String detailForm;
   final String detailFormUrl = "/lhCmcNoSessionAdapter.lh";
-  String defaultDetailFormXml =
-    '''<?xml version="1.0" encoding="UTF-8"?>
-      <Root xmlns="http://www.nexacroplatform.com/platform/dataset">
+
+  @protected
+  String defaultDetailFormXml ='''<?xml version="1.0" encoding="UTF-8"?>
+    <Root xmlns="http://www.nexacroplatform.com/platform/dataset">
 	    <Dataset id="dsSch">
 		    <ColumnInfo>
-			  <Column id="PAN_ID" type="STRING" size="256"  />
-			  <Column id="CCR_CNNT_SYS_DS_CD" type="STRING" size="256"  />
-			  <Column id="PG_SZ" type="STRING" size="256"  />
-			  <Column id="PAGE" type="STRING" size="256"  />
-			  <Column id="PAN_LOLD_TYPE" type="STRING" size="256"  />
-			  <Column id="PREVIEW" type="STRING" size="256"  />
-			  <Column id="PAN_KD_CD" type="STRING" size="256"  />
-			  <Column id="OTXT_PAN_ID" type="STRING" size="256"  />
-			  <Column id="TRET_PAN_ID" type="STRING" size="256"  />
-			  <Column id="TMP_PAN_SS" type="STRING" size="256"  />
-		  </ColumnInfo>
-    </Dataset>
-  </Root>''';
+			    <Column id="PAN_ID" type="STRING" size="256"  />
+			    <Column id="CCR_CNNT_SYS_DS_CD" type="STRING" size="256"  />
+			    <Column id="PG_SZ" type="STRING" size="256"  />
+			    <Column id="PAGE" type="STRING" size="256"  />
+			    <Column id="PAN_LOLD_TYPE" type="STRING" size="256"  />
+			    <Column id="PREVIEW" type="STRING" size="256"  />
+			    <Column id="PAN_KD_CD" type="STRING" size="256"  />
+			    <Column id="OTXT_PAN_ID" type="STRING" size="256"  />
+			    <Column id="TRET_PAN_ID" type="STRING" size="256"  />
+			    <Column id="TMP_PAN_SS" type="STRING" size="256"  />
+		    </ColumnInfo>
+      </Dataset>
+    </Root>''';
 
   Map<String, List<Map<String, String>>> setContextData(Iterable<xml.XmlElement> iterator)
   {
@@ -51,5 +73,42 @@ abstract class MenuItemModel
       });
 
     return res;
+  }  
+}
+
+abstract class MenuPanInfoModel extends MenuItemModel
+{
+  MenuPanInfoModel(String detailForm) : super(detailForm);
+  
+  String _requestPanInfo = "OCMC_LCC_SIL_PAN_IFNO_R0001";
+
+  @protected
+  String get panInfoFormXml;
+
+  @protected
+  generateRequestPanInfoBody(RequestPanInfo requestPanInfo);
+
+  PanInfo getPanInfo(Iterable<xml.XmlElement> iterator)
+  {
+    var res = this.setContextData(iterator);
+    return PanInfo(res["dsPanInfo"].first["OTXT_PAN_ID"], res["dsPanInfo"].first["PAN_KD_CD"]);
+  }
+
+  Future<PanInfo> fetchPanInfo(Notice_Code noticeCode, RequestPanInfo requestPanInfo) async
+  {
+    StringBuffer stringBuffer = new StringBuffer();
+    stringBuffer.write(noticeURL);
+    stringBuffer.write(detailFormUrl);
+    stringBuffer.write("?&serviceID=");
+    stringBuffer.write(_requestPanInfo);
+
+    return await http.post
+    (
+      stringBuffer.toString(),
+      headers: {"Content-Type" : "application/xml"},
+      body: generateRequestPanInfoBody(requestPanInfo)
+    ).timeout(const Duration(seconds: 5))
+    .then((res) => xml.parse(res.body))
+    .then((xmlDocument) => getPanInfo(xmlDocument.findAllElements("Dataset")));
   }
 }
