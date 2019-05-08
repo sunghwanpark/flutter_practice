@@ -3,6 +3,7 @@ import 'package:bunyang/Util/Util.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:sprintf/sprintf.dart';
+import 'package:flutter/foundation.dart';
 
 class ContractPay
 {
@@ -17,19 +18,20 @@ class ContractPay
 
 class ContractSchedule extends StatefulWidget
 {
-  ContractSchedule(this.ccrCnntSysDsCd, this.aisInfSn, this.lastDt);
+  ContractSchedule(this.ccrCnntSysDsCd, this.aisInfSn, this.lastDt, this.splXpcAmt);
 
   final String ccrCnntSysDsCd;
   final String aisInfSn;
   final DateTime lastDt;
+  final String splXpcAmt;
 
   @override
-  State<StatefulWidget> createState() => ContractScheduleView(ccrCnntSysDsCd, aisInfSn, lastDt);
+  State<StatefulWidget> createState() => ContractScheduleView(ccrCnntSysDsCd, aisInfSn, lastDt, splXpcAmt);
 }
 
 class ContractScheduleView extends State<ContractSchedule>
 {
-  ContractScheduleView(this.ccrCnntSysDsCd, this.aisInfSn, this.lastDt)
+  ContractScheduleView(this.ccrCnntSysDsCd, this.aisInfSn, this.lastDt, this.splXpcAmt)
   {
     _format = NumberFormat('#,###');
     _checkDate = null;
@@ -38,6 +40,7 @@ class ContractScheduleView extends State<ContractSchedule>
   final String ccrCnntSysDsCd;
   final String aisInfSn;
   final DateTime lastDt;
+  final String splXpcAmt;
 
   NumberFormat _format;
 
@@ -75,15 +78,14 @@ class ContractScheduleView extends State<ContractSchedule>
   void onCheckDate(DateTime time)
   {
     _checkDate = time;
-
     _contractPays.clear();
-
-    int nNot = int.parse(cachedDatas['XCPC_RCP_NOT']);
-    int nMCnt = int.parse(cachedDatas['XCPC_RCP_INTV_MCNT']); // 수납간견
-    double nCtrtAmt = int.parse(cachedDatas['SLLN_AMT']) * 0.1; //계약금액
-    double nSllnAmt2 = int.parse(cachedDatas['SLLN_AMT']) - nCtrtAmt; //계약금액을 뺀 남은금액
+    int nNot = cachedDatas['XCPC_RCP_NOT'].isNotEmpty ? int.parse(cachedDatas['XCPC_RCP_NOT']) : 0;
+    int nMCnt = cachedDatas['XCPC_RCP_INTV_MCNT'].isNotEmpty ? int.tryParse(cachedDatas['XCPC_RCP_INTV_MCNT']) : 0; // 수납간견
+    double nCtrtAmt = splXpcAmt.isNotEmpty ? int.tryParse(splXpcAmt) * 0.1 : 0; //계약금액
+    double nSllnAmt2 = splXpcAmt.isNotEmpty ? int.tryParse(splXpcAmt) - nCtrtAmt : 0; //계약금액을 뺀 남은금액
     double nToyAmt = nSllnAmt2 / nNot; //분할금액
-    double intRt = cachedDatas['STL_PC_RCP_MD_DS_CD_NM'].contains('무이자') ? 0 : double.parse(cachedDatas['STPL_INT_RT']);
+    double intRt = cachedDatas['STL_PC_RCP_MD_DS_CD_NM'].contains('무이자') ? 0 : cachedDatas['STPL_INT_RT'].isNotEmpty ?
+      double.tryParse(cachedDatas['STPL_INT_RT']) : 0;
     double nToyInt =  (nToyAmt * intRt) / 100; //분할이자
 
     List<DateTime> payDates = new List<DateTime>();
@@ -110,12 +112,11 @@ class ContractScheduleView extends State<ContractSchedule>
         DateTime nextDateTime = DateTime(prevDateTime.year, prevDateTime.month + nMCnt, prevDateTime.day);
 
         // 토지사용가능일과 약정일(이전회차)중 큰날을 이자기준일로 삼는다.
-        DateTime startDt = lastDt.isBefore(prevDateTime) ? lastDt : prevDateTime;
+        DateTime startDt = lastDt != null ? prevDateTime.isBefore(lastDt) ? lastDt : prevDateTime : prevDateTime;
 
-        // 이자계산일수 = 이자기준일과 (회차의 약정일) 사이의 일수 
-        int dayCount = startDt.isBefore(nextDateTime) ? 0 : nextDateTime.difference(startDt).inDays;	
-        dayCount = dayCount <= 0 ? 0 : dayCount - 1;
-
+        // 이자계산일수 = 이자기준일과 (회차의 약정일) 사이의 일수
+        int dayCount = nextDateTime.isBefore(startDt) ? 0 : nextDateTime.difference(startDt).inDays;
+        dayCount = dayCount <= 0 ? 0 : dayCount;
         int stplInt = (((nSllnAmt2 * intRt * dayCount) / 100) / 365).floor();
         double toyStoAmt = nToyAmt + stplInt;
 
@@ -131,6 +132,8 @@ class ContractScheduleView extends State<ContractSchedule>
             DataCell(myText(_format.format(toyStoAmt.toInt())))
           ]
         ));
+
+        nSllnAmt2 = nSllnAmt2 - nToyAmt;
       }
     }
 

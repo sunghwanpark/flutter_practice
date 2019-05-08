@@ -116,7 +116,7 @@ class LocateInfoView extends StatelessWidget
         Align
         (
           alignment: Alignment.centerLeft,
-          child: Text(sprintf('공사준공일 : %s', [cachedData["CON_CCW_DT"]]), textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'TmonTium'))
+          child: Text(sprintf('공사준공일 : %s', [getDateFormat(cachedData["CON_CCW_DT"])]), textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'TmonTium'))
         ));
 
     if(cachedData["SPL_OTST_DT"].isNotEmpty)
@@ -124,7 +124,7 @@ class LocateInfoView extends StatelessWidget
         Align
         (
           alignment: Alignment.centerLeft,
-          child: Text(sprintf('공급개시일 : %s', [cachedData["SPL_OTST_DT"]]), textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'TmonTium'))
+          child: Text(sprintf('공급개시일 : %s', [getDateFormat(cachedData["SPL_OTST_DT"])]), textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'TmonTium'))
         ));
 
     var f = NumberFormat('#,###');
@@ -163,7 +163,7 @@ class LocateInfoView extends StatelessWidget
               (
                 width: double.maxFinite,
                 height: MediaQuery.of(context).size.height,
-                child: ContractSchedule(ccrCnntSysDsCd, aisInfSn, DateTime.parse(lastDt)) 
+                child: ContractSchedule(ccrCnntSysDsCd, aisInfSn, DateTime.tryParse(lastDt), cachedData["SPL_XPC_AMT"])
               ),
               actions: <Widget>
               [
