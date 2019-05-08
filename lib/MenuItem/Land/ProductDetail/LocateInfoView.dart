@@ -12,6 +12,11 @@ class LocateInfoView extends StatelessWidget
   List<Widget> _makeWidgets(BuildContext context)
   {
     List<Widget> widgets = new List<Widget>();
+    
+    String lastDt = cachedData["AR_EXA_DT"].isNotEmpty ? cachedData["AR_EXA_DT"] :
+      cachedData["AR_EXA_XPC_DT"].isNotEmpty ? cachedData["AR_EXA_XPC_DT"] :
+      cachedData["LND_US_PSB_DT"];
+    
     widgets.add(
       Row
       (
@@ -158,7 +163,7 @@ class LocateInfoView extends StatelessWidget
               (
                 width: double.maxFinite,
                 height: MediaQuery.of(context).size.height,
-                child: ContractSchedule(ccrCnntSysDsCd, aisInfSn)
+                child: ContractSchedule(ccrCnntSysDsCd, aisInfSn, DateTime.parse(lastDt)) 
               ),
               actions: <Widget>
               [
