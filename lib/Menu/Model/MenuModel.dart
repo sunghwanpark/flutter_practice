@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:bunyang/Data/Address.dart';
-import 'package:bunyang/Data/URL.dart';
+import 'package:bunyang/Secret/URL.dart';
 import 'package:http/http.dart' as http;
 
 class MenuData

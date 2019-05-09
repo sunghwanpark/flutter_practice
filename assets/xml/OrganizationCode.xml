@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<OrganizationCode>
+	<Row>
+		<Col id=\"ARA_HDQ_CD\">101</Col>
+		<Col id=\"ARA_HDQ_NM\">본사</Col>
+	</Row>
+	<Row>
+		<Col id=\"ARA_HDQ_CD\">102</Col>
+		<Col id=\"ARA_HDQ_NM\">서울지역본부</Col>
+	</Row>
+	<Row>
+		<Col id=\"ARA_HDQ_CD\">103</Col>
+		<Col id=\"ARA_HDQ_NM\">부산울산지역본부</Col>
+	</Row>
+	<Row>
+		<Col id=\"ARA_HDQ_CD\">104</Col>
+		<Col id=\"ARA_HDQ_NM\">인천지역본부</Col>
+	</Row>
+	<Row>
+		<Col id=\"ARA_HDQ_CD\">105</Col>
+		<Col id=\"ARA_HDQ_NM\">경기지역본부</Col>
+	</Row>
+	<Row>
+		<Col id=\"ARA_HDQ_CD\">106</Col>
+		<Col id=\"ARA_HDQ_NM\">강원지역본부</Col>
+	</Row>
+	<Row>
+		<Col id=\"ARA_HDQ_CD\">107</Col>
+		<Col id=\"ARA_HDQ_NM\">충북지역본부</Col>
+	</Row>
+	<Row>
+		<Col id=\"ARA_HDQ_CD\">108</Col>
+		<Col id=\"ARA_HDQ_NM\">대전충남지역본부</Col>
+	</Row>
+	<Row>
+		<Col id=\"ARA_HDQ_CD\">109</Col>
+		<Col id=\"ARA_HDQ_NM\">전북지역본부</Col>
+	</Row>
+	<Row>
+		<Col id=\"ARA_HDQ_CD\">110</Col>
+		<Col id=\"ARA_HDQ_NM\">광주전남지역본부</Col>
+	</Row>
+	<Row>
+		<Col id=\"ARA_HDQ_CD\">111</Col>
+		<Col id=\"ARA_HDQ_NM\">대구경북지역본부</Col>
+	</Row>
+	<Row>
+		<Col id=\"ARA_HDQ_CD\">112</Col>
+		<Col id=\"ARA_HDQ_NM\">경남지역본부</Col>
+	</Row>
+	<Row>
+		<Col id=\"ARA_HDQ_CD\">113</Col>
+		<Col id=\"ARA_HDQ_NM\">제주지역본부</Col>
+	</Row>
+	<Row>
+		<Col id=\"ARA_HDQ_CD\">114</Col>
+		<Col id=\"ARA_HDQ_NM\">세종사업본부</Col>
+	</Row>
+	<Row>
+		<Col id=\"ARA_HDQ_CD\">115</Col>
+		<Col id=\"ARA_HDQ_NM\">미군기지본부</Col>
+	</Row>
+	<Row>
+		<Col id=\"ARA_HDQ_CD\">116</Col>
+		<Col id=\"ARA_HDQ_NM\">위례사업본부</Col>
+	</Row>
+	<Row>
+		<Col id=\"ARA_HDQ_CD\">117</Col>
+		<Col id=\"ARA_HDQ_NM\">동탄사업본부</Col>
+	</Row>
+	<Row>
+		<Col id=\"ARA_HDQ_CD\">118</Col>
+		<Col id=\"ARA_HDQ_NM\">하남사업본부</Col>
+	</Row>
+	<Row>
+		<Col id=\"ARA_HDQ_CD\">119</Col>
+		<Col id=\"ARA_HDQ_NM\">청라영종사업본부</Col>
+	</Row>
+	<Row>
+		<Col id=\"ARA_HDQ_CD\">120</Col>
+		<Col id=\"ARA_HDQ_NM\">고양사업본부</Col>
+	</Row>
+	<Row>
+		<Col id=\"ARA_HDQ_CD\">121</Col>
+		<Col id=\"ARA_HDQ_NM\">파주사업본부</Col>
+	</Row>
+	<Row>
+		<Col id=\"ARA_HDQ_CD\">122</Col>
+		<Col id=\"ARA_HDQ_NM\">광명시흥사업본부</Col>
+	</Row>
+	<Row>
+		<Col id=\"ARA_HDQ_CD\">123</Col>
+		<Col id=\"ARA_HDQ_NM\">평택사업본부</Col>
+	</Row>
+	<Row>
+		<Col id=\"ARA_HDQ_CD\">124</Col>
+		<Col id=\"ARA_HDQ_NM\">양주사업본부</Col>
+	</Row>
+	<Row>
+		<Col id=\"ARA_HDQ_CD\">125</Col>
+		<Col id=\"ARA_HDQ_NM\">강남사업본부</Col>
+	</Row>
+	<Row>
+		<Col id=\"ARA_HDQ_CD\">126</Col>
+		<Col id=\"ARA_HDQ_NM\">서초직할사업단</Col>
+	</Row>
+	<Row>
+		<Col id=\"ARA_HDQ_CD\">127</Col>
+		<Col id=\"ARA_HDQ_NM\">남양주직할사업단</Col>
+	</Row>
+	<Row>
+		<Col id=\"ARA_HDQ_CD\">128</Col>
+		<Col id=\"ARA_HDQ_NM\">내포직할사업단</Col>
+	</Row>
+	<Row>
+		<Col id=\"ARA_HDQ_CD\">129</Col>
+		<Col id=\"ARA_HDQ_NM\">대구남부직할사업단</Col>
+	</Row>
+	<Row>
+		<Col id=\"ARA_HDQ_CD\">130</Col>
+		<Col id=\"ARA_HDQ_NM\">부산진해직할사업단</Col>
+	</Row>
+	<Row>
+		<Col id=\"ARA_HDQ_CD\">131</Col>
+		<Col id=\"ARA_HDQ_NM\">아산직할사업단</Col>
+	</Row>
+	<Row>
+		<Col id=\"ARA_HDQ_CD\">132</Col>
+		<Col id=\"ARA_HDQ_NM\">오산직할사업단</Col>
+	</Row>
+	<Row>
+		<Col id=\"ARA_HDQ_CD\">133</Col>
+		<Col id=\"ARA_HDQ_NM\">경기동북부직할사업단</Col>
+	</Row>
+	<Row>
+		<Col id=\"ARA_HDQ_CD\">134</Col>
+		<Col id=\"ARA_HDQ_NM\">판교사업본부</Col>
+	</Row>
+	<Row>
+		<Col id=\"ARA_HDQ_CD\">135</Col>
+		<Col id=\"ARA_HDQ_NM\">토지은행기획처</Col>
+	</Row>
+	<Row>
+		<Col id=\"ARA_HDQ_CD\">136</Col>
+		<Col id=\"ARA_HDQ_NM\">토지주택연구원</Col>
+	</Row>
+	<Row>
+		<Col id=\"ARA_HDQ_CD\">137</Col>
+		<Col id=\"ARA_HDQ_NM\">김포직할사업단</Col>
+	</Row>
+	<Row>
+		<Col id=\"ARA_HDQ_CD\">138</Col>
+		<Col id=\"ARA_HDQ_NM\">성남재생직할사업단</Col>
+	</Row>
+	<Row>
+		<Col id=\"ARA_HDQ_CD\">139</Col>
+		<Col id=\"ARA_HDQ_NM\">광교직할사업단</Col>
+	</Row>
+	<Row>
+		<Col id=\"ARA_HDQ_CD\">140</Col>
+		<Col id=\"ARA_HDQ_NM\">당진직할사업단</Col>
+	</Row>
+	<Row>
+		<Col id=\"ARA_HDQ_CD\">141</Col>
+		<Col id=\"ARA_HDQ_NM\">용인지사</Col>
+	</Row>
+	<Row>
+		<Col id=\"ARA_HDQ_CD\">142</Col>
+		<Col id=\"ARA_HDQ_NM\">영동지사</Col>
+	</Row>
+	<Row>
+		<Col id=\"ARA_HDQ_CD\">143</Col>
+		<Col id=\"ARA_HDQ_NM\">천진사업단</Col>
+	</Row>
+	<Row>
+		<Col id=\"ARA_HDQ_CD\">144</Col>
+		<Col id=\"ARA_HDQ_NM\">심양사업단</Col>
+	</Row>
+	<Row>
+		<Col id=\"ARA_HDQ_CD\">145</Col>
+		<Col id=\"ARA_HDQ_NM\">러시아사업단</Col>
+	</Row>
+</OrganizationCode>

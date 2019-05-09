@@ -1,16 +1,8 @@
 import 'package:bunyang/Data/Address.dart';
-import 'package:bunyang/Data/URL.dart';
+import 'package:bunyang/Secret/URL.dart';
 import 'package:meta/meta.dart';
 import 'package:xml/xml.dart' as xml;
 import 'package:http/http.dart' as http;
-
-class PanInfo
-{
-  PanInfo(this.otxtPanId, this.panKDCD);
-
-  final String otxtPanId;
-  final String panKDCD;
-}
 
 class RequestPanInfo
 {
@@ -88,13 +80,14 @@ abstract class MenuPanInfoModel extends MenuItemModel
   @protected
   generateRequestPanInfoBody(RequestPanInfo requestPanInfo);
 
-  PanInfo getPanInfo(Iterable<xml.XmlElement> iterator)
+  @protected
+  Map<String, String> getPanInfo(Iterable<xml.XmlElement> iterator)
   {
     var res = this.setContextData(iterator);
-    return PanInfo(res["dsPanInfo"].first["OTXT_PAN_ID"], res["dsPanInfo"].first["PAN_KD_CD"]);
+    return res["dsPanInfo"].first;
   }
 
-  Future<PanInfo> fetchPanInfo(Notice_Code noticeCode, RequestPanInfo requestPanInfo) async
+  Future<Map<String, String>> fetchPanInfo(Notice_Code noticeCode, RequestPanInfo requestPanInfo) async
   {
     StringBuffer stringBuffer = new StringBuffer();
     stringBuffer.write(noticeURL);

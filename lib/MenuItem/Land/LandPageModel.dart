@@ -1,5 +1,5 @@
 import 'package:bunyang/Data/Address.dart';
-import 'package:bunyang/Data/URL.dart';
+import 'package:bunyang/Secret/URL.dart';
 import 'package:bunyang/MenuItem/MenuItemModel.dart';
 import 'package:xml/xml.dart' as xml;
 import 'package:http/http.dart' as http;
@@ -81,7 +81,7 @@ class LandPageModel extends MenuPanInfoModel
     return document.toXmlString(pretty: true, indent: '\t');
   }
 
-  generateDetailBody(String panId, String ccrCnntSysDsCd, PanInfo panInfo)
+  generateDetailBody(String panId, String ccrCnntSysDsCd, String panKDCD, String otxtPanId)
   {
     var document = xml.parse(defaultDetailFormXml);
 
@@ -107,12 +107,12 @@ class LandPageModel extends MenuPanInfoModel
 
         builder.element("Col", attributes: {"id": "PAN_KD_CD"}, nest: ()
         {
-          builder.text(panInfo.panKDCD);
+          builder.text(panKDCD);
         });
 
         builder.element("Col", attributes: {"id": "OTXT_PAN_ID"}, nest: ()
         {
-          builder.text(panInfo.otxtPanId);
+          builder.text(otxtPanId);
         });
 
         builder.element("Col", attributes: {"id": "TRET_PAN_ID"}, nest: ()
@@ -153,7 +153,7 @@ class LandPageModel extends MenuPanInfoModel
     return cachedLandInfos;
   }
 
-  Future<Map<String, List<Map<String, String>>>> fetchData(Notice_Code noticeCode, String panId, String ccrCnntSysDsCd, PanInfo panInfo) async
+  Future<Map<String, List<Map<String, String>>>> fetchData(Notice_Code noticeCode, String panId, String ccrCnntSysDsCd, String panKDCD, String otxtPanId) async
   {
     StringBuffer stringBuffer = new StringBuffer();
     stringBuffer.write(noticeURL);
@@ -165,7 +165,7 @@ class LandPageModel extends MenuPanInfoModel
     (
       stringBuffer.toString(),
       headers: {"Content-Type" : "application/xml"},
-      body: generateDetailBody(panId, ccrCnntSysDsCd, panInfo)
+      body: generateDetailBody(panId, ccrCnntSysDsCd, panKDCD, otxtPanId)
     ).timeout(const Duration(seconds: 5))
     .then((res) => xml.parse(res.body))
     .then((xmlDocument) => getSupplyDate(xmlDocument.findAllElements("Dataset")));

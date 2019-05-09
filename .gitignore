@@ -26,7 +26,7 @@
 .pub/
 build/
 
-**/lib/Data/
+**/lib/Secret/
 
 # Android related
 **/android/**/gradle-wrapper.jar

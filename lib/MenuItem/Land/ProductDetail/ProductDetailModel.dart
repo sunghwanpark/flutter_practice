@@ -1,4 +1,4 @@
-import 'package:bunyang/Data/URL.dart';
+import 'package:bunyang/Secret/URL.dart';
 import 'package:bunyang/MenuItem/MenuItemModel.dart';
 import 'package:xml/xml.dart' as xml;
 import 'package:http/http.dart' as http;

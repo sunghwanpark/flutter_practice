@@ -1,9 +1,11 @@
+import 'package:bunyang/Data/OrganizationCode.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:bunyang/Menu/SnapMenu.dart';
 
 void main()
 {
+  OrganizationCode().loadXml();
   runApp(MyApp());
 }
 

@@ -41,7 +41,7 @@ abstract class MenuItemPageView<T extends MenuItemPage> extends State<T>
   MenuItemPresenter presenter;
 
   @protected
-  void onResponseSuccessPanInfo(PanInfo panInfo);
+  void onResponseSuccessPanInfo(Map<String, String> panInfo);
 
   void onError()
   {

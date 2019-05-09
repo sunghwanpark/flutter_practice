@@ -28,9 +28,9 @@ class LandPageView extends MenuItemPageView<LandPage>
   }
 
   @override
-  void onResponseSuccessPanInfo(PanInfo panInfo)
+  void onResponseSuccessPanInfo(Map<String, String> panInfo)
   {
-    (presenter as LandPagePresenter).onRequestNotice(type, pan_id, ccr_cnnt_sys_ds_cd, panInfo);
+    (presenter as LandPagePresenter).onRequestNotice(type, pan_id, ccr_cnnt_sys_ds_cd, panInfo["PAN_KD_CD"], panInfo["OTXT_PAN_ID"]);
   }
 
   void onLoadComplete(Map<String, List<Map<String, String>>> landDatas)

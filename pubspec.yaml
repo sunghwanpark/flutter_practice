@@ -33,6 +33,7 @@ flutter:
   uses-material-design: true
   assets:
     - assets/image/
+    - assets/xml/
   fonts:
     - family: NanumGothic
       fonts:
