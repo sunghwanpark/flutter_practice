@@ -17,31 +17,21 @@ class OrganizationCode
     return _codeNameMap[code];
   }
 
-  Future<xml.XmlDocument> parseXmlFromAssets(String assetsPath) async 
+  void parseXmlFromAssets() async 
   {
-    print('--- Parse xml from: $assetsPath');
-    String xmlString = await rootBundle.loadString(assetsPath);
+    String xmlString = await rootBundle.loadString('assets/xml/OrganizationCode.xml');
 
-    return xml.parse(xmlString);
-  }
-
-  void loadXml()
-  {
-    parseXmlFromAssets('assets/xml/OrganizationCode.xml')
-      .then((document)
+    var document = xml.parse(xmlString);
+    document.findAllElements("Row").forEach((row)
+    {
+      int codeName = 0;
+      row.findAllElements("Col").forEach((col)
       {
-        var iterator = document.findAllElements("Row");
-        iterator.forEach((row)
-        {
-          int codeName = 0;
-          row.findAllElements("Col").forEach((col)
-          {
-            if(col.getAttribute("id") == "ARA_HDQ_CD")
-              codeName = int.parse(col.text);
-            else if(col.getAttribute("id") == "ARA_HDQ_NM")
-              _codeNameMap[codeName] = col.text;
-          });
-        });
+        if(col.getAttribute("id") == "ARA_HDQ_CD")
+          codeName = int.parse(col.text);
+        else if(col.getAttribute("id") == "ARA_HDQ_NM")
+          _codeNameMap[codeName] = col.text;
       });
+    });
   }
 }

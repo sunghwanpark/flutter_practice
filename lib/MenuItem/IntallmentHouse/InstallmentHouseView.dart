@@ -4,7 +4,6 @@ import 'package:bunyang/MenuItem/IntallmentHouse/SummaryInfoView.dart';
 import 'package:bunyang/MenuItem/MenuItemModel.dart';
 import 'package:bunyang/MenuItem/MenuItemPageView.dart';
 import 'package:bunyang/Util/Util.dart';
-import 'package:flutter/material.dart';
 
 class InstallmentHousePage extends MenuItemPage
 {
@@ -32,14 +31,14 @@ class InstallmentHouseView extends MenuItemPageView<InstallmentHousePage>
   {
     super.initState();
     presenter = new InstallmentHousePresenter(this);
-    presenter.onRequestPanInfo(type, RequestPanInfo(pan_id, ccr_cnnt_sys_ds_cd, _uppAisTpCd));
+    presenter.onRequestPanInfo(type, RequestPanInfo(panId, ccrCnntSysDsCd, _uppAisTpCd));
   }
 
   @override
   void onResponseSuccessPanInfo(Map<String, String> panInfo) 
   {
     _otxtPanId = panInfo["OTXT_PAN_ID"];
-    (presenter as InstallmentHousePresenter).onRequestDetail(type, pan_id, ccr_cnnt_sys_ds_cd, _otxtPanId, _uppAisTpCd);
+    (presenter as InstallmentHousePresenter).onRequestDetail(type, panId, ccrCnntSysDsCd, _otxtPanId, _uppAisTpCd);
   }
 
   void onResponseDetail(Map<String, List<Map<String, String>>> res)
@@ -52,7 +51,7 @@ class InstallmentHouseView extends MenuItemPageView<InstallmentHousePage>
       _hcBlkCd = res["dsHsAisList"].first["HC_BLK_CD"];
 
       (presenter as InstallmentHousePresenter).onRequestSupplyInfoPublicInstallment(
-        pan_id, ccr_cnnt_sys_ds_cd, _aisInfSn, _otxtPanId, _uppAisTpCd, onResponsePublicInstallment);
+        panId, ccrCnntSysDsCd, _aisInfSn, _otxtPanId, _uppAisTpCd, onResponsePublicInstallment);
     }
     else
     {
@@ -67,19 +66,19 @@ class InstallmentHouseView extends MenuItemPageView<InstallmentHousePage>
   void onResponsePublicInstallment(List<Map<String, String>> res)
   {
     (presenter as InstallmentHousePresenter).onRequestSupplyInfoPublicInstallment(
-        pan_id, ccr_cnnt_sys_ds_cd, _aisInfSn, _otxtPanId, "06", onResponsePublicRentalType06, true, false);
+        panId, ccrCnntSysDsCd, _aisInfSn, _otxtPanId, "06", onResponsePublicRentalType06, true, false);
   }
 
   void onResponsePublicRentalType06(List<Map<String, String>> res)
   {
     (presenter as InstallmentHousePresenter).onRequestSupplyInfoPublicInstallment(
-        pan_id, ccr_cnnt_sys_ds_cd, _aisInfSn, _otxtPanId, "06", onResponsePublicRentalType07, false, true);
+        panId, ccrCnntSysDsCd, _aisInfSn, _otxtPanId, "06", onResponsePublicRentalType07, false, true);
   }
 
   void onResponsePublicRentalType07(List<Map<String, String>> res)
   {
     (presenter as InstallmentHousePresenter).onRequestSupplyInfoImage(
-      pan_id, ccr_cnnt_sys_ds_cd, _aisInfSn, _otxtPanId, _uppAisTpCd, onResponseFinally, _bztdCd, _hcBlkCd);
+        panId, ccrCnntSysDsCd, _aisInfSn, _otxtPanId, _uppAisTpCd, onResponseFinally, _bztdCd, _hcBlkCd);
   }
 
   void onResponseFinally(List<Map<String, String>> res)

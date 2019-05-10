@@ -1,7 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:bunyang/Data/Address.dart';
 import 'package:bunyang/Menu/Model/MenuModel.dart';
-import 'package:bunyang/MenuItem/MenuItemModel.dart';
 import 'package:bunyang/MenuItem/MenuItemPresenter.dart';
 import 'package:bunyang/Util/Util.dart';
 import 'package:flutter/material.dart';
@@ -23,15 +22,15 @@ abstract class MenuItemPageView<T extends MenuItemPage> extends State<T>
   MenuItemPageView(this.data)
   {
     type = this.data.type;
-    pan_id = this.data.getParameter("PAN_ID");
-    ccr_cnnt_sys_ds_cd = this.data.getParameter("CCR_CNNT_SYS_DS_CD");
+    panId = this.data.getParameter("PAN_ID");
+    ccrCnntSysDsCd = this.data.getParameter("CCR_CNNT_SYS_DS_CD");
     appBarTitle = this.data.panName;
   }
 
   final MenuData data;
   Notice_Code type;
-  String pan_id;
-  String ccr_cnnt_sys_ds_cd;
+  String panId;
+  String ccrCnntSysDsCd;
   String appBarTitle;
   
   List<Widget> contents = new List<Widget>();
@@ -40,7 +39,6 @@ abstract class MenuItemPageView<T extends MenuItemPage> extends State<T>
 
   MenuItemPresenter presenter;
 
-  @protected
   void onResponseSuccessPanInfo(Map<String, String> panInfo);
 
   void onError()

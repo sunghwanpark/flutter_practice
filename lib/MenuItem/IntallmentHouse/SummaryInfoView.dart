@@ -26,6 +26,7 @@ class SummaryInfoView extends StatelessWidget
       width: MediaQuery.of(context).size.width,
       child: Padding
       (
+        padding: EdgeInsets.only(left: 10, right: 10),
         child: Column
         (
           children: <Widget>
@@ -42,44 +43,42 @@ class SummaryInfoView extends StatelessWidget
             isModifyNotice ? AutoSizeText
             (
               '본 공고문에 대한 정정 공고문이 있습니다.',
-              maxLines: 2,
+              maxLines: 1,
               textAlign: TextAlign.left, 
               style: TextStyle(color: Colors.red, fontSize: 23, fontFamily: 'TmonTium', fontWeight: FontWeight.w800)
             ) : SizedBox(),
             isCancelNotice ? AutoSizeText
             (
               '본 공고문에 대한 취소 공고문이 있습니다.',
-              maxLines: 2,
+              maxLines: 1,
               textAlign: TextAlign.left, 
               style: TextStyle(color: Colors.red, fontSize: 23, fontFamily: 'TmonTium', fontWeight: FontWeight.w800)
             ) : SizedBox(),
-            Row
+            department.isNotEmpty ? Align
             (
-              children : <Widget>
-              [
-                Icon(Icons.brightness_high, color: Colors.black),
-                SizedBox(width: 10),
-                AutoSizeText(_data["PAN_NM"], maxLines: 2, style: TextStyle(color: Colors.black, fontSize: 25, fontFamily: 'TmonTium', decoration: TextDecoration.underline))
-              ]
-            ),
-            department.isNotEmpty ? 
-            Text(sprintf('담당부서 : %s', [department]), textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 25, fontFamily: 'TmonTium')) 
-            : SizedBox(),
-            _data["IQY_TLNO"].isNotEmpty ?
-            Text(sprintf('문의처 : %s', [_data["IQY_TLNO"]]), textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 25, fontFamily: 'TmonTium')) 
-            : SizedBox(),
-            _data["PAN_DT"].isNotEmpty ?
-            Text(sprintf('공고일 : %s', [getDateFormat(_data["PAN_DT"])]), textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 25, fontFamily: 'TmonTium')) 
-            : SizedBox(),
-            _data["CLSG_DT"].isNotEmpty ?
-            Text(sprintf('마감일 : %s', [getDateFormat(_data["CLSG_DT"])]), textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 25, fontFamily: 'TmonTium')) 
-            : SizedBox(),
+              alignment: Alignment.centerLeft,
+              child: Text(sprintf('담당부서 : %s', [department]), textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'TmonTium'))
+            ) : SizedBox(),
+            _data["IQY_TLNO"].isNotEmpty ? Align
+            (
+              alignment: Alignment.centerLeft,
+              child: Text(sprintf('문의처 : %s', [_data["IQY_TLNO"]]), textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'TmonTium'))
+            ) : SizedBox(),
+            _data["PAN_DT"].isNotEmpty ? Align
+            (
+              alignment: Alignment.centerLeft,
+              child: Text(sprintf('공고일 : %s', [getDateFormat(_data["PAN_DT"])]), textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'TmonTium'))
+            ) : SizedBox(),
+            _data["CLSG_DT"].isNotEmpty ? Align
+            (
+              alignment: Alignment.centerLeft,
+              child: Text(sprintf('마감일 : %s', [getDateFormat(_data["CLSG_DT"])]), textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'TmonTium')) 
+            ) : SizedBox(),
             _data["PAN_DTL_CTS"].isNotEmpty ?
-            Text(sprintf('공고내용 : %s', [_data["PAN_DTL_CTS"]]), textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 25, fontFamily: 'TmonTium')) 
+            Text(sprintf('<공고내용>\n%s', [_data["PAN_DTL_CTS"]]), textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'TmonTium')) 
             : SizedBox(),
           ],
         ),
-        padding: EdgeInsets.only(left: 10, right: 10)
       )
     );
   }

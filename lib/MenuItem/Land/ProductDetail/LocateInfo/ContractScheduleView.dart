@@ -3,7 +3,6 @@ import 'package:bunyang/Util/Util.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:sprintf/sprintf.dart';
-import 'package:flutter/foundation.dart';
 
 class ContractPay
 {
@@ -86,7 +85,7 @@ class ContractScheduleView extends State<ContractSchedule>
     double nToyAmt = nSllnAmt2 / nNot; //분할금액
     double intRt = cachedDatas['STL_PC_RCP_MD_DS_CD_NM'].contains('무이자') ? 0 : cachedDatas['STPL_INT_RT'].isNotEmpty ?
       double.tryParse(cachedDatas['STPL_INT_RT']) : 0;
-    double nToyInt =  (nToyAmt * intRt) / 100; //분할이자
+    //double nToyInt =  (nToyAmt * intRt) / 100; //분할이자
 
     List<DateTime> payDates = new List<DateTime>();
     for(int i = 0; i <= nNot; i++)

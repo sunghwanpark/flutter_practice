@@ -16,11 +16,28 @@ class DetailPageData
 
 class SupplyLotOfLandInfoView extends StatelessWidget
 {
-  SupplyLotOfLandInfoView(bool isTender, List<Map<String, String>> data)
-  {    
-    landInfosCards.clear();
+  SupplyLotOfLandInfoView(this._isTender, this._data);
 
-    String typeString = isTender ? "입찰" : "추첨";
+  final bool _isTender;
+  final List<Map<String, String>> _data;
+
+  void onLongPressDetail(BuildContext _context, DetailPageData requestDetailData)
+  {
+    Navigator.push
+    (
+      _context,
+      MaterialPageRoute
+      (
+        builder: (context) => ProductDetail(requestDetailData)
+      )
+    );
+  }
+
+  List<Widget> getLandInfo(BuildContext context)
+  {
+    List<Widget> landInfosCards = new List<Widget>();
+
+    String typeString = _isTender ? "입찰" : "추첨";
     landInfosCards.add(Row
     (
       children : <Widget>
@@ -32,21 +49,24 @@ class SupplyLotOfLandInfoView extends StatelessWidget
     ));
 
     final f = NumberFormat("#,###");
-    data.forEach((info) =>
+    _data.forEach((info) =>
     { 
       landInfosCards.add(Padding
       (
         padding: EdgeInsets.only(top: 10, bottom: 10),
         child: GestureDetector
         (
-          onLongPress: () => onLongPressDetail(DetailPageData
-          (
-            info["CCR_CNNT_SYS_DS_CD"],
-            info["AIS_INF_SN"],
-            info["BZDT_CD"],
-            info["LOLD_NO"],
-            info["PAN_ID"]
-          )),
+          onLongPress: () => onLongPressDetail(
+            context,
+            DetailPageData
+            (
+              info["CCR_CNNT_SYS_DS_CD"],
+              info["AIS_INF_SN"],
+              info["BZDT_CD"],
+              info["LOLD_NO"],
+              info["PAN_ID"]
+            )
+          ),
           child: Container
           (
             decoration: ShapeDecoration
@@ -113,28 +133,13 @@ class SupplyLotOfLandInfoView extends StatelessWidget
         )
       )
     )});
-  }
 
-  final List<Widget> landInfosCards = new List<Widget>();
-
-  BuildContext _context;
-
-  void onLongPressDetail(DetailPageData requestDetailData)
-  {
-    Navigator.push
-    (
-      _context,
-      MaterialPageRoute
-      (
-        builder: (context) => ProductDetail(requestDetailData)
-      )
-    );
+    return landInfosCards;
   }
 
   @override
   Widget build(BuildContext context)
   {
-    _context = context;
     return Container
     (
       width: MediaQuery.of(context).size.width,
@@ -144,7 +149,7 @@ class SupplyLotOfLandInfoView extends StatelessWidget
         child: Column
         (
           mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: landInfosCards
+          children: getLandInfo(context)
         ),
       )
     );

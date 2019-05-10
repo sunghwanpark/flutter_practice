@@ -5,7 +5,7 @@ import 'package:bunyang/Menu/SnapMenu.dart';
 
 void main()
 {
-  OrganizationCode().loadXml();
+  OrganizationCode().parseXmlFromAssets();
   runApp(MyApp());
 }
 

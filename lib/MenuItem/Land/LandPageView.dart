@@ -24,13 +24,13 @@ class LandPageView extends MenuItemPageView<LandPage>
   {
     super.initState();
     presenter = new LandPagePresenter(this);
-    presenter.onRequestPanInfo(type, RequestPanInfo(pan_id, ccr_cnnt_sys_ds_cd, ''));
+    presenter.onRequestPanInfo(type, RequestPanInfo(panId, ccrCnntSysDsCd, ''));
   }
 
   @override
   void onResponseSuccessPanInfo(Map<String, String> panInfo)
   {
-    (presenter as LandPagePresenter).onRequestNotice(type, pan_id, ccr_cnnt_sys_ds_cd, panInfo["PAN_KD_CD"], panInfo["OTXT_PAN_ID"]);
+    (presenter as LandPagePresenter).onRequestNotice(type, panId, ccrCnntSysDsCd, panInfo["PAN_KD_CD"], panInfo["OTXT_PAN_ID"]);
   }
 
   void onLoadComplete(Map<String, List<Map<String, String>>> landDatas)

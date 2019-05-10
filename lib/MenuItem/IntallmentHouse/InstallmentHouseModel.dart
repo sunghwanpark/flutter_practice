@@ -359,7 +359,7 @@ class InstallmentHouseModel extends MenuPanInfoModel
     stringBuffer.write(noticeURL);
     stringBuffer.write(detailFormUrl);
     stringBuffer.write("?&serviceID=");
-    stringBuffer.write(_supplyServiceId);
+    stringBuffer.write(_supplyAttachmentId);
 
     return await http.post
     (
