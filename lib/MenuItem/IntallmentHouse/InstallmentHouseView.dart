@@ -1,6 +1,7 @@
 import 'package:bunyang/Menu/Model/MenuModel.dart';
 import 'package:bunyang/MenuItem/IntallmentHouse/InstallmentHousePresenter.dart';
 import 'package:bunyang/MenuItem/IntallmentHouse/SummaryInfoView.dart';
+import 'package:bunyang/MenuItem/IntallmentHouse/SupplyInfoView.dart';
 import 'package:bunyang/MenuItem/MenuItemModel.dart';
 import 'package:bunyang/MenuItem/MenuItemPageView.dart';
 import 'package:bunyang/Util/Util.dart';
@@ -26,6 +27,8 @@ class InstallmentHouseView extends MenuItemPageView<InstallmentHousePage>
   String _bztdCd;
   String _hcBlkCd;
 
+  SupplyInfo _supplyInfo;
+
   @override
   void initState() 
   {
@@ -49,6 +52,8 @@ class InstallmentHouseView extends MenuItemPageView<InstallmentHousePage>
       _aisInfSn = res["dsHsAisList"].first["AIS_INF_SN"];
       _bztdCd = res["dsHsAisList"].first["BZDT_CD"];
       _hcBlkCd = res["dsHsAisList"].first["HC_BLK_CD"];
+      _supplyInfo = SupplyInfo();
+      _supplyInfo.setDefaultData(res["dsHsAisList"].first);
 
       (presenter as InstallmentHousePresenter).onRequestSupplyInfoPublicInstallment(
         panId, ccrCnntSysDsCd, _aisInfSn, _otxtPanId, _uppAisTpCd, onResponsePublicInstallment);
@@ -65,6 +70,8 @@ class InstallmentHouseView extends MenuItemPageView<InstallmentHousePage>
 
   void onResponsePublicInstallment(List<Map<String, String>> res)
   {
+    _supplyInfo.setDetailData(res);
+
     (presenter as InstallmentHousePresenter).onRequestSupplyInfoPublicInstallment(
         panId, ccrCnntSysDsCd, _aisInfSn, _otxtPanId, "06", onResponsePublicRentalType06, true, false);
   }
@@ -83,6 +90,9 @@ class InstallmentHouseView extends MenuItemPageView<InstallmentHousePage>
 
   void onResponseFinally(List<Map<String, String>> res)
   {
+    _supplyInfo.setImageData(res);
+    contents.add(_supplyInfo);
+
     setState(() {
         loadingState = LoadingState.DONE;
     });
