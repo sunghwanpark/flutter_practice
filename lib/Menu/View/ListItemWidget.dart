@@ -103,8 +103,7 @@ class ListItemWidget extends StatelessWidget
                         context,
                         MaterialPageRoute
                         (
-                          builder: (context) => 
-                            NoticeElementRouteFactory.buildElement(item)
+                          builder: (context) => NoticeElementRouteFactory.buildElement(item)
                         )
                       );
                     }

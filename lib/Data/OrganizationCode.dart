@@ -10,13 +10,12 @@ class OrganizationCode
 
   Map<int, String> _codeNameMap = new Map<int, String>();
 
-  String getCodeName(int code)
+  String operator [](int code)
   {
     assert(_codeNameMap.containsKey(code));
-
     return _codeNameMap[code];
   }
-
+  
   void parseXmlFromAssets() async 
   {
     String xmlString = await rootBundle.loadString('assets/xml/OrganizationCode.xml');

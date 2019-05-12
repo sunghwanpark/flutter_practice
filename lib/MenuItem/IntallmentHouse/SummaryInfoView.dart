@@ -20,7 +20,7 @@ class SummaryInfoView extends StatelessWidget
     bool isModifyNotice = currPanKdCd != "01" && panId != currPanId ? currPanKdCd == "02" : false;
     bool isCancelNotice = currPanKdCd != "01" && panId != currPanId ? currPanKdCd == "03" : false;
 
-    String department = _data["ARA_HDQ_CD"].isNotEmpty ? OrganizationCode().getCodeName(int.parse(_data["ARA_HDQ_CD"])) : "";
+    String department = _data["ARA_HDQ_CD"].isNotEmpty ? OrganizationCode()[(int.parse(_data["ARA_HDQ_CD"]))] : "";
     return Container
     (
       width: MediaQuery.of(context).size.width,

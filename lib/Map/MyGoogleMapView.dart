@@ -123,3 +123,75 @@ class MyGoogleMapView extends State<MyGoogleMap>
     }
   }
 }
+
+class MyGoogleMapViewLatLtd extends StatelessWidget
+{
+  MyGoogleMapViewLatLtd(this._title, this._address, this._latLng)
+  {
+    _markers.add(Marker
+    (
+      markerId: MarkerId(_latLng.toString()),
+      position: _latLng,
+      icon: BitmapDescriptor.defaultMarker
+    ));
+  }
+
+  final String _title;
+  final String _address;
+  final LatLng _latLng;
+  final Completer<GoogleMapController> _controller = Completer();
+  final Set<Marker> _markers = {};
+
+  void _onMapCreated(GoogleMapController controller) 
+  {
+    _controller.complete(controller);
+  }
+
+  @override
+  Widget build(BuildContext context) 
+  {
+    return Container
+    (
+      width: MediaQuery.of(context).size.width,
+      child: Padding
+      (
+        padding: EdgeInsets.only(left: 10, right: 10),
+        child: Column
+        (
+          children : <Widget>
+          [
+            Row
+            (
+              children : <Widget>
+              [
+                Icon(Icons.location_on, color: Colors.black),
+                SizedBox(width: 10),
+                Text(_title, textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 25, fontFamily: 'TmonTium'))
+              ]
+            ),
+            this._address.isNotEmpty ? AutoSizeText
+            (
+              this._address,
+              textAlign: TextAlign.left,
+              style: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'TmonTium')
+            ) : SizedBox(),
+            Container
+            (
+              height: 300,
+              child: GoogleMap
+              (
+                onMapCreated: _onMapCreated,
+                markers: _markers,
+                initialCameraPosition: CameraPosition
+                (
+                  target: _latLng,
+                  zoom: 16.0,
+                )
+              )
+            )
+          ]
+        )
+      )
+    );
+  }
+}

@@ -172,7 +172,7 @@ class InstallmentHouseModel extends MenuPanInfoModel
 
   generateSupplyInfoBody(String panId, String ccrCnntSysDsCd, String aisInfSn, String otxtPanId, String uppAisTpCd, [bool dynamic0708 = false, bool dynamic11 = false])
   {
-    var document = xml.parse(defaultDetailFormXml);
+    var document = xml.parse(supplyInfoFormXml);
 
     var builder = new xml.XmlBuilder();
     builder.element("Rows", nest: ()
@@ -215,14 +215,9 @@ class InstallmentHouseModel extends MenuPanInfoModel
         {
           builder.element("Col", attributes: {"id": "DYNAMIC_SPL_TP_CD_11"}, nest: ()
           {
-            builder.text("0708");
+            builder.text("11");
           });
         }
-
-        builder.element("Col", attributes: {"id": "PREVIEW"}, nest: ()
-        {
-          builder.text("N");
-        });
       });
     });
 
@@ -243,12 +238,13 @@ class InstallmentHouseModel extends MenuPanInfoModel
         print(e);
       }
     }
+    print(document.toXmlString(pretty: true, indent: '\t'));
     return document.toXmlString(pretty: true, indent: '\t');
   }
 
   generateSupplyInfoImageBody(String panId, String ccrCnntSysDsCd, String aisInfSn, String otxtPanId, String uppAisTpCd, String bzdtCd, String hcBlkCd)
   {
-    var document = xml.parse(defaultDetailFormXml);
+    var document = xml.parse(supplyInfoFormXml);
 
     var builder = new xml.XmlBuilder();
     builder.element("Rows", nest: ()
@@ -289,11 +285,6 @@ class InstallmentHouseModel extends MenuPanInfoModel
         {
           builder.text(hcBlkCd);
         });
-
-        builder.element("Col", attributes: {"id": "PREVIEW"}, nest: ()
-        {
-          builder.text("N");
-        });
       });
     });
 
@@ -314,6 +305,7 @@ class InstallmentHouseModel extends MenuPanInfoModel
         print(e);
       }
     }
+    print(document.toXmlString(pretty: true, indent: '\t'));
     return document.toXmlString(pretty: true, indent: '\t');
   }
 
