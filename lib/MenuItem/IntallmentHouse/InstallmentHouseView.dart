@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:bunyang/Menu/Model/MenuModel.dart';
 import 'package:bunyang/MenuItem/IntallmentHouse/InstallmentHousePresenter.dart';
 import 'package:bunyang/MenuItem/IntallmentHouse/SummaryInfoView.dart';
@@ -7,7 +5,6 @@ import 'package:bunyang/MenuItem/IntallmentHouse/SupplyInfoView.dart';
 import 'package:bunyang/MenuItem/MenuItemModel.dart';
 import 'package:bunyang/MenuItem/MenuItemPageView.dart';
 import 'package:bunyang/Util/Util.dart';
-import 'package:tuple/tuple.dart';
 
 enum DataListenState { DEFAULT, DETAIL, IMAGE }
 
@@ -34,7 +31,6 @@ class InstallmentHouseView extends MenuItemPageView<InstallmentHousePage>
 
   final Map<String, String> _defaultData = new Map<String, String>();
   final List<Map<String, String>> _detailData = new List<Map<String, String>>();
-  final List<Map<String, String>> _imageData = List<Map<String, String>>();
 
   @override
   void initState() 
@@ -50,7 +46,6 @@ class InstallmentHouseView extends MenuItemPageView<InstallmentHousePage>
     super.dispose();
     _defaultData.clear();
     _detailData.clear();
-    _imageData.clear();
   }
 
   @override
@@ -108,9 +103,7 @@ class InstallmentHouseView extends MenuItemPageView<InstallmentHousePage>
 
   void onResponseFinally(Map<String, List<Map<String, String>>> res)
   {
-    _detailData.clear();
-    _detailData.addAll(res["dsHsAhtlList"]);
-    contents.add(SupplyInfoView(_defaultData, _detailData, _imageData));
+    contents.add(SupplyInfoView(_defaultData, _detailData, res["dsHsAhtlList"]));
 
     setState(() {
         loadingState = LoadingState.DONE;

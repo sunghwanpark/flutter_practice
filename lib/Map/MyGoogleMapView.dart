@@ -185,7 +185,7 @@ class MyGoogleMapViewLatLtd extends StatelessWidget
                 initialCameraPosition: CameraPosition
                 (
                   target: _latLng,
-                  zoom: 16.0,
+                  zoom: 10.0,
                 )
               )
             )

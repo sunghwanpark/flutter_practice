@@ -24,16 +24,7 @@ class MyApp extends StatelessWidget
         scaffoldBackgroundColor: Color.fromARGB(255, 255, 255, 255),
         fontFamily: "TmonTium"
       ),
-      home: MainPage(),
+      home: Scaffold(body : SnapMenu())
     );
-  }
-}
-
-class MainPage extends StatelessWidget
-{
-  @override
-  Widget build(BuildContext context) 
-  {
-    return Scaffold(body : SnapMenu());
   }
 }
