@@ -1,3 +1,5 @@
+import 'package:auto_size_text/auto_size_text.dart';
+import 'package:bunyang/Data/Address.dart';
 import 'package:bunyang/Menu/Model/MenuModel.dart';
 import 'package:bunyang/MenuItem/IntallmentHouse/InstallmentHousePresenter.dart';
 import 'package:bunyang/MenuItem/IntallmentHouse/SummaryInfoView.dart';
@@ -5,6 +7,8 @@ import 'package:bunyang/MenuItem/IntallmentHouse/SupplyInfoView.dart';
 import 'package:bunyang/MenuItem/MenuItemModel.dart';
 import 'package:bunyang/MenuItem/MenuItemPageView.dart';
 import 'package:bunyang/Util/Util.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 
 enum DataListenState { DEFAULT, DETAIL, IMAGE }
 
@@ -16,18 +20,31 @@ class InstallmentHousePage extends MenuItemPage
   InstallmentHouseView createState() => InstallmentHouseView(data);
 }
 
-class InstallmentHouseView extends MenuItemPageView<InstallmentHousePage> 
+class InstallmentHouseView extends MenuItemPageView<InstallmentHousePage> with SingleTickerProviderStateMixin
 {
   InstallmentHouseView(MenuData data) : super(data)
   {
     _uppAisTpCd = this.data.getUppAisTPCD();
   }
 
+  var tabs = const <Tab>
+  [
+    Tab(icon: Text('공고개요', style: TextStyle(color: Colors.black, fontWeight: FontWeight.w700))),
+    Tab(icon: Text('공급정보', style: TextStyle(color: Colors.black, fontWeight: FontWeight.w700))),
+    Tab(icon: Text('공급일정', style: TextStyle(color: Colors.black, fontWeight: FontWeight.w700)))
+  ];
+
   String _uppAisTpCd;
   String _otxtPanId;
   String _aisInfSn;
   String _bztdCd;
   String _hcBlkCd;
+
+  ScrollController _scrollController;
+  TabController _tabController;
+
+  List<Widget> _infoView = new List<Widget>();
+  List<Widget> _scheduleView = new List<Widget>();
 
   final Map<String, String> _defaultData = new Map<String, String>();
   final List<Map<String, String>> _detailData = new List<Map<String, String>>();
@@ -38,11 +55,17 @@ class InstallmentHouseView extends MenuItemPageView<InstallmentHousePage>
     super.initState();
     presenter = new InstallmentHousePresenter(this);
     presenter.onRequestPanInfo(type, RequestPanInfo(panId, ccrCnntSysDsCd, _uppAisTpCd));
+
+    _scrollController = ScrollController();
+    _tabController = TabController(length: tabs.length, vsync: this, initialIndex: 0);
   }
 
   @override
   void dispose()
   {
+    _scrollController.dispose();
+    _tabController.dispose();
+    
     super.dispose();
     _defaultData.clear();
     _detailData.clear();
@@ -103,10 +126,105 @@ class InstallmentHouseView extends MenuItemPageView<InstallmentHousePage>
 
   void onResponseFinally(Map<String, List<Map<String, String>>> res)
   {
-    contents.add(SupplyInfoView(_defaultData, _detailData, res["dsHsAhtlList"]));
+    _infoView.add(SupplyInfo(_defaultData, _detailData, res["dsHsAhtlList"]));
 
     setState(() {
         loadingState = LoadingState.DONE;
     });
+  }
+
+  Widget _getContentSection(int idx)
+  {
+    switch (loadingState)
+    {
+      case LoadingState.DONE:
+        if(idx == 0)
+          return ListView(children: contents);
+        else if(idx == 1)
+          return ListView(children: _infoView);
+        return ListView(children: _scheduleView);
+      case LoadingState.ERROR:
+        return myText("데이터를 불러오지 못했습니다!");
+      case LoadingState.LOADING:
+        return Container
+        (
+          alignment: Alignment.center,
+          child: CircularProgressIndicator(backgroundColor: Colors.white)
+        );
+      default:
+        return(Container());
+    }
+  }
+
+  @override
+  Widget build(BuildContext context)
+  {
+    return Scaffold
+    (
+      backgroundColor: Colors.white,
+      body: NestedScrollView
+      (
+        controller: _scrollController,
+        headerSliverBuilder: (BuildContext context, bool boxIsScrolled)
+        {
+          return <Widget>
+          [
+            SliverAppBar
+            (
+              bottom: TabBar(tabs: tabs, controller: _tabController),
+              expandedHeight: 300,
+              iconTheme: IconThemeData
+              (
+                color: Colors.black
+              ),
+              flexibleSpace: FlexibleSpaceBar
+              (
+                titlePadding: EdgeInsets.only(bottom: 50, left: 80, right: 80),
+                centerTitle: true,
+                title: AutoSizeText
+                (
+                  appBarTitle,
+                  style: TextStyle
+                  (
+                    color: Colors.white,
+                    fontFamily: "TmonTium",
+                    fontSize: 25,
+                    fontWeight: FontWeight.w800
+                  ),
+                  maxLines: 3,
+                ),
+                background: Stack
+                (
+                  fit: StackFit.expand,
+                  children: <Widget>
+                  [
+                    Hero
+                    (
+                      tag: constNoticeCodeMap[type].code,
+                      child: FadeInImage
+                      (
+                        fit: BoxFit.cover,
+                        placeholder: AssetImage("assets/image/placeholder.jpg"),
+                        image: constNoticeCodeMap[type].image
+                      )
+                    )
+                  ]
+                )
+              ),
+            ),
+          ];
+        },
+        body: TabBarView
+        (
+          controller: _tabController,
+          children: <Widget>
+          [
+            _getContentSection(0),
+            _getContentSection(1),
+            _getContentSection(2)
+          ]
+        ),
+      ),
+    );
   }
 }

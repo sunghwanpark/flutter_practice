@@ -1,17 +1,32 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:bunyang/Map/MyGoogleMapView.dart';
 import 'package:bunyang/Secret/URL.dart';
+import 'package:bunyang/Util/HighlightImageView.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:sprintf/sprintf.dart';
 
-class SupplyInfoView extends StatelessWidget
+class SupplyInfo extends StatefulWidget
+{
+  SupplyInfo(this._defaultData, this._detailData, this._imageData);
+
+  final Map<String, String> _defaultData;
+  final List<Map<String, String>> _detailData;
+  final List<Map<String, String>> _imageData;
+
+  @override
+  SupplyInfoView createState() => SupplyInfoView(_defaultData, _detailData, _imageData);
+}
+
+class SupplyInfoView extends State<SupplyInfo>
 {
   SupplyInfoView(this._defaultData, this._detailData, this._imageData);
 
   final Map<String, String> _defaultData;
   final List<Map<String, String>> _detailData;
   final List<Map<String, String>> _imageData;
+
+  List<bool> _imageLoadingState = new List<bool>();
 
   List<Widget> _getContents(BuildContext context)
   {
@@ -85,16 +100,40 @@ class SupplyInfoView extends StatelessWidget
       ));
     }
 
-    _imageData.forEach((map)
+    for(int i = 0; i < _imageData.length; i++)
     {
+      var map = _imageData[i];
+      _imageLoadingState.add(false);
       String urlSerial = map["CMN_AHFL_SN"];
-      widgets.add(Image.network
+      var _image = Image.network("$imageURL$urlSerial");
+      _image.image.resolve(new ImageConfiguration()).addListener((_, __) 
+      {
+        if (mounted) 
+        {
+          setState(() {
+            _imageLoadingState[i] = true;
+          });
+        }
+      });
+      widgets.add(Align
       (
-        "$imageURL$urlSerial",
-        width: MediaQuery.of(context).size.width - 10,
-        height: 300,
+        alignment: Alignment.centerLeft,
+        child: Text(sprintf("· %s", [map["SL_PAN_AHFL_DS_CD_NM"]]), textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 20, fontWeight: FontWeight.w500, fontFamily: 'TmonTium'))
       ));
-    });
+      widgets.add(_imageLoadingState[i] ? InkWell
+      (
+        child: Hero
+        (
+          tag: urlSerial,
+          child: _image
+        ),
+        onTap: () => Navigator.push
+        (
+          context,
+          MaterialPageRoute(builder: (context) => HighlightImageView(urlSerial, _image))
+        )
+      ) : CircularProgressIndicator(backgroundColor: Colors.black));
+    }
     
     widgets.add(Align
     (

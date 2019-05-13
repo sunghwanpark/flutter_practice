@@ -132,10 +132,10 @@ class ProductDetailView extends State<ProductDetail> with SingleTickerProviderSt
               (
                 color: Colors.black
               ),
-              bottom: TabBar(tabs: tabs, controller: _tabController),
+              bottom: TabBar(indicatorColor: Colors.black, tabs: tabs, controller: _tabController),
               flexibleSpace: FlexibleSpaceBar
               (
-                titlePadding: EdgeInsets.only(top: 100, bottom: 100, left: 80, right: 80),
+                titlePadding: EdgeInsets.only(bottom: 50, left: 80, right: 80),
                 centerTitle: true,
                 title: Text
                 (
@@ -150,7 +150,7 @@ class ProductDetailView extends State<ProductDetail> with SingleTickerProviderSt
                 ),
                 background: Stack
                 (
-                fit: StackFit.expand,
+                  fit: StackFit.expand,
                   children: <Widget>
                   [
                     Hero
