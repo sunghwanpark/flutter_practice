@@ -238,7 +238,6 @@ class InstallmentHouseModel extends MenuPanInfoModel
         print(e);
       }
     }
-    print(document.toXmlString(pretty: true, indent: '\t'));
     return document.toXmlString(pretty: true, indent: '\t');
   }
 
@@ -305,7 +304,6 @@ class InstallmentHouseModel extends MenuPanInfoModel
         print(e);
       }
     }
-    print(document.toXmlString(pretty: true, indent: '\t'));
     return document.toXmlString(pretty: true, indent: '\t');
   }
 

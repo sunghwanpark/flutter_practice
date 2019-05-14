@@ -25,14 +25,45 @@ class InstallmentHouseView extends MenuItemPageView<InstallmentHousePage> with S
   InstallmentHouseView(MenuData data) : super(data)
   {
     _uppAisTpCd = this.data.getUppAisTPCD();
-  }
 
-  var tabs = const <Tab>
-  [
-    Tab(icon: Text('공고개요', style: TextStyle(color: Colors.black, fontWeight: FontWeight.w700))),
-    Tab(icon: Text('공급정보', style: TextStyle(color: Colors.black, fontWeight: FontWeight.w700))),
-    Tab(icon: Text('공급일정', style: TextStyle(color: Colors.black, fontWeight: FontWeight.w700)))
-  ];
+    var _tabNames = ['공고내용', '공급정보', '공고일정'];
+    for(int i = 0; i < _tabNames.length; i++)
+    {
+      _tabs.add(Tab
+      (
+        icon: Text
+        (
+          _tabNames[i],
+          style: TextStyle
+          (
+            fontSize: 18,
+            inherit: true,
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+            shadows: 
+            [
+              Shadow( // bottomLeft
+	              offset: Offset(-1.5, -1.5),
+	              color: Colors.black
+              ),
+              Shadow( // bottomRight
+	              offset: Offset(1.5, -1.5),
+	              color: Colors.black
+              ),
+              Shadow( // topRight
+	              offset: Offset(1.5, 1.5),
+	              color: Colors.black
+                ),
+              Shadow( // topLeft
+	              offset: Offset(-1.5, 1.5),
+	              color: Colors.black
+              ),
+            ]
+          )
+        )
+      ));
+    }
+  }
 
   String _uppAisTpCd;
   String _otxtPanId;
@@ -43,11 +74,14 @@ class InstallmentHouseView extends MenuItemPageView<InstallmentHousePage> with S
   ScrollController _scrollController;
   TabController _tabController;
 
+  List<Tab> _tabs = new List<Tab>();
   List<Widget> _infoView = new List<Widget>();
   List<Widget> _scheduleView = new List<Widget>();
 
   final Map<String, String> _defaultData = new Map<String, String>();
-  final List<Map<String, String>> _detailData = new List<Map<String, String>>();
+  final List<Map<String, String>> _publicInstallment = new List<Map<String, String>>();
+  final List<Map<String, String>> _publicLease = new List<Map<String, String>>();
+  final List<Map<String, String>> _publicInstallmentLease = new List<Map<String, String>>();
 
   @override
   void initState() 
@@ -57,7 +91,7 @@ class InstallmentHouseView extends MenuItemPageView<InstallmentHousePage> with S
     presenter.onRequestPanInfo(type, RequestPanInfo(panId, ccrCnntSysDsCd, _uppAisTpCd));
 
     _scrollController = ScrollController();
-    _tabController = TabController(length: tabs.length, vsync: this, initialIndex: 0);
+    _tabController = TabController(length: _tabs.length, vsync: this, initialIndex: 0);
   }
 
   @override
@@ -67,8 +101,11 @@ class InstallmentHouseView extends MenuItemPageView<InstallmentHousePage> with S
     _tabController.dispose();
     
     super.dispose();
+
     _defaultData.clear();
-    _detailData.clear();
+    _publicInstallment.clear();
+    _publicLease.clear();
+    _publicInstallmentLease.clear();
   }
 
   @override
@@ -105,8 +142,8 @@ class InstallmentHouseView extends MenuItemPageView<InstallmentHousePage> with S
 
   void onResponsePublicInstallment(Map<String, List<Map<String, String>>> res)
   {
-    _detailData.clear();
-    _detailData.addAll(res["dsHtyList"]);
+    _publicInstallment.clear();
+    _publicInstallment.addAll(res["dsHtyList"]);
 
     (presenter as InstallmentHousePresenter).onRequestSupplyInfoPublicInstallment(
         panId, ccrCnntSysDsCd, _aisInfSn, _otxtPanId, "06", onResponsePublicRentalType06, true, false);
@@ -114,19 +151,25 @@ class InstallmentHouseView extends MenuItemPageView<InstallmentHousePage> with S
 
   void onResponsePublicRentalType06(Map<String, List<Map<String, String>>> res)
   {
+    _publicLease.clear();
+    _publicLease.addAll(res["dsHtyList"]);
+
     (presenter as InstallmentHousePresenter).onRequestSupplyInfoPublicInstallment(
         panId, ccrCnntSysDsCd, _aisInfSn, _otxtPanId, "06", onResponsePublicRentalType07, false, true);
   }
 
   void onResponsePublicRentalType07(Map<String, List<Map<String, String>>> res)
   {
+    _publicInstallmentLease.clear();
+    _publicInstallmentLease.addAll(res["dsHtyList"]);
+
     (presenter as InstallmentHousePresenter).onRequestSupplyInfoImage(
         panId, ccrCnntSysDsCd, _aisInfSn, _otxtPanId, _uppAisTpCd, onResponseFinally, _bztdCd, _hcBlkCd);
   }
 
   void onResponseFinally(Map<String, List<Map<String, String>>> res)
   {
-    _infoView.add(SupplyInfo(_defaultData, _detailData, res["dsHsAhtlList"]));
+    _infoView.add(SupplyInfo(_defaultData, _publicInstallment, _publicLease, _publicInstallmentLease, res["dsHsAhtlList"]));
 
     setState(() {
         loadingState = LoadingState.DONE;
@@ -171,7 +214,13 @@ class InstallmentHouseView extends MenuItemPageView<InstallmentHousePage> with S
           [
             SliverAppBar
             (
-              bottom: TabBar(tabs: tabs, controller: _tabController),
+              bottom: TabBar
+              (
+                tabs: _tabs,
+                controller: _tabController,
+                indicatorWeight: 5,
+                indicatorColor: Colors.black26,
+              ),
               expandedHeight: 300,
               iconTheme: IconThemeData
               (

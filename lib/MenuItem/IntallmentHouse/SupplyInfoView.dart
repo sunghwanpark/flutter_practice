@@ -4,29 +4,41 @@ import 'package:bunyang/Secret/URL.dart';
 import 'package:bunyang/Util/HighlightImageView.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:intl/intl.dart';
 import 'package:sprintf/sprintf.dart';
+import 'package:tuple/tuple.dart';
 
 class SupplyInfo extends StatefulWidget
 {
-  SupplyInfo(this._defaultData, this._detailData, this._imageData);
+  SupplyInfo(this._defaultData, this._publicInstallment, this._publicLease, this._publicInstallmentLease, this._imageData);
 
   final Map<String, String> _defaultData;
-  final List<Map<String, String>> _detailData;
+  final List<Map<String, String>> _publicInstallment;
+  final List<Map<String, String>> _publicLease;
+  final List<Map<String, String>> _publicInstallmentLease;
   final List<Map<String, String>> _imageData;
 
   @override
-  SupplyInfoView createState() => SupplyInfoView(_defaultData, _detailData, _imageData);
+  SupplyInfoView createState() => SupplyInfoView(_defaultData, _publicInstallment, _publicLease, _publicInstallmentLease, _imageData);
 }
 
 class SupplyInfoView extends State<SupplyInfo>
 {
-  SupplyInfoView(this._defaultData, this._detailData, this._imageData);
+  SupplyInfoView(this._defaultData, this._publicInstallment, this._publicLease, this._publicInstallmentLease, this._imageData);
 
   final Map<String, String> _defaultData;
-  final List<Map<String, String>> _detailData;
+  final List<Map<String, String>> _publicInstallment;
+  final List<Map<String, String>> _publicLease;
+  final List<Map<String, String>> _publicInstallmentLease;
   final List<Map<String, String>> _imageData;
 
   List<bool> _imageLoadingState = new List<bool>();
+
+  @override
+  void initState()
+  {
+    super.initState();
+  }
 
   List<Widget> _getContents(BuildContext context)
   {
@@ -100,6 +112,7 @@ class SupplyInfoView extends State<SupplyInfo>
       ));
     }
 
+    _imageLoadingState.clear();
     for(int i = 0; i < _imageData.length; i++)
     {
       var map = _imageData[i];
@@ -135,10 +148,14 @@ class SupplyInfoView extends State<SupplyInfo>
       ) : CircularProgressIndicator(backgroundColor: Colors.black));
     }
     
-    widgets.add(Align
+    widgets.add(Row
     (
-      alignment: Alignment.centerLeft,
-      child: Text('단지 특장점', textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 25, fontWeight: FontWeight.w500, fontFamily: 'TmonTium'))
+      children : <Widget>
+      [
+        Icon(Icons.check_circle, color: Colors.black),
+        SizedBox(width: 10),
+        Text('단지 특장점', textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 25, fontFamily: 'TmonTium', fontWeight: FontWeight.w500))
+      ]
     ));
 
     if(_defaultData["TFFC_FCL_CTS"].isNotEmpty)
@@ -176,8 +193,168 @@ class SupplyInfoView extends State<SupplyInfo>
         child: Text(sprintf('· 부대시설 : %s', [_defaultData["IDT_FCL_CTS"]]), textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'TmonTium'))
       ));
     }
+    
+    final f = NumberFormat("#,###");
+    
+    List<Widget> contents = new List<Widget>(); 
+    if(_publicInstallment.length > 0) // 공공분양
+    {
+      widgets.add(_setSubject('공공분양'));
+
+      widgets.add(Align
+      (
+        alignment: Alignment.centerLeft,
+        child: Text('상세공급정보를 확인하시려면 카드를 길게 눌러주세요', textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 15, fontFamily: 'TmonTium', decoration: TextDecoration.underline))
+      ));
+
+      _publicInstallment.forEach((map)
+      {
+        var values = 
+        [
+          sprintf('주택형: %s', [map['HTY_NM']]),
+          sprintf('전용면적(m²): %s', [map['RSDN_DDO_AR']]),
+          sprintf('세대수: %s', [map['TOT_HSH_CNT']]),
+          sprintf('금화공급 세대수: %s', [map['SIL_HSH_CNT']]),
+          sprintf('평균분양가격(원): %s', [f.format(map['SIL_AMT'])]),
+          sprintf('인터넷청약', [map['BTN_NM']])
+        ];
+        values.forEach((value)
+        {
+          contents.add(Align
+          (
+            alignment: Alignment.centerLeft,
+            child: Text(value, textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'TmonTium'))
+          ));
+        });
+
+        widgets.add(_setDetailCard(contents));
+      });
+    }
+    else if(_publicLease.length > 0) // 공공임대
+    {
+      widgets.add(_setSubject('공공임대'));
+
+      widgets.add(Align
+      (
+        alignment: Alignment.centerLeft,
+        child: Text('상세공급정보를 확인하시려면 카드를 길게 눌러주세요', textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 15, fontFamily: 'TmonTium', decoration: TextDecoration.underline))
+      ));
+
+      _publicInstallment.forEach((map)
+      {
+        var values = 
+        [
+          sprintf('주택형: %s', [map['HTY_NM']]),
+          sprintf('전용면적(m²): %s', [map['RSDN_DDO_AR']]),
+          sprintf('세대수: %s', [map['TOT_HSH_CNT']]),
+          sprintf('금화공급 세대수: %s', [map['SIL_HSH_CNT']]),
+          sprintf('임대보증금(원): %s', [f.format(map['LS_GMY'])]),
+          sprintf('월임대료(원): %s', [f.format(map['MM_RFE'])]),
+          sprintf('인터넷청약', [map['BTN_NM']])
+        ];
+        values.forEach((value)
+        {
+          contents.add(Align
+          (
+            alignment: Alignment.centerLeft,
+            child: Text(value, textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'TmonTium'))
+          ));
+        });
+
+        widgets.add(_setDetailCard(contents));
+      });
+    }
+    else if(_publicInstallmentLease.length > 0) // 분납임대
+    {
+      widgets.add(_setSubject('분납임대'));
+
+      widgets.add(Align
+      (
+        alignment: Alignment.centerLeft,
+        child: Text('상세공급정보를 확인하시려면 카드를 길게 눌러주세요', textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 15, fontFamily: 'TmonTium', decoration: TextDecoration.underline))
+      ));
+
+      _publicInstallment.forEach((map)
+      {
+        var values = 
+        [
+          sprintf('주택형: %s', [map['HTY_NM']]),
+          sprintf('전용면적(m²): %s', [map['DDO_AR']]),
+          sprintf('세대수: %s', [map['TOT_HSH_CNT']]),
+          sprintf('금화공급 세대수: %s', [map['SIL_HSH_CNT']]),
+          sprintf('초기분납금(원): %s', [f.format(map['ELY_DSU_AMT'])]),
+          sprintf('월임대료(원): %s', [f.format(map['MM_RFE'])]),
+          sprintf('인터넷청약', [map['BTN_NM']])
+        ];
+        values.forEach((value)
+        {
+          contents.add(Align
+          (
+            alignment: Alignment.centerLeft,
+            child: Text(value, textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'TmonTium'))
+          ));
+        });
+
+        widgets.add(_setDetailCard(contents));
+      });
+    }
+
+    widgets.add(Row
+    (
+      children : <Widget>
+      [
+        Icon(Icons.info, color: Colors.red),
+        SizedBox(width: 10),
+        Text(sprintf('안내사항\n%s',[_defaultData['SPL_INF_GUD_FCTS']]), textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'TmonTium', fontWeight: FontWeight.w500))
+      ]
+    ));
 
     return widgets;
+  }
+
+  Row _setSubject(String subject)
+  {
+    return Row
+    (
+      children : <Widget>
+      [
+        Icon(Icons.check_circle, color: Colors.black),
+        SizedBox(width: 10),
+        Text('주택형 안내 ($subject)', textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 25, fontFamily: 'TmonTium', fontWeight: FontWeight.w500))
+      ]
+    );
+  }
+
+  Padding _setDetailCard(List<Widget> addContents)
+  {
+    return Padding
+    (
+      padding: EdgeInsets.only(top: 10, bottom: 10),
+      child: GestureDetector
+      (
+        child: Container
+        (
+          decoration: ShapeDecoration
+          (
+            color: Colors.indigo[200],
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            shadows: 
+            [
+              BoxShadow
+              (
+                color: Colors.black.withOpacity(0.3),
+                spreadRadius: 2.0,
+                offset: Offset(5.0, 5.0),
+              )
+            ],
+          ),
+          child: Column
+          (
+            children: addContents
+          )
+        )
+      )
+    );
   }
 
   @override
