@@ -215,15 +215,19 @@ class SupplyInfoView extends State<SupplyInfo>
           sprintf('전용면적(m²): %s', [map['RSDN_DDO_AR']]),
           sprintf('세대수: %s', [map['TOT_HSH_CNT']]),
           sprintf('금화공급 세대수: %s', [map['SIL_HSH_CNT']]),
-          sprintf('평균분양가격(원): %s', [f.format(map['SIL_AMT'])]),
-          sprintf('인터넷청약', [map['BTN_NM']])
+          sprintf('평균분양가격(원): %s', [f.format(int.parse(map['SIL_AMT']))]),
+          sprintf('인터넷청약: %s', [map['BTN_NM']])
         ];
         values.forEach((value)
         {
-          contents.add(Align
+          contents.add(Padding
           (
-            alignment: Alignment.centerLeft,
-            child: Text(value, textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'TmonTium'))
+            padding: EdgeInsets.only(left:10, right:10),
+            child: Align
+            (
+              alignment: Alignment.centerLeft,
+              child: Text(value, textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'TmonTium'))
+            )
           ));
         });
 
@@ -248,16 +252,20 @@ class SupplyInfoView extends State<SupplyInfo>
           sprintf('전용면적(m²): %s', [map['RSDN_DDO_AR']]),
           sprintf('세대수: %s', [map['TOT_HSH_CNT']]),
           sprintf('금화공급 세대수: %s', [map['SIL_HSH_CNT']]),
-          sprintf('임대보증금(원): %s', [f.format(map['LS_GMY'])]),
-          sprintf('월임대료(원): %s', [f.format(map['MM_RFE'])]),
-          sprintf('인터넷청약', [map['BTN_NM']])
+          sprintf('임대보증금(원): %s', [f.format(int.parse(map['LS_GMY']))]),
+          sprintf('월임대료(원): %s', [f.format(int.parse(map['MM_RFE']))]),
+          sprintf('인터넷청약: %s', [map['BTN_NM']])
         ];
         values.forEach((value)
         {
-          contents.add(Align
+          contents.add(Padding
           (
-            alignment: Alignment.centerLeft,
-            child: Text(value, textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'TmonTium'))
+            padding: EdgeInsets.only(left:10, right:10),
+            child: Align
+            (
+              alignment: Alignment.centerLeft,
+              child: Text(value, textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'TmonTium'))
+            )
           ));
         });
 
@@ -282,16 +290,20 @@ class SupplyInfoView extends State<SupplyInfo>
           sprintf('전용면적(m²): %s', [map['DDO_AR']]),
           sprintf('세대수: %s', [map['TOT_HSH_CNT']]),
           sprintf('금화공급 세대수: %s', [map['SIL_HSH_CNT']]),
-          sprintf('초기분납금(원): %s', [f.format(map['ELY_DSU_AMT'])]),
-          sprintf('월임대료(원): %s', [f.format(map['MM_RFE'])]),
-          sprintf('인터넷청약', [map['BTN_NM']])
+          sprintf('초기분납금(원): %s', [f.format(int.parse(map['ELY_DSU_AMT']))]),
+          sprintf('월임대료(원): %s', [f.format(int.parse(map['MM_RFE']))]),
+          sprintf('인터넷청약: %s', [map['BTN_NM']])
         ];
         values.forEach((value)
         {
-          contents.add(Align
+          contents.add(Padding
           (
-            alignment: Alignment.centerLeft,
-            child: Text(value, textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'TmonTium'))
+            padding: EdgeInsets.only(left:10, right:10),
+            child: Align
+            (
+              alignment: Alignment.centerLeft,
+              child: Text(value, textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'TmonTium'))
+            )
           ));
         });
 
@@ -305,8 +317,14 @@ class SupplyInfoView extends State<SupplyInfo>
       [
         Icon(Icons.info, color: Colors.red),
         SizedBox(width: 10),
-        Text(sprintf('안내사항\n%s',[_defaultData['SPL_INF_GUD_FCTS']]), textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'TmonTium', fontWeight: FontWeight.w500))
+        Text('안내사항', textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'TmonTium', fontWeight: FontWeight.w800))
       ]
+    ));
+
+    widgets.add(Align
+    (
+      alignment: Alignment.centerLeft,
+      child: Text(_defaultData['SPL_INF_GUD_FCTS'], textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'TmonTium'))
     ));
 
     return widgets;
