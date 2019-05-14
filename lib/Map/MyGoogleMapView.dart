@@ -70,44 +70,41 @@ class MyGoogleMapView extends State<MyGoogleMap>
         return Container
         (
           width: MediaQuery.of(context).size.width,
-          child: Padding
+          child: Column
           (
-            padding: EdgeInsets.only(left: 10, right: 10),
-            child: Column
-            (
-              children : <Widget>
-              [
-                Row
+            children: <Widget>
+            [
+              Row
+              (
+                children : <Widget>
+                [
+                  Icon(Icons.location_on, color: Colors.black),
+                  SizedBox(width: 10),
+                  Text(title, textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 25, fontFamily: 'TmonTium'))
+                ]
+              ),
+              this.address.isNotEmpty ? AutoSizeText
+              (
+                this.address,
+                textAlign: TextAlign.left,
+                style: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'TmonTium')
+              ) : SizedBox(),
+              Container
+              (
+                padding: EdgeInsets.only(left: 10, right: 10),
+                height: 300,
+                child: GoogleMap
                 (
-                  children : <Widget>
-                  [
-                    Icon(Icons.location_on, color: Colors.black),
-                    SizedBox(width: 10),
-                    Text(title, textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 25, fontFamily: 'TmonTium'))
-                  ]
-                ),
-                this.address.isNotEmpty ? AutoSizeText
-                (
-                  this.address,
-                  textAlign: TextAlign.left,
-                  style: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'TmonTium')
-                ) : SizedBox(),
-                Container
-                (
-                  height: 300,
-                  child: GoogleMap
+                  onMapCreated: _onMapCreated,
+                  markers: _markers,
+                  initialCameraPosition: CameraPosition
                   (
-                    onMapCreated: _onMapCreated,
-                    markers: _markers,
-                    initialCameraPosition: CameraPosition
-                    (
-                      target: _center,
-                      zoom: 16.0,
-                    )
+                    target: _center,
+                    zoom: 16.0,
                   )
                 )
-              ]
-            )
+              )
+            ],
           )
         );
       case LoadingState.ERROR:

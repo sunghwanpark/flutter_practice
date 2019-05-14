@@ -10,6 +10,8 @@ import 'package:bunyang/Util/Util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
+import 'SupplyScheduleView.dart';
+
 enum DataListenState { DEFAULT, DETAIL, IMAGE }
 
 class InstallmentHousePage extends MenuItemPage
@@ -118,6 +120,7 @@ class InstallmentHouseView extends MenuItemPageView<InstallmentHousePage> with S
   void onResponseDetail(Map<String, List<Map<String, String>>> res)
   {
     contents.add(SummaryInfoView(res["dsHsSlpa"].first));
+    _scheduleView.add(SupplyScheduleView(res));
 
     // list가 한개인 경우만
     if(res["dsHsAisList"].length == 1)

@@ -6,6 +6,7 @@ import 'package:bunyang/MenuItem/Land/SupplyLotOfLandInfoView.dart';
 import 'package:bunyang/MenuItem/MenuItemModel.dart';
 import 'package:bunyang/MenuItem/MenuItemPageView.dart';
 import 'package:bunyang/Util/Util.dart';
+import 'package:flutter/material.dart';
 
 class LandPage extends MenuItemPage
 {
@@ -54,7 +55,11 @@ class LandPageView extends MenuItemPageView<LandPage>
       addressBuffer.write(" ");
       addressBuffer.write(landDatas["dsLndInf"].first["CTRT_PLC_DTL_ADR"]);
 
-      contents.add(MyGoogleMap("계약장소 정보", addressBuffer.toString()));
+      contents.add(Container
+      (
+        padding: EdgeInsets.only(left: 10, right: 10),
+        child: MyGoogleMap("계약장소 정보", addressBuffer.toString())
+      ));
     }
 
     setState(() => loadingState = LoadingState.DONE);

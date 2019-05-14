@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:sprintf/sprintf.dart';
-import 'package:tuple/tuple.dart';
 
 class SupplyInfo extends StatefulWidget
 {
