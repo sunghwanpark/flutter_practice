@@ -119,7 +119,7 @@ class SupplyDateView extends StatelessWidget
 
       widgets.add(Table
       (
-        border: TableBorder.all(color: Colors.black, width: 2),
+        border: TableBorder.all(color: Colors.black, width: 1),
         columnWidths: {0: FractionColumnWidth(0.2)},
         children: rows,
       ));

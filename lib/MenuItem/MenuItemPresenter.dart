@@ -5,7 +5,9 @@ import 'package:meta/meta.dart';
 
 abstract class MenuItemPresenter<T extends MenuPanInfoModel>
 {
+  @protected
   T model;
+  @protected
   MenuItemPageView view;
 
   @protected

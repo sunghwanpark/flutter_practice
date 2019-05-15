@@ -5,16 +5,20 @@ import 'package:flutter/material.dart';
 import 'package:bunyang/Data/Address.dart';
 import 'package:bunyang/Util/Util.dart';
 
+import 'IntallmentHouse/IntallmentChangeSale/InstallmentChangeSaleView.dart';
+
 class NoticeElementRouteFactory
 {
   static Widget buildElement(MenuData item)
   {
-    switch (item.type)
+    switch (item.getServiceType())
     {
-      case Notice_Code.land:
+      case MenuItemType.land:
         return LandPage(item);
-      case Notice_Code.installment_house:
+      case MenuItemType.installment_house:
         return InstallmentHousePage(item);
+      case MenuItemType.installment_change_sale:
+        return InstallmentChangeSale(item);
       default:
         return myText('아직 개발중이야~');
     }

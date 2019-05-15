@@ -48,6 +48,12 @@ class SupplyLotOfLandInfoView extends StatelessWidget
       ]
     ));
 
+    landInfosCards.add(Align
+    (
+      alignment: Alignment.centerLeft,
+      child: Text('상세공급정보를 확인하시려면 카드를 길게 눌러주세요', textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 15, fontFamily: 'TmonTium', decoration: TextDecoration.underline))
+    ));
+
     final f = NumberFormat("#,###");
     _data.forEach((info) =>
     { 

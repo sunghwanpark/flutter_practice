@@ -211,7 +211,7 @@ class SupplyInfoView extends State<SupplyInfo>
         var values = 
         [
           sprintf('주택형: %s', [map['HTY_NM']]),
-          sprintf('전용면적(m²): %s', [map['RSDN_DDO_AR']]),
+          sprintf('전용면적(㎡): %s', [map['RSDN_DDO_AR']]),
           sprintf('세대수: %s', [map['TOT_HSH_CNT']]),
           sprintf('금화공급 세대수: %s', [map['SIL_HSH_CNT']]),
           sprintf('평균분양가격(원): %s', [f.format(int.parse(map['SIL_AMT']))]),
@@ -248,7 +248,7 @@ class SupplyInfoView extends State<SupplyInfo>
         var values = 
         [
           sprintf('주택형: %s', [map['HTY_NM']]),
-          sprintf('전용면적(m²): %s', [map['RSDN_DDO_AR']]),
+          sprintf('전용면적(㎡): %s', [map['RSDN_DDO_AR']]),
           sprintf('세대수: %s', [map['TOT_HSH_CNT']]),
           sprintf('금화공급 세대수: %s', [map['SIL_HSH_CNT']]),
           sprintf('임대보증금(원): %s', [f.format(int.parse(map['LS_GMY']))]),
@@ -286,7 +286,7 @@ class SupplyInfoView extends State<SupplyInfo>
         var values = 
         [
           sprintf('주택형: %s', [map['HTY_NM']]),
-          sprintf('전용면적(m²): %s', [map['DDO_AR']]),
+          sprintf('전용면적(㎡): %s', [map['DDO_AR']]),
           sprintf('세대수: %s', [map['TOT_HSH_CNT']]),
           sprintf('금화공급 세대수: %s', [map['SIL_HSH_CNT']]),
           sprintf('초기분납금(원): %s', [f.format(int.parse(map['ELY_DSU_AMT']))]),

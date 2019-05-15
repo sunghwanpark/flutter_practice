@@ -32,6 +32,20 @@ class MenuData
       detailURL = jsonMap['DTL_URL'],
       rNum = jsonMap['RNUM'];
 
+  MenuItemType getServiceType()
+  {
+    int findIdx = detailURL.lastIndexOf("gv_url=");
+    String subString = detailURL.substring(findIdx, findIdx + 23);
+    if(subString.contains("0040"))
+      return MenuItemType.land;
+    else if(subString.contains("0050"))
+      return MenuItemType.installment_house;
+    else if(subString.contains("0062"))
+      return MenuItemType.installment_change_sale;
+
+    return MenuItemType.land;
+  }
+
   getParameter(String param)
   {
     int findIdx = detailURL.lastIndexOf("gv_param=");

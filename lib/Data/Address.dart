@@ -10,6 +10,13 @@ enum Notice_Code
   public_installment_house    // 신혼희망타운
 }
 
+enum MenuItemType
+{
+  land,                       // 토지매각공고상세내역
+  installment_house,          // 분양주택분양공고상세내역
+  installment_change_sale,    // 분양전환일반매각공고상세내역
+}
+
 class MainMenuData
 {
   const MainMenuData(this.code, this.image);
