@@ -157,9 +157,9 @@ class LandPageModel extends MenuPanInfoModel
   {
     StringBuffer stringBuffer = new StringBuffer();
     stringBuffer.write(noticeURL);
-    stringBuffer.write(detailFormUrl);
+    stringBuffer.write(detailFormAdapter);
     stringBuffer.write("?&serviceID=");
-    stringBuffer.write(detailForm);
+    stringBuffer.write(detailFormURL);
 
     return await http.post
     (

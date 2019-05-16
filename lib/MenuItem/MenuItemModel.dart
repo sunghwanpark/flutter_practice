@@ -15,10 +15,10 @@ class RequestPanInfo
 
 abstract class MenuItemModel
 {
-  MenuItemModel(this.detailForm);
+  MenuItemModel(this.detailFormURL);
 
-  final String detailForm;
-  final String detailFormUrl = "/lhCmcNoSessionAdapter.lh";
+  final String detailFormURL;
+  final String detailFormAdapter = "/lhCmcNoSessionAdapter.lh";
 
   @protected
   String defaultDetailFormXml ='''<?xml version="1.0" encoding="UTF-8"?>
@@ -91,7 +91,7 @@ abstract class MenuPanInfoModel extends MenuItemModel
   {
     StringBuffer stringBuffer = new StringBuffer();
     stringBuffer.write(noticeURL);
-    stringBuffer.write(detailFormUrl);
+    stringBuffer.write(detailFormAdapter);
     stringBuffer.write("?&serviceID=");
     stringBuffer.write(_requestPanInfo);
 

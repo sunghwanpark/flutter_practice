@@ -14,4 +14,20 @@ class InstallmentChangeSalePresenter extends MenuItemPresenter<InstallmentChange
       .then((res) => (view as InstallmentChangeSaleView).onResponseDetail(res))
       .catchError((onError) => view.onError());
   }
+
+  void onRequestHouseType(String panId, String ccrCnntSysDsCd, String sbdLgoNo, String ltrNot, String ltrUntNo, String sn)
+  {
+    model
+      .fetchHouseType(panId, ccrCnntSysDsCd, sbdLgoNo, ltrNot, ltrUntNo, sn, false)
+      .then((res) => (view as InstallmentChangeSaleView).onResponseHouseType(res))
+      .catchError((onError) => view.onError());
+  }
+
+  void onRequestHouseTypeAttatchment(String panId, String ccrCnntSysDsCd, String sbdLgoNo, String ltrNot, String ltrUntNo, String sn)
+  {
+    model
+      .fetchHouseType(panId, ccrCnntSysDsCd, sbdLgoNo, ltrNot, ltrUntNo, sn, true)
+      .then((res) => (view as InstallmentChangeSaleView).onResponseHouseAttatchment(res))
+      .catchError((onError) => view.onError());
+  }
 }

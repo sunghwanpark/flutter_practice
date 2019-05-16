@@ -35,7 +35,7 @@ class MenuData
   MenuItemType getServiceType()
   {
     int findIdx = detailURL.lastIndexOf("gv_url=");
-    String subString = detailURL.substring(findIdx, findIdx + 23);
+    String subString = detailURL.substring(findIdx, findIdx + 30);
     if(subString.contains("0040"))
       return MenuItemType.land;
     else if(subString.contains("0050"))
