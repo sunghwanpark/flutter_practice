@@ -13,13 +13,17 @@ class HighlightImageView extends StatelessWidget
     return Scaffold
     (
       backgroundColor: Colors.black,
-      appBar: AppBar
+      appBar: PreferredSize
       (
-        iconTheme: IconThemeData
+        preferredSize: Size.fromHeight(50),
+        child: AppBar
         (
-          color: Colors.white
-        ),
-        backgroundColor: Colors.black
+          iconTheme: IconThemeData
+          (
+            color: Colors.white
+          ),
+          backgroundColor: Colors.black
+        )
       ),
       body: Center
       (

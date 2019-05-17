@@ -1,6 +1,7 @@
 import 'package:bunyang/Map/MyGoogleMapView.dart';
 import 'package:bunyang/Menu/Model/MenuModel.dart';
 import 'package:bunyang/MenuItem/Land/LandPagePresenter.dart';
+import 'package:bunyang/MenuItem/Land/LandSummaryInfoView.dart';
 import 'package:bunyang/MenuItem/Land/SupplyDateView.dart';
 import 'package:bunyang/MenuItem/Land/SupplyLotOfLandInfoView.dart';
 import 'package:bunyang/MenuItem/MenuItemModel.dart';
@@ -36,6 +37,8 @@ class LandPageView extends MenuItemPageView<LandPage>
 
   void onLoadComplete(Map<String, List<Map<String, String>>> landDatas)
   {
+    contents.add(LandSummaryInfoView(landDatas["dsLndInf"].first, landDatas['dsAhtlList']));
+
     if(landDatas["dsSplInfBidList"].length > 0)
     {
       contents.add(SupplyDateView(true, landDatas["dsLndInf"].first, landDatas["dsSplScdList"].where((data) => data["RNK_TYPE"] == "01").toList()));

@@ -17,7 +17,7 @@ abstract class MenuItemPage extends StatefulWidget
   }
 }
 
-abstract class MenuItemPageView<T extends MenuItemPage> extends State<T>
+abstract class MenuItemPageView<T extends MenuItemPage> extends State<T> with SingleTickerProviderStateMixin
 {
   MenuItemPageView(this.data)
   {
@@ -33,7 +33,7 @@ abstract class MenuItemPageView<T extends MenuItemPage> extends State<T>
   String ccrCnntSysDsCd;
   String appBarTitle;
   
-  List<Widget> contents = new List<Widget>();
+  //List<Widget> contents = new List<Widget>();
 
   LoadingState loadingState = LoadingState.LOADING;
 
@@ -48,47 +48,48 @@ abstract class MenuItemPageView<T extends MenuItemPage> extends State<T>
     });
   }
 
-  Widget getContentSection()
+  ScrollController _scrollController;
+  TabController _tabController;
+
+  @protected
+  List<Tab> tabs = new List<Tab>();
+  @protected
+  List<List<Widget>> contents = new List<List<Widget>>();
+
+  @override
+  void initState() 
+  {
+    super.initState();
+
+    _scrollController = ScrollController();
+    _tabController = TabController(length: tabs.length, vsync: this, initialIndex: 0);
+  }
+
+  @override
+  void dispose()
+  {
+    _scrollController.dispose();
+    _tabController.dispose();
+    
+    super.dispose();
+  }
+
+  Widget _getContentSection(int idx)
   {
     switch (loadingState)
     {
       case LoadingState.DONE:
-        return SliverList
-        (
-          delegate: SliverChildBuilderDelegate
-          (
-            (context, index) => contents[index],
-            childCount: contents.length
-          ),
-        );
+        return ListView(children: contents[idx]);
       case LoadingState.ERROR:
-        return SliverList
-        (
-          delegate: SliverChildListDelegate(<Widget>
-          [
-            myText("데이터를 불러오지 못했습니다!")
-          ])
-        );
+        return myText("데이터를 불러오지 못했습니다!");
       case LoadingState.LOADING:
-        return SliverList
+        return Container
         (
-          delegate: SliverChildListDelegate(<Widget>
-          [
-            Container
-            (
-              alignment: Alignment.center,
-              child: CircularProgressIndicator(backgroundColor: Colors.white)
-            )
-          ])
+          alignment: Alignment.center,
+          child: CircularProgressIndicator(backgroundColor: Colors.white)
         );
       default:
-        return SliverList
-        (
-          delegate: SliverChildListDelegate(<Widget>
-          [
-            Container()
-          ])
-        );
+        return(Container());
     }
   }
 
@@ -98,55 +99,74 @@ abstract class MenuItemPageView<T extends MenuItemPage> extends State<T>
     return Scaffold
     (
       backgroundColor: Colors.white,
-      body: CustomScrollView
+      body: NestedScrollView
       (
-        primary: false,
-        slivers: <Widget>
-        [
-          SliverAppBar
-          (
-            expandedHeight: 300,
-            iconTheme: IconThemeData
+        controller: _scrollController,
+        headerSliverBuilder: (BuildContext context, bool boxIsScrolled)
+        {
+          return <Widget>
+          [
+            SliverAppBar
             (
-              color: Colors.black
-            ),
-            flexibleSpace: FlexibleSpaceBar
-            (
-              titlePadding: EdgeInsets.only(top: 200, left: 80, right: 80),
-              centerTitle: true,
-              title: AutoSizeText
+              bottom: TabBar
               (
-                appBarTitle,
-                style: TextStyle
-                (
-                  color: Colors.white,
-                  fontFamily: "TmonTium",
-                  fontSize: 25,
-                  fontWeight: FontWeight.w800
-                ),
-                maxLines: 3,
+                tabs: tabs,
+                controller: _tabController,
+                indicatorWeight: 5,
+                indicatorColor: Colors.black26,
               ),
-              background: Stack
+              expandedHeight: 300,
+              iconTheme: IconThemeData
               (
-                fit: StackFit.expand,
-                children: <Widget>
-                [
-                  Hero
+                color: Colors.black
+              ),
+              flexibleSpace: FlexibleSpaceBar
+              (
+                titlePadding: EdgeInsets.only(bottom: 50, left: 80, right: 80),
+                centerTitle: true,
+                title: AutoSizeText
+                (
+                  appBarTitle,
+                  style: TextStyle
                   (
-                    tag: constNoticeCodeMap[type].code,
-                    child: FadeInImage
+                    color: Colors.white,
+                    fontFamily: "TmonTium",
+                    fontSize: 25,
+                    fontWeight: FontWeight.w800
+                  ),
+                  maxLines: 3,
+                ),
+                background: Stack
+                (
+                  fit: StackFit.expand,
+                  children: <Widget>
+                  [
+                    Hero
                     (
-                      fit: BoxFit.cover,
-                      placeholder: AssetImage("assets/image/placeholder.jpg"),
-                      image: constNoticeCodeMap[type].image
+                      tag: constNoticeCodeMap[type].code,
+                      child: FadeInImage
+                      (
+                        fit: BoxFit.cover,
+                        placeholder: AssetImage("assets/image/placeholder.jpg"),
+                        image: constNoticeCodeMap[type].image
+                      )
                     )
-                  )
-                ]
-              )
+                  ]
+                )
+              ),
             ),
-          ),
-          getContentSection()
-        ], 
+          ];
+        },
+        body: TabBarView
+        (
+          controller: _tabController,
+          children: <Widget>
+          [
+            _getContentSection(0),
+            _getContentSection(1),
+            _getContentSection(2)
+          ]
+        ),
       ),
     );
   }
