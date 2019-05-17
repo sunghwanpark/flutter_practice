@@ -160,7 +160,7 @@ abstract class MenuItemPageView<T extends MenuItemPage> extends State<T> with Si
         body: TabBarView
         (
           controller: _tabController,
-          children: <Widget>
+          children: contents <Widget>
           [
             _getContentSection(0),
             _getContentSection(1),
