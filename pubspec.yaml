@@ -24,6 +24,8 @@ dependencies:
   tuple: ^1.0.2
   intl: ^0.15.8
   google_maps_flutter: ^0.5.11+1
+  flutter_pdfview: ^1.0.0+6
+  path_provider: ^1.1.0
 
 dev_dependencies:
   flutter_test:

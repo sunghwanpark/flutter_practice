@@ -1,5 +1,6 @@
 import 'package:bunyang/Menu/Model/MenuModel.dart';
 import 'package:bunyang/MenuItem/IntallmentHouse/Abstract/AbstractInstallmentHouseView.dart';
+import 'package:bunyang/MenuItem/IntallmentHouse/IntallmentChangeSale/ChargeSaleSummaryInfoView.dart';
 import 'package:bunyang/MenuItem/IntallmentHouse/IntallmentChangeSale/InstallmentChangeSalePresenter.dart';
 import 'package:bunyang/Util/Util.dart';
 
@@ -29,6 +30,15 @@ class InstallmentChangeSaleView extends AbstractInstallmentHouseView<Installment
     (presenter as InstallmentChangeSalePresenter).onRequestDetail(type, panId, ccrCnntSysDsCd);
   }
 
+  @override
+  void dispose()
+  {
+    super.dispose();
+    _defaultData.clear();
+    _typeofHouseData.clear();
+    _typeofHouseDataAttachment.clear();
+  }
+
   void onResponseDetail(Map<String, List<Map<String, String>>> res)
   {
     _defaultData.clear();
@@ -38,9 +48,6 @@ class InstallmentChangeSaleView extends AbstractInstallmentHouseView<Installment
     {
       (presenter as InstallmentChangeSalePresenter).onRequestHouseType(
         panId, ccrCnntSysDsCd, map["SBD_LGO_NO"], map["LTR_NOT"], map["LTR_UNT_NO"], map["SN"]);
-      
-      (presenter as InstallmentChangeSalePresenter).onRequestHouseTypeAttatchment(
-        panId, ccrCnntSysDsCd, map["SBD_LGO_NO"], map["LTR_NOT"], map["LTR_UNT_NO"], map["SN"]);
     });
 
     _tabLen = res["dsSbdInf"].length;
@@ -49,13 +56,6 @@ class InstallmentChangeSaleView extends AbstractInstallmentHouseView<Installment
   void onResponseHouseType(Map<String, List<Map<String, String>>> res)
   {
     _typeofHouseData.add(res["dsHtyInf"].length > 0 ? res["dsHtyInf"].first : null);
-
-    if(_typeofHouseData.length == _tabLen && _typeofHouseDataAttachment.length == _tabLen)
-    {
-      setState(() {
-       loadingState = LoadingState.DONE; 
-      });
-    }
   }
 
   void onResponseHouseAttatchment(Map<String, List<Map<String, String>>> res)
@@ -64,6 +64,7 @@ class InstallmentChangeSaleView extends AbstractInstallmentHouseView<Installment
 
     if(_typeofHouseData.length == _tabLen && _typeofHouseDataAttachment.length == _tabLen)
     {
+      contents.add(ChargeSaleSummaryInfoView(_defaultData));
       setState(() {
        loadingState = LoadingState.DONE; 
       });

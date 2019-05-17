@@ -15,7 +15,7 @@ abstract class AbstractInstallmentHouse extends MenuItemPage
   }
 }
 
-abstract class AbstractInstallmentHouseView<T extends AbstractInstallmentHouse> extends MenuItemPageView<T> with SingleTickerProviderStateMixin
+abstract class AbstractInstallmentHouseView<T extends AbstractInstallmentHouse> extends MenuItemPageView<T>
 {
   AbstractInstallmentHouseView(MenuData data) : super(data)
   {
@@ -62,34 +62,11 @@ abstract class AbstractInstallmentHouseView<T extends AbstractInstallmentHouse> 
 
   @protected
   String uppAisTpCd;
-
-  ScrollController _scrollController;
-  TabController _tabController;
-
-  @protected
-  List<Tab> tabs = new List<Tab>();
+  
   @protected
   List<Widget> infoView = new List<Widget>();
   @protected
   List<Widget> scheduleView = new List<Widget>();
-
-  @override
-  void initState() 
-  {
-    super.initState();
-
-    _scrollController = ScrollController();
-    _tabController = TabController(length: tabs.length, vsync: this, initialIndex: 0);
-  }
-
-  @override
-  void dispose()
-  {
-    _scrollController.dispose();
-    _tabController.dispose();
-    
-    super.dispose();
-  }
 
   Widget _getContentSection(int idx)
   {

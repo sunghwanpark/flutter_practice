@@ -6,9 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:sprintf/sprintf.dart';
 import 'package:tuple/tuple.dart';
 
-class SummaryInfoView extends StatelessWidget
+class LandSummaryInfoView extends StatelessWidget
 {
-  SummaryInfoView(this._data, List<Map<String, String>> attatchDatas)
+  LandSummaryInfoView(this._data, List<Map<String, String>> attatchDatas)
   {
     for(int i = 0; i < attatchDatas.length; i++)
     {
@@ -18,18 +18,17 @@ class SummaryInfoView extends StatelessWidget
       if(!pdfName.contains('pdf'))
         continue;
 
-      String serialNum = map["CMN_AHFL_SN"];
       String code = map["SL_PAN_AHFL_DS_CD"];
+      if(code != '01')
+        continue;
 
-      if(!_attatchmentDatas.containsKey(code))
-        _attatchmentDatas[code] = new List<Tuple2<String, String>>();
-
-      _attatchmentDatas[code].add(Tuple2(pdfName, serialNum));
+      String serialNum = map["CMN_AHFL_SN"];
+      _noticeDatas.add(Tuple2(pdfName, serialNum));
     }
   }
   
   final Map<String, String> _data;
-  final Map<String, List<Tuple2<String, String>>> _attatchmentDatas = new Map<String, List<Tuple2<String, String>>>();
+  final List<Tuple2<String, String>> _noticeDatas = new List<Tuple2<String, String>>();
 
   _getPDFButton(BuildContext context, String pdfFileName, String pdfSerialNum)
   {
@@ -130,7 +129,7 @@ class SummaryInfoView extends StatelessWidget
       widgets.add(Align
       (
         alignment: Alignment.centerLeft,
-        child: Text(sprintf('공고일 : %s', [getDateFormat(_data["PAN_DT"])]), textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'TmonTium'))
+        child: Text(sprintf('공고게시일 : %s', [getDateFormat(_data["PAN_DT"])]), textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'TmonTium'))
       ));
     }
     
@@ -143,7 +142,7 @@ class SummaryInfoView extends StatelessWidget
       ));
     }
 
-    if(_attatchmentDatas.containsKey('01') && _attatchmentDatas['01'].length > 0)
+    if(_noticeDatas.length > 0)
     {
       widgets.add(Row
       (
@@ -155,43 +154,7 @@ class SummaryInfoView extends StatelessWidget
         ]
       ));
 
-      _attatchmentDatas['01'].forEach((tuple)
-      {
-        widgets.add(_getPDFButton(context, tuple.item1, tuple.item2));
-      });
-    }
-
-    if(_attatchmentDatas.containsKey('02') && _attatchmentDatas['02'].length > 0)
-    {
-      widgets.add(Row
-      (
-        children : <Widget>
-        [
-          Icon(Icons.library_books, color: Colors.black),
-          SizedBox(width: 10),
-          Text('팜플렛', textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 25, fontFamily: 'TmonTium', fontWeight: FontWeight.w500))
-        ]
-      ));
-
-      _attatchmentDatas['02'].forEach((tuple)
-      {
-        widgets.add(_getPDFButton(context, tuple.item1, tuple.item2));
-      });
-    }
-
-    if(_attatchmentDatas.containsKey('19') && _attatchmentDatas['19'].length > 0)
-    {
-      widgets.add(Row
-      (
-        children : <Widget>
-        [
-          Icon(Icons.file_download, color: Colors.black),
-          SizedBox(width: 10),
-          Text('기타 첨부파일', textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 25, fontFamily: 'TmonTium', fontWeight: FontWeight.w500))
-        ]
-      ));
-
-      _attatchmentDatas['19'].forEach((tuple)
+      _noticeDatas.forEach((tuple)
       {
         widgets.add(_getPDFButton(context, tuple.item1, tuple.item2));
       });

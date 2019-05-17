@@ -5,7 +5,6 @@ import 'package:bunyang/MenuItem/IntallmentHouse/SummaryInfoView.dart';
 import 'package:bunyang/MenuItem/IntallmentHouse/SupplyInfoView.dart';
 import 'package:bunyang/MenuItem/MenuItemModel.dart';
 import 'package:bunyang/Util/Util.dart';
-import 'package:flutter/material.dart';
 
 import 'SupplyScheduleView.dart';
 
@@ -61,7 +60,7 @@ class InstallmentHouseView extends AbstractInstallmentHouseView<InstallmentHouse
 
   void onResponseDetail(Map<String, List<Map<String, String>>> res)
   {
-    contents.add(SummaryInfoView(res["dsHsSlpa"].first));
+    contents.add(SummaryInfoView(res["dsHsSlpa"].first, res["dsAhflList"]));
     scheduleView.add(SupplyScheduleView(res));
 
     // list가 한개인 경우만
