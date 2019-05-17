@@ -1,7 +1,6 @@
 import 'package:bunyang/Menu/Model/MenuModel.dart';
 import 'package:bunyang/MenuItem/IntallmentHouse/Abstract/AbstractInstallmentHouseView.dart';
 import 'package:bunyang/MenuItem/IntallmentHouse/IntallmentChangeSale/InstallmentChangeSalePresenter.dart';
-import 'package:bunyang/Util/PDFViewer.dart';
 import 'package:bunyang/Util/Util.dart';
 
 class InstallmentChangeSale extends AbstractInstallmentHouse
@@ -34,8 +33,6 @@ class InstallmentChangeSaleView extends AbstractInstallmentHouseView<Installment
   {
     _defaultData.clear();
     _defaultData.addAll(res);
-
-    contents.add(PDFViewer(res["dsAhflList"][1]["SL_PAN_AHFL_DS_CD"]));
 
     res["dsSbdInf"].forEach((map)
     {
