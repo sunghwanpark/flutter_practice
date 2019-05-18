@@ -32,8 +32,6 @@ abstract class MenuItemPageView<T extends MenuItemPage> extends State<T> with Si
   String panId;
   String ccrCnntSysDsCd;
   String appBarTitle;
-  
-  //List<Widget> contents = new List<Widget>();
 
   LoadingState loadingState = LoadingState.LOADING;
 
@@ -52,9 +50,11 @@ abstract class MenuItemPageView<T extends MenuItemPage> extends State<T> with Si
   TabController _tabController;
 
   @protected
+  List<String> tabNames = new List<String>();
+  @protected
   List<Tab> tabs = new List<Tab>();
   @protected
-  List<List<Widget>> contents = new List<List<Widget>>();
+  Map<int, List<Widget>> contents = new Map<int, List<Widget>>();
 
   @override
   void initState() 
@@ -74,12 +74,12 @@ abstract class MenuItemPageView<T extends MenuItemPage> extends State<T> with Si
     super.dispose();
   }
 
-  Widget _getContentSection(int idx)
+  Widget _getContentSection(List<Widget> content)
   {
     switch (loadingState)
     {
       case LoadingState.DONE:
-        return ListView(children: contents[idx]);
+        return ListView(children: content);
       case LoadingState.ERROR:
         return myText("데이터를 불러오지 못했습니다!");
       case LoadingState.LOADING:
@@ -110,7 +110,42 @@ abstract class MenuItemPageView<T extends MenuItemPage> extends State<T> with Si
             (
               bottom: TabBar
               (
-                tabs: tabs,
+                tabs: tabNames.map((str)
+                {
+                  return Tab
+                  (
+                    icon: Text
+                    (
+                      str,
+                      style: TextStyle
+                      (
+                        fontSize: 18,
+                        inherit: true,
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        shadows: 
+                        [
+                          Shadow( // bottomLeft
+	                          offset: Offset(-1.5, -1.5),
+	                          color: Colors.black
+                          ),
+                          Shadow( // bottomRight
+	                          offset: Offset(1.5, -1.5),
+	                          color: Colors.black
+                          ),
+                          Shadow( // topRight
+	                          offset: Offset(1.5, 1.5),
+	                          color: Colors.black
+                          ),
+                          Shadow( // topLeft
+	                          offset: Offset(-1.5, 1.5),
+	                          color: Colors.black
+                          ),
+                        ]
+                      )
+                    )
+                  );
+                }).toList(),
                 controller: _tabController,
                 indicatorWeight: 5,
                 indicatorColor: Colors.black26,
@@ -160,12 +195,7 @@ abstract class MenuItemPageView<T extends MenuItemPage> extends State<T> with Si
         body: TabBarView
         (
           controller: _tabController,
-          children: contents <Widget>
-          [
-            _getContentSection(0),
-            _getContentSection(1),
-            _getContentSection(2)
-          ]
+          children: contents.values.map((content) => _getContentSection(content)).toList()
         ),
       ),
     );

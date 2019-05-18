@@ -9,6 +9,8 @@ import 'package:bunyang/MenuItem/MenuItemPageView.dart';
 import 'package:bunyang/Util/Util.dart';
 import 'package:flutter/material.dart';
 
+enum LandPageState { Contents, Infos, Schedule }
+
 class LandPage extends MenuItemPage
 {
   LandPage(MenuData data) : super(data);
@@ -19,7 +21,15 @@ class LandPage extends MenuItemPage
 
 class LandPageView extends MenuItemPageView<LandPage>
 {
-  LandPageView(MenuData data) : super(data);
+  LandPageView(MenuData data) : super(data)
+  {
+    tabNames = ['공고내용', '공급정보', '공고일정'];
+
+    for(int i = 0; i < LandPageState.values.length; i++)
+    {
+      contents[i] = new List<Widget>();
+    }
+  }
   
   @override
   void initState() 
@@ -37,18 +47,18 @@ class LandPageView extends MenuItemPageView<LandPage>
 
   void onLoadComplete(Map<String, List<Map<String, String>>> landDatas)
   {
-    contents.add(LandSummaryInfoView(landDatas["dsLndInf"].first, landDatas['dsAhtlList']));
+    contents[LandPageState.Contents.index].add(LandSummaryInfoView(landDatas["dsLndInf"].first, landDatas['dsAhtlList']));
 
     if(landDatas["dsSplInfBidList"].length > 0)
     {
-      contents.add(SupplyDateView(true, landDatas["dsLndInf"].first, landDatas["dsSplScdList"].where((data) => data["RNK_TYPE"] == "01").toList()));
-      contents.add(SupplyLotOfLandInfoView(true, landDatas["dsSplInfBidList"]));
+      contents[LandPageState.Schedule.index].add(SupplyDateView(true, landDatas["dsLndInf"].first, landDatas["dsSplScdList"].where((data) => data["RNK_TYPE"] == "01").toList()));
+      contents[LandPageState.Infos.index].add(SupplyLotOfLandInfoView(true, landDatas["dsSplInfBidList"]));
     }
 
     if(landDatas["dsSplInfLtrList"].length > 0)
     {
-      contents.add(SupplyDateView(false, landDatas["dsLndInf"].first, landDatas["dsSplScdList"].where((data) => data["RNK_TYPE"] == "02").toList()));
-      contents.add(SupplyLotOfLandInfoView(false, landDatas["dsSplInfLtrList"]));
+      contents[LandPageState.Schedule.index].add(SupplyDateView(false, landDatas["dsLndInf"].first, landDatas["dsSplScdList"].where((data) => data["RNK_TYPE"] == "02").toList()));
+      contents[LandPageState.Infos.index].add(SupplyLotOfLandInfoView(false, landDatas["dsSplInfLtrList"]));
     }
     
     if(landDatas["dsLndInf"].first["CTRT_PLC_ADR"].isNotEmpty && landDatas["dsLndInf"].first["CTRT_PLC_DTL_ADR"].isNotEmpty)
@@ -58,7 +68,7 @@ class LandPageView extends MenuItemPageView<LandPage>
       addressBuffer.write(" ");
       addressBuffer.write(landDatas["dsLndInf"].first["CTRT_PLC_DTL_ADR"]);
 
-      contents.add(Container
+      contents[LandPageState.Schedule.index].add(Container
       (
         padding: EdgeInsets.only(left: 10, right: 10),
         child: MyGoogleMap("계약장소 정보", addressBuffer.toString())

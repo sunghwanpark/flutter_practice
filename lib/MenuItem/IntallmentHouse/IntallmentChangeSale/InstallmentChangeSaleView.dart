@@ -1,8 +1,10 @@
 import 'package:bunyang/Menu/Model/MenuModel.dart';
 import 'package:bunyang/MenuItem/IntallmentHouse/Abstract/AbstractInstallmentHouseView.dart';
 import 'package:bunyang/MenuItem/IntallmentHouse/IntallmentChangeSale/ChargeSaleSummaryInfoView.dart';
+import 'package:bunyang/MenuItem/IntallmentHouse/IntallmentChangeSale/ChargeSupplyInfoTabView.dart';
 import 'package:bunyang/MenuItem/IntallmentHouse/IntallmentChangeSale/InstallmentChangeSalePresenter.dart';
 import 'package:bunyang/Util/Util.dart';
+import 'package:tuple/tuple.dart';
 
 class InstallmentChangeSale extends AbstractInstallmentHouse
 {
@@ -64,7 +66,14 @@ class InstallmentChangeSaleView extends AbstractInstallmentHouseView<Installment
 
     if(_typeofHouseData.length == _tabLen && _typeofHouseDataAttachment.length == _tabLen)
     {
-      contents.add(ChargeSaleSummaryInfoView(_defaultData));
+      contents[InstallmentTabState.Contents.index].add(ChargeSaleSummaryInfoView(_defaultData));
+
+      var tupleList = List<Tuple3<Map<String, String>, Map<String, String>, Map<String, String>>>();
+      for(int i = 0; i < _tabLen; i++)
+      {
+        tupleList.add(Tuple3(_defaultData['dsSbdInf'][i], _typeofHouseData[i], _typeofHouseDataAttachment[i]));
+      }
+      contents[InstallmentTabState.Infos.index].add(ChargeSupplyInfoTab(tupleList));
       setState(() {
        loadingState = LoadingState.DONE; 
       });

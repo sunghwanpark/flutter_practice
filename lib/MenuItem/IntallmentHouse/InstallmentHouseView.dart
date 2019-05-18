@@ -5,10 +5,9 @@ import 'package:bunyang/MenuItem/IntallmentHouse/SummaryInfoView.dart';
 import 'package:bunyang/MenuItem/IntallmentHouse/SupplyInfoView.dart';
 import 'package:bunyang/MenuItem/MenuItemModel.dart';
 import 'package:bunyang/Util/Util.dart';
+import 'package:flutter/material.dart';
 
 import 'SupplyScheduleView.dart';
-
-enum DataListenState { DEFAULT, DETAIL, IMAGE }
 
 class InstallmentHousePage extends AbstractInstallmentHouse
 {
@@ -60,8 +59,8 @@ class InstallmentHouseView extends AbstractInstallmentHouseView<InstallmentHouse
 
   void onResponseDetail(Map<String, List<Map<String, String>>> res)
   {
-    contents.add(SummaryInfoView(res["dsHsSlpa"].first, res["dsAhflList"]));
-    scheduleView.add(SupplyScheduleView(res));
+    contents[InstallmentTabState.Contents.index].add(SummaryInfoView(res["dsHsSlpa"].first, res["dsAhflList"]));
+    contents[InstallmentTabState.Schedule.index].add(SupplyScheduleView(res));
 
     // list가 한개인 경우만
     if(res["dsHsAisList"].length == 1)
@@ -113,7 +112,7 @@ class InstallmentHouseView extends AbstractInstallmentHouseView<InstallmentHouse
 
   void onResponseFinally(Map<String, List<Map<String, String>>> res)
   {
-    infoView.add(SupplyInfo(_defaultData, _publicInstallment, _publicLease, _publicInstallmentLease, res["dsHsAhtlList"]));
+    contents[InstallmentTabState.Infos.index].add(SupplyInfo(_defaultData, _publicInstallment, _publicLease, _publicInstallmentLease, res["dsHsAhtlList"]));
 
     setState(() {
         loadingState = LoadingState.DONE;
