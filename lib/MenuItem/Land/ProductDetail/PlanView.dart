@@ -52,7 +52,7 @@ class PlanView extends StatelessWidget
               map["AR"].isNotEmpty ? Align
               (
                 alignment: Alignment.centerLeft,
-                child: Text(sprintf('면적(㎡) : %s', [f.format(int.parse(map["AR"]))]), textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'TmonTium'))
+                child: Text(sprintf('면적(㎡) : %s', [f.format(double.parse(map["AR"]))]), textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'TmonTium'))
               ) : SizedBox(),
               map["AGR_HSH_CNT"].isNotEmpty ? Align
               (

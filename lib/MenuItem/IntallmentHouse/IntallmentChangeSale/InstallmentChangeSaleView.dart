@@ -1,10 +1,10 @@
 import 'package:bunyang/Menu/Model/MenuModel.dart';
 import 'package:bunyang/MenuItem/IntallmentHouse/Abstract/AbstractInstallmentHouseView.dart';
 import 'package:bunyang/MenuItem/IntallmentHouse/IntallmentChangeSale/ChargeSaleSummaryInfoView.dart';
-import 'package:bunyang/MenuItem/IntallmentHouse/IntallmentChangeSale/ChargeSupplyInfoTabView.dart';
+import 'package:bunyang/MenuItem/IntallmentHouse/IntallmentChangeSale/ChargeSupplyInfoView.dart';
 import 'package:bunyang/MenuItem/IntallmentHouse/IntallmentChangeSale/InstallmentChangeSalePresenter.dart';
 import 'package:bunyang/Util/Util.dart';
-import 'package:tuple/tuple.dart';
+import 'package:flutter/material.dart';
 
 class InstallmentChangeSale extends AbstractInstallmentHouse
 {
@@ -19,8 +19,8 @@ class InstallmentChangeSaleView extends AbstractInstallmentHouseView<Installment
   InstallmentChangeSaleView(MenuData data) : super(data);
 
   final Map<String, List<Map<String, String>>> _defaultData = new Map<String, List<Map<String, String>>>();
-  final List<Map<String, String>> _typeofHouseData = new List<Map<String, String>>();
-  final List<Map<String, String>> _typeofHouseDataAttachment = new List<Map<String, String>>();
+  final List<List<Map<String, String>>> _typeofHouseData = new List<List<Map<String, String>>>();
+  final List<List<Map<String, String>>> _typeofHouseDataAttachment = new List<List<Map<String, String>>>();
 
   int _tabLen = 0;
 
@@ -45,6 +45,7 @@ class InstallmentChangeSaleView extends AbstractInstallmentHouseView<Installment
   {
     _defaultData.clear();
     _defaultData.addAll(res);
+    contents[InstallmentTabState.Contents.index].add(ChargeSaleSummaryInfoView(_defaultData));
 
     res["dsSbdInf"].forEach((map)
     {
@@ -57,23 +58,17 @@ class InstallmentChangeSaleView extends AbstractInstallmentHouseView<Installment
 
   void onResponseHouseType(Map<String, List<Map<String, String>>> res)
   {
-    _typeofHouseData.add(res["dsHtyInf"].length > 0 ? res["dsHtyInf"].first : null);
+    _typeofHouseData.add(res["dsHtyInf"].length > 0 ? res["dsHtyInf"] : null);
   }
 
   void onResponseHouseAttatchment(Map<String, List<Map<String, String>>> res)
   {
-    _typeofHouseDataAttachment.add(res["dsSdbAhflInf"].length > 0 ? res["dsSdbAhflInf"].first : null);
+    _typeofHouseDataAttachment.add(res["dsSdbAhflInf"].length > 0 ? res["dsSdbAhflInf"] : null);
 
     if(_typeofHouseData.length == _tabLen && _typeofHouseDataAttachment.length == _tabLen)
     {
-      contents[InstallmentTabState.Contents.index].add(ChargeSaleSummaryInfoView(_defaultData));
-
-      var tupleList = List<Tuple3<Map<String, String>, Map<String, String>, Map<String, String>>>();
-      for(int i = 0; i < _tabLen; i++)
-      {
-        tupleList.add(Tuple3(_defaultData['dsSbdInf'][i], _typeofHouseData[i], _typeofHouseDataAttachment[i]));
-      }
-      contents[InstallmentTabState.Infos.index].add(ChargeSupplyInfoTab(tupleList));
+      contents[InstallmentTabState.Infos.index].add(ChargeSupplyInfo(_defaultData["dsSbdInf"], _typeofHouseData, _typeofHouseDataAttachment));
+      contents[InstallmentTabState.Schedule.index].add(SizedBox());
       setState(() {
        loadingState = LoadingState.DONE; 
       });

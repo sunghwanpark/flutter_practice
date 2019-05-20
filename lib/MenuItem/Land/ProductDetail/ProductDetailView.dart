@@ -76,7 +76,7 @@ class ProductDetailView extends State<ProductDetail> with SingleTickerProviderSt
 
   void _makeBusinessView(Map<String, List<Map<String, String>>> res)
   {
-    _businessView.add(BusinessShortInfoView(res["dsLndInf"].first));
+    _businessView.add(BusinessShortInfoView(res["dsLndInf"].first, res['dsAhflList']));
     if(res["dsLndHsList"].length > 0)
       _businessView.add(PlanView(res["dsLndHsList"]));
   }

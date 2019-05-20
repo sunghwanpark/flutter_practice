@@ -1,6 +1,7 @@
 import 'package:bunyang/Util/PDFViewer.dart';
 import 'package:bunyang/Util/Util.dart';
 import 'package:flutter/material.dart';
+import 'package:sprintf/sprintf.dart';
 
 class ChargeSaleSummaryInfoView extends StatelessWidget
 {
@@ -20,6 +21,18 @@ class ChargeSaleSummaryInfoView extends StatelessWidget
         SizedBox(width: 10),
         Text('공고개요', textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 27, fontFamily: 'TmonTium', fontWeight: FontWeight.w500))
       ]
+    ));
+
+    widgets.add(Align
+    (
+      alignment: Alignment.centerLeft,
+      child: Text(sprintf('유형 : %s', [_defaultData['dsPanInf'].first['SPL_TP_CD_NM']]), textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'TmonTium'))
+    ));
+    
+    widgets.add(Align
+    (
+      alignment: Alignment.centerLeft,
+      child: Text(sprintf('공고일 : %s', [getDateFormat(_defaultData['dsPanInf'].first['PAN_DT'])]), textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'TmonTium'))
     ));
 
     String pdfFileName = _defaultData['dsAhflList'].where((map) => map['SL_PAN_AHFL_DS_CD'] == '01').first['CMN_AHFL_NM'];

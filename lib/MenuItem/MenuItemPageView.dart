@@ -51,8 +51,7 @@ abstract class MenuItemPageView<T extends MenuItemPage> extends State<T> with Si
 
   @protected
   List<String> tabNames = new List<String>();
-  @protected
-  List<Tab> tabs = new List<Tab>();
+  
   @protected
   Map<int, List<Widget>> contents = new Map<int, List<Widget>>();
 
@@ -62,7 +61,7 @@ abstract class MenuItemPageView<T extends MenuItemPage> extends State<T> with Si
     super.initState();
 
     _scrollController = ScrollController();
-    _tabController = TabController(length: tabs.length, vsync: this, initialIndex: 0);
+    _tabController = TabController(length: tabNames.length, vsync: this, initialIndex: 0);
   }
 
   @override

@@ -77,6 +77,7 @@ class InstallmentHouseView extends AbstractInstallmentHouseView<InstallmentHouse
     }
     else
     {
+      contents[InstallmentTabState.Infos.index].add(SizedBox());
       setState(() {
         loadingState = LoadingState.DONE;
       });

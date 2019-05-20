@@ -75,6 +75,11 @@ class LandPageView extends MenuItemPageView<LandPage>
       ));
     }
 
+    if(contents[LandPageState.Schedule.index].length == 0)
+      contents[LandPageState.Schedule.index].add(SizedBox());
+    if(contents[LandPageState.Infos.index].length == 0)
+      contents[LandPageState.Infos.index].add(SizedBox());
+
     setState(() => loadingState = LoadingState.DONE);
   }
 }

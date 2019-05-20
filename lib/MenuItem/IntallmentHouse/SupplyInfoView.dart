@@ -121,11 +121,13 @@ class SupplyInfoView extends State<SupplyInfo>
           });
         }
       });
+      
       widgets.add(Align
       (
         alignment: Alignment.centerLeft,
         child: Text(sprintf("· %s", [map["SL_PAN_AHFL_DS_CD_NM"]]), textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 20, fontWeight: FontWeight.w500, fontFamily: 'TmonTium'))
       ));
+
       widgets.add(_imageLoadingState[i] ? InkWell
       (
         child: Hero
