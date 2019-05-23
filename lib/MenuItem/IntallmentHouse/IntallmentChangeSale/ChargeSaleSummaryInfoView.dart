@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:bunyang/Util/PDFViewer.dart';
 import 'package:bunyang/Util/Util.dart';
 import 'package:flutter/material.dart';
@@ -51,7 +52,11 @@ class ChargeSaleSummaryInfoView extends StatelessWidget
         [
           Icon(Icons.picture_as_pdf, color: Colors.black),
           SizedBox(width: 5),
-          myText(pdfFileName)
+          Container
+          (
+            width: MediaQuery.of(context).size.width - 100,
+            child: AutoSizeText(pdfFileName, maxLines: 1, textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'TmonTium'))
+          )
         ]
       ),
       onPressed: () => Navigator.push

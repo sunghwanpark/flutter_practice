@@ -1,6 +1,7 @@
 import 'package:bunyang/Menu/Model/MenuModel.dart';
 import 'package:bunyang/MenuItem/IntallmentHouse/Abstract/AbstractInstallmentHouseView.dart';
 import 'package:bunyang/MenuItem/IntallmentHouse/IntallmentChangeSale/ChargeSaleSummaryInfoView.dart';
+import 'package:bunyang/MenuItem/IntallmentHouse/IntallmentChangeSale/ChargeScheduleView.dart';
 import 'package:bunyang/MenuItem/IntallmentHouse/IntallmentChangeSale/ChargeSupplyInfoView.dart';
 import 'package:bunyang/MenuItem/IntallmentHouse/IntallmentChangeSale/InstallmentChangeSalePresenter.dart';
 import 'package:bunyang/Util/Util.dart';
@@ -46,6 +47,7 @@ class InstallmentChangeSaleView extends AbstractInstallmentHouseView<Installment
     _defaultData.clear();
     _defaultData.addAll(res);
     contents[InstallmentTabState.Contents.index].add(ChargeSaleSummaryInfoView(_defaultData));
+    contents[InstallmentTabState.Schedule.index].add(ChargeScheduleView(_defaultData));
 
     res["dsSbdInf"].forEach((map)
     {
@@ -68,7 +70,6 @@ class InstallmentChangeSaleView extends AbstractInstallmentHouseView<Installment
     if(_typeofHouseData.length == _tabLen && _typeofHouseDataAttachment.length == _tabLen)
     {
       contents[InstallmentTabState.Infos.index].add(ChargeSupplyInfo(_defaultData["dsSbdInf"], _typeofHouseData, _typeofHouseDataAttachment));
-      contents[InstallmentTabState.Schedule.index].add(SizedBox());
       setState(() {
        loadingState = LoadingState.DONE; 
       });

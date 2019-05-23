@@ -47,10 +47,10 @@ class SummaryInfoView extends StatelessWidget
         [
           Icon(Icons.picture_as_pdf, color: Colors.black),
           SizedBox(width: 5),
-          SizedBox
+          Container
           (
-            width: MediaQuery.of(context).size.width - 150,
-            child: Text(pdfFileName, maxLines: 1, overflow: TextOverflow.fade, style: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'TmonTium'))
+            width: MediaQuery.of(context).size.width - 100,
+            child: AutoSizeText(pdfFileName, maxLines: 1, textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'TmonTium'))
           )
         ]
       ),

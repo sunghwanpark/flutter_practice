@@ -19,16 +19,20 @@ class LandSummaryInfoView extends StatelessWidget
         continue;
 
       String code = map["SL_PAN_AHFL_DS_CD"];
-      if(code != '01')
-        continue;
-
       String serialNum = map["CMN_AHFL_SN"];
-      _noticeDatas.add(Tuple2(pdfName, serialNum));
+      if(code == '01' || code == '17' || code == '20' || code == '21')
+        _noticeDatas.add(Tuple2(pdfName, serialNum));
+      else if(code == '02' || code == '22')
+        _downloadDatas.add(Tuple2(pdfName, serialNum));
+      else if(code == '03' || code == '07' || code == '09' || code == '19' || code == '25')
+        _etcDatas.add(Tuple2(pdfName, serialNum));
     }
   }
   
   final Map<String, String> _data;
   final List<Tuple2<String, String>> _noticeDatas = new List<Tuple2<String, String>>();
+  final List<Tuple2<String, String>> _downloadDatas = new List<Tuple2<String, String>>();
+  final List<Tuple2<String, String>> _etcDatas = new List<Tuple2<String, String>>();
 
   _getPDFButton(BuildContext context, String pdfFileName, String pdfSerialNum)
   {
@@ -46,10 +50,10 @@ class LandSummaryInfoView extends StatelessWidget
         [
           Icon(Icons.picture_as_pdf, color: Colors.black),
           SizedBox(width: 5),
-          SizedBox
+          Container
           (
-            width: MediaQuery.of(context).size.width - 150,
-            child: Text(pdfFileName, maxLines: 1, overflow: TextOverflow.fade, style: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'TmonTium'))
+            width: MediaQuery.of(context).size.width - 100,
+            child: AutoSizeText(pdfFileName, maxLines: 1, textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'TmonTium'))
           )
         ]
       ),
@@ -155,6 +159,42 @@ class LandSummaryInfoView extends StatelessWidget
       ));
 
       _noticeDatas.forEach((tuple)
+      {
+        widgets.add(_getPDFButton(context, tuple.item1, tuple.item2));
+      });
+    }
+
+    if(_downloadDatas.length > 0)
+    {
+      widgets.add(Row
+      (
+        children : <Widget>
+        [
+          Icon(Icons.notifications, color: Colors.black),
+          SizedBox(width: 10),
+          Text('다운로드', textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 25, fontFamily: 'TmonTium', fontWeight: FontWeight.w500))
+        ]
+      ));
+
+      _downloadDatas.forEach((tuple)
+      {
+        widgets.add(_getPDFButton(context, tuple.item1, tuple.item2));
+      });
+    }
+
+    if(_etcDatas.length > 0)
+    {
+      widgets.add(Row
+      (
+        children : <Widget>
+        [
+          Icon(Icons.notifications, color: Colors.black),
+          SizedBox(width: 10),
+          Text('기타', textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 25, fontFamily: 'TmonTium', fontWeight: FontWeight.w500))
+        ]
+      ));
+
+      _etcDatas.forEach((tuple)
       {
         widgets.add(_getPDFButton(context, tuple.item1, tuple.item2));
       });
