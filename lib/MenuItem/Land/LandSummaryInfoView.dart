@@ -152,7 +152,7 @@ class LandSummaryInfoView extends StatelessWidget
       (
         children : <Widget>
         [
-          Icon(Icons.notifications, color: Colors.black),
+          Icon(Icons.library_books, color: Colors.black),
           SizedBox(width: 10),
           Text('공고문', textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 25, fontFamily: 'TmonTium', fontWeight: FontWeight.w500))
         ]
@@ -170,7 +170,7 @@ class LandSummaryInfoView extends StatelessWidget
       (
         children : <Widget>
         [
-          Icon(Icons.notifications, color: Colors.black),
+          Icon(Icons.file_download, color: Colors.black),
           SizedBox(width: 10),
           Text('다운로드', textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 25, fontFamily: 'TmonTium', fontWeight: FontWeight.w500))
         ]

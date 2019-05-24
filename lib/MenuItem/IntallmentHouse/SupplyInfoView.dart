@@ -1,7 +1,10 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:bunyang/Map/MyGoogleMapView.dart';
+import 'package:bunyang/MenuItem/IntallmentHouse/InstallmentHouseInquiry/InstallmentHouseInquiryView.dart';
+import 'package:bunyang/MenuItem/IntallmentHouse/IntallmentDetail/InstallmentSupplyInfoDetailView.dart';
 import 'package:bunyang/Secret/URL.dart';
 import 'package:bunyang/Util/HighlightImageView.dart';
+import 'package:bunyang/Util/Util.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
@@ -9,8 +12,9 @@ import 'package:sprintf/sprintf.dart';
 
 class SupplyInfo extends StatefulWidget
 {
-  SupplyInfo(this._defaultData, this._publicInstallment, this._publicLease, this._publicInstallmentLease, this._imageData);
+  SupplyInfo(this._uppAisTpCd, this._defaultData, this._publicInstallment, this._publicLease, this._publicInstallmentLease, this._imageData);
 
+  final String _uppAisTpCd;
   final Map<String, String> _defaultData;
   final List<Map<String, String>> _publicInstallment;
   final List<Map<String, String>> _publicLease;
@@ -33,6 +37,7 @@ class SupplyInfoView extends State<SupplyInfo>
     super.initState();
   }
 
+  
   List<Widget> _getContents(BuildContext context)
   {
     List<Widget> widgets = new List<Widget>();
@@ -61,6 +66,36 @@ class SupplyInfoView extends State<SupplyInfo>
         )
       ));
     }
+
+    widgets.add(Align
+    (
+      alignment: Alignment.center,
+      child: Row
+      (
+        children: <Widget>
+        [
+          widget._defaultData['CYB_MODH_URL'].isNotEmpty ? RaisedButton.icon
+          (
+            onPressed: () => launchURL(widget._defaultData['CYB_MODH_URL']),
+            color: Colors.amber[300],
+            icon: Icon(Icons.details),
+            label: Text('사이버모델하우스', textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'TmonTium')),
+          ) : SizedBox(),
+          widget._defaultData['CYB_MODH_URL'].isNotEmpty ? SizedBox(width: 10) : SizedBox(),
+          RaisedButton.icon
+          (
+            onPressed: () => Navigator.push
+            (
+              context,
+              MaterialPageRoute(builder: (context) => InstallmentHouseInquiry(widget._defaultData, widget._uppAisTpCd))
+            ),
+            color: Colors.amber[300],
+            icon: Icon(Icons.details),
+            label: Text('매물정보조회', textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'TmonTium')),
+          )
+        ],
+      )
+    ));
 
     if(widget._defaultData["LAT"].isNotEmpty && widget._defaultData["LTD"].isNotEmpty)
     {
@@ -190,8 +225,6 @@ class SupplyInfoView extends State<SupplyInfo>
     }
     
     final f = NumberFormat("#,###");
-    
-    List<Widget> contents = new List<Widget>(); 
     if(widget._publicInstallment.length > 0) // 공공분양
     {
       widgets.add(_setSubject('공공분양'));
@@ -213,6 +246,8 @@ class SupplyInfoView extends State<SupplyInfo>
           sprintf('평균분양가격(원): %s', [f.format(int.parse(map['SIL_AMT']))]),
           sprintf('인터넷청약: %s', [map['BTN_NM']])
         ];
+
+        List<Widget> contents = new List<Widget>(); 
         values.forEach((value)
         {
           contents.add(Padding
@@ -226,7 +261,7 @@ class SupplyInfoView extends State<SupplyInfo>
           ));
         });
 
-        widgets.add(_setDetailCard(contents));
+        widgets.add(_setDetailCard(context, contents, map));
       });
     }
     else if(widget._publicLease.length > 0) // 공공임대
@@ -251,6 +286,8 @@ class SupplyInfoView extends State<SupplyInfo>
           sprintf('월임대료(원): %s', [f.format(int.parse(map['MM_RFE']))]),
           sprintf('인터넷청약: %s', [map['BTN_NM']])
         ];
+
+        List<Widget> contents = new List<Widget>(); 
         values.forEach((value)
         {
           contents.add(Padding
@@ -264,7 +301,7 @@ class SupplyInfoView extends State<SupplyInfo>
           ));
         });
 
-        widgets.add(_setDetailCard(contents));
+        widgets.add(_setDetailCard(context, contents, map));
       });
     }
     else if(widget._publicInstallmentLease.length > 0) // 분납임대
@@ -289,6 +326,8 @@ class SupplyInfoView extends State<SupplyInfo>
           sprintf('월임대료(원): %s', [f.format(int.parse(map['MM_RFE']))]),
           sprintf('인터넷청약: %s', [map['BTN_NM']])
         ];
+
+        List<Widget> contents = new List<Widget>(); 
         values.forEach((value)
         {
           contents.add(Padding
@@ -302,7 +341,7 @@ class SupplyInfoView extends State<SupplyInfo>
           ));
         });
 
-        widgets.add(_setDetailCard(contents));
+        widgets.add(_setDetailCard(context, contents, map));
       });
     }
 
@@ -338,13 +377,21 @@ class SupplyInfoView extends State<SupplyInfo>
     );
   }
 
-  Padding _setDetailCard(List<Widget> addContents)
+  Padding _setDetailCard(BuildContext context, List<Widget> addContents, Map<String, String> contentsData)
   {
     return Padding
     (
       padding: EdgeInsets.only(top: 10, bottom: 10),
       child: GestureDetector
       (
+        onLongPress: () => Navigator.push
+        (
+          context,
+          MaterialPageRoute
+          (
+            builder: (context) => InstallmentSupplyInfoDetail(contentsData)
+          )
+        ),
         child: Container
         (
           decoration: ShapeDecoration

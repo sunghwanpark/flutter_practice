@@ -1,4 +1,5 @@
 import 'package:bunyang/Map/MyGoogleMapView.dart';
+import 'package:bunyang/MenuItem/IntallmentHouse/IntallmentChangeSale/ChargeSupplyInfoDetailView.dart';
 import 'package:bunyang/Secret/URL.dart';
 import 'package:bunyang/Util/HighlightImageView.dart';
 import 'package:flutter/material.dart';
@@ -152,6 +153,13 @@ class ChargeSupplyInfoView extends State<ChargeSupplyInfo>
           ]
         ));
 
+        widgets.add(Align
+        (
+          alignment: Alignment.centerLeft,
+          child: Text('상세공급정보를 확인하시려면 카드를 길게 눌러주세요', textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 15, fontFamily: 'TmonTium', decoration: TextDecoration.underline))
+        ));
+
+        List<Widget> cards = new List<Widget>();
         for(int j = 0; j < _detail.length; j++)
         {
           var detail = _detail[j];
@@ -168,7 +176,7 @@ class ChargeSupplyInfoView extends State<ChargeSupplyInfo>
 
           values.forEach((value)
           {
-            widgets.add(Padding
+            cards.add(Padding
             (
               padding: EdgeInsets.only(left:10, right:10),
               child: Align
@@ -178,6 +186,8 @@ class ChargeSupplyInfoView extends State<ChargeSupplyInfo>
               )
             ));
           });
+
+          widgets.add(_setDetailCard(context, cards, detail));
         }        
       }
 
@@ -201,6 +211,46 @@ class ChargeSupplyInfoView extends State<ChargeSupplyInfo>
     }
 
     return widgets;
+  }
+
+  Padding _setDetailCard(BuildContext context, List<Widget> addContents, Map<String, String> contentsData)
+  {
+    return Padding
+    (
+      padding: EdgeInsets.only(top: 10, bottom: 10),
+      child: GestureDetector
+      (
+        onLongPress: () => Navigator.push
+        (
+          context,
+          MaterialPageRoute
+          (
+            builder: (context) => ChargeSupplyInfoDetailView(contentsData)
+          )
+        ),
+        child: Container
+        (
+          decoration: ShapeDecoration
+          (
+            color: Colors.indigo[200],
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            shadows: 
+            [
+              BoxShadow
+              (
+                color: Colors.black.withOpacity(0.3),
+                spreadRadius: 2.0,
+                offset: Offset(5.0, 5.0),
+              )
+            ],
+          ),
+          child: Column
+          (
+            children: addContents
+          )
+        )
+      )
+    );
   }
 
   @override

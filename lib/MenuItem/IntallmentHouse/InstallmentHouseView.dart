@@ -113,7 +113,7 @@ class InstallmentHouseView extends AbstractInstallmentHouseView<InstallmentHouse
 
   void onResponseFinally(Map<String, List<Map<String, String>>> res)
   {
-    contents[InstallmentTabState.Infos.index].add(SupplyInfo(_defaultData, _publicInstallment, _publicLease, _publicInstallmentLease, res["dsHsAhtlList"]));
+    contents[InstallmentTabState.Infos.index].add(SupplyInfo(uppAisTpCd, _defaultData, _publicInstallment, _publicLease, _publicInstallmentLease, res["dsHsAhtlList"]));
 
     setState(() {
         loadingState = LoadingState.DONE;

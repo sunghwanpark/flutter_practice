@@ -5,7 +5,6 @@ import 'package:bunyang/MenuItem/IntallmentHouse/IntallmentChangeSale/ChargeSche
 import 'package:bunyang/MenuItem/IntallmentHouse/IntallmentChangeSale/ChargeSupplyInfoView.dart';
 import 'package:bunyang/MenuItem/IntallmentHouse/IntallmentChangeSale/InstallmentChangeSalePresenter.dart';
 import 'package:bunyang/Util/Util.dart';
-import 'package:flutter/material.dart';
 
 class InstallmentChangeSale extends AbstractInstallmentHouse
 {

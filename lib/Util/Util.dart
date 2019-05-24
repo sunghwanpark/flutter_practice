@@ -1,4 +1,5 @@
 import "package:flutter/material.dart";
+import 'package:url_launcher/url_launcher.dart';
 
 enum LoadingState { DONE, LOADING, WAITING, ERROR }
 
@@ -27,4 +28,27 @@ String getDateFormat(String dateString)
   sb.write(dateString.substring(6, 8));
 
   return sb.toString();
+}
+
+String getDateFormatkr(String dateString)
+{
+  StringBuffer sb = new StringBuffer();
+  sb.write(dateString.substring(0, 4));
+  sb.write('월');
+  sb.write(dateString.substring(4, 6));
+  sb.write('일');
+
+  return sb.toString();
+}
+
+launchURL(String url) async 
+{
+  if (await canLaunch(url)) 
+  {
+    await launch(url);
+  } 
+  else 
+  {
+    throw 'Could not launch $url';
+  }
 }

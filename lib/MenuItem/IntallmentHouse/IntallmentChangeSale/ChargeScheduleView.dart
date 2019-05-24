@@ -1,6 +1,5 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:bunyang/Map/MyGoogleMapView.dart';
-import 'package:bunyang/Util/Util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:sprintf/sprintf.dart';

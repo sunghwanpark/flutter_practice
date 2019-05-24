@@ -81,7 +81,6 @@ class MenuModel
     url = url + "?" + "apiKey=" + api_key;
     url = url + "&PG_SZ=100";
     url = url + "&PAGE=1";
-    url = url + "&PAN_SS=접수마감";
     url = url + "&UPP_AIS_TP_CD=" + code;
 
     return await http.post(url)
