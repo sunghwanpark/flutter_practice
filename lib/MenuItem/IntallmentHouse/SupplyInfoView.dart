@@ -4,6 +4,7 @@ import 'package:bunyang/MenuItem/IntallmentHouse/InstallmentHouseInquiry/Install
 import 'package:bunyang/MenuItem/IntallmentHouse/IntallmentDetail/InstallmentSupplyInfoDetailView.dart';
 import 'package:bunyang/Secret/URL.dart';
 import 'package:bunyang/Util/HighlightImageView.dart';
+import 'package:bunyang/Util/WebViewer.dart';
 import 'package:bunyang/Util/Util.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -76,10 +77,19 @@ class SupplyInfoView extends State<SupplyInfo>
         [
           widget._defaultData['CYB_MODH_URL'].isNotEmpty ? RaisedButton.icon
           (
+            /*onPressed: () => Navigator.push
+            (
+              context,
+              MaterialPageRoute(builder: (context) => WebViewer(url: widget._defaultData['CYB_MODH_URL']))
+            ),*/
             onPressed: () => launchURL(widget._defaultData['CYB_MODH_URL']),
             color: Colors.amber[300],
             icon: Icon(Icons.details),
-            label: Text('사이버모델하우스', textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'TmonTium')),
+            label: Container
+            (
+              width: 100,
+              child: AutoSizeText('사이버모델하우스', maxLines: 1, textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'TmonTium'))
+            )
           ) : SizedBox(),
           widget._defaultData['CYB_MODH_URL'].isNotEmpty ? SizedBox(width: 10) : SizedBox(),
           RaisedButton.icon
@@ -91,7 +101,11 @@ class SupplyInfoView extends State<SupplyInfo>
             ),
             color: Colors.amber[300],
             icon: Icon(Icons.details),
-            label: Text('매물정보조회', textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'TmonTium')),
+            label: Container
+            (
+              width: 100,
+              child: AutoSizeText('매물정보조회', maxLines: 1, textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'TmonTium'))
+            )
           )
         ],
       )
