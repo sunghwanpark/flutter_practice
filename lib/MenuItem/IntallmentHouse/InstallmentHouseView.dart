@@ -3,6 +3,7 @@ import 'package:bunyang/MenuItem/IntallmentHouse/Abstract/AbstractInstallmentHou
 import 'package:bunyang/MenuItem/IntallmentHouse/InstallmentHousePresenter.dart';
 import 'package:bunyang/MenuItem/IntallmentHouse/SummaryInfoView.dart';
 import 'package:bunyang/MenuItem/IntallmentHouse/SupplyInfoView.dart';
+import 'package:bunyang/MenuItem/IntallmentHouse/SupplyInfosView.dart';
 import 'package:bunyang/MenuItem/MenuItemModel.dart';
 import 'package:bunyang/Util/Util.dart';
 import 'package:flutter/material.dart';
@@ -22,14 +23,12 @@ class InstallmentHouseView extends AbstractInstallmentHouseView<InstallmentHouse
   InstallmentHouseView(MenuData data) : super(data);
 
   String _otxtPanId;
-  String _aisInfSn;
-  String _bztdCd;
-  String _hcBlkCd;
 
-  final Map<String, String> _defaultData = new Map<String, String>();
-  final List<Map<String, String>> _publicInstallment = new List<Map<String, String>>();
-  final List<Map<String, String>> _publicLease = new List<Map<String, String>>();
-  final List<Map<String, String>> _publicInstallmentLease = new List<Map<String, String>>();
+  final Map<String, Map<String, String>> _defaultData = new Map<String, Map<String, String>>();
+  final Map<String, List<Map<String, String>>> _publicInstallment = new Map<String, List<Map<String, String>>>();
+  final Map<String, List<Map<String, String>>> _publicLease = new Map<String, List<Map<String, String>>>();
+  final Map<String, List<Map<String, String>>> _publicInstallmentLease = new Map<String, List<Map<String, String>>>();
+  final Map<String, List<Map<String, String>>> _imageDatas = new Map<String, List<Map<String, String>>>();
 
   @override
   void initState() 
@@ -62,18 +61,24 @@ class InstallmentHouseView extends AbstractInstallmentHouseView<InstallmentHouse
     contents[InstallmentTabState.Contents.index].add(SummaryInfoView(res["dsHsSlpa"].first, res["dsAhflList"]));
     contents[InstallmentTabState.Schedule.index].add(SupplyScheduleView(res));
 
-    // list가 한개인 경우만
-    if(res["dsHsAisList"].length == 1)
+    if(res["dsHsAisList"].length > 0)
     {
-      _aisInfSn = res["dsHsAisList"].first["AIS_INF_SN"];
-      _bztdCd = res["dsHsAisList"].first["BZDT_CD"];
-      _hcBlkCd = res["dsHsAisList"].first["HC_BLK_CD"];
+      res["dsHsAisList"].forEach((map)
+      {
+        _defaultData[map['AIS_INF_SN']] = map;
 
-      _defaultData.clear();
-      _defaultData.addAll(res["dsHsAisList"].first);
+        (presenter as InstallmentHousePresenter).onRequestSupplyInfoPublicInstallment(
+          panId, ccrCnntSysDsCd, map['AIS_INF_SN'], _otxtPanId, uppAisTpCd, onResponsePublicInstallment);
+        
+        (presenter as InstallmentHousePresenter).onRequestSupplyInfoPublicInstallment(
+          panId, ccrCnntSysDsCd, map['AIS_INF_SN'], _otxtPanId, "06", onResponsePublicRentalType06, true, false);
 
-      (presenter as InstallmentHousePresenter).onRequestSupplyInfoPublicInstallment(
-        panId, ccrCnntSysDsCd, _aisInfSn, _otxtPanId, uppAisTpCd, onResponsePublicInstallment);
+        (presenter as InstallmentHousePresenter).onRequestSupplyInfoPublicInstallment(
+          panId, ccrCnntSysDsCd, map['AIS_INF_SN'], _otxtPanId, "06", onResponsePublicRentalType07, false, true);
+
+        (presenter as InstallmentHousePresenter).onRequestSupplyInfoImage(
+          panId, ccrCnntSysDsCd, map['AIS_INF_SN'], _otxtPanId, uppAisTpCd, onResponseFinally, _defaultData[map['AIS_INF_SN']]['BZDT_CD'], _defaultData[map['AIS_INF_SN']]['HC_BLK_CD']);
+      });
     }
     else
     {
@@ -84,39 +89,79 @@ class InstallmentHouseView extends AbstractInstallmentHouseView<InstallmentHouse
     }
   }
 
-  void onResponsePublicInstallment(Map<String, List<Map<String, String>>> res)
+  void onResponsePublicInstallment(String aisInfSn, Map<String, List<Map<String, String>>> res)
   {
-    _publicInstallment.clear();
-    _publicInstallment.addAll(res["dsHtyList"]);
+    _publicInstallment[aisInfSn] = res["dsHtyList"];
 
-    (presenter as InstallmentHousePresenter).onRequestSupplyInfoPublicInstallment(
-        panId, ccrCnntSysDsCd, _aisInfSn, _otxtPanId, "06", onResponsePublicRentalType06, true, false);
+    if(_defaultData.length == _imageDatas.length && _defaultData.length == _publicInstallment.length &&
+    _defaultData.length == _publicLease.length && _defaultData.length == _publicInstallmentLease.length)
+    {
+      onLoadComplete();
+    }
   }
 
-  void onResponsePublicRentalType06(Map<String, List<Map<String, String>>> res)
+  void onResponsePublicRentalType06(String aisInfSn, Map<String, List<Map<String, String>>> res)
   {
-    _publicLease.clear();
-    _publicLease.addAll(res["dsHtyList"]);
+    _publicLease[aisInfSn] = res["dsHtyList"];
 
-    (presenter as InstallmentHousePresenter).onRequestSupplyInfoPublicInstallment(
-        panId, ccrCnntSysDsCd, _aisInfSn, _otxtPanId, "06", onResponsePublicRentalType07, false, true);
+    if(_defaultData.length == _imageDatas.length && _defaultData.length == _publicInstallment.length &&
+    _defaultData.length == _publicLease.length && _defaultData.length == _publicInstallmentLease.length)
+    {
+      onLoadComplete();
+    }
   }
 
-  void onResponsePublicRentalType07(Map<String, List<Map<String, String>>> res)
+  void onResponsePublicRentalType07(String aisInfSn, Map<String, List<Map<String, String>>> res)
   {
-    _publicInstallmentLease.clear();
-    _publicInstallmentLease.addAll(res["dsHtyList"]);
+    _publicInstallmentLease[aisInfSn] = res["dsHtyList"];
 
-    (presenter as InstallmentHousePresenter).onRequestSupplyInfoImage(
-        panId, ccrCnntSysDsCd, _aisInfSn, _otxtPanId, uppAisTpCd, onResponseFinally, _bztdCd, _hcBlkCd);
+    if(_defaultData.length == _imageDatas.length && _defaultData.length == _publicInstallment.length &&
+    _defaultData.length == _publicLease.length && _defaultData.length == _publicInstallmentLease.length)
+    {
+      onLoadComplete();
+    }
   }
 
-  void onResponseFinally(Map<String, List<Map<String, String>>> res)
+  void onResponseFinally(String aisInfSn, Map<String, List<Map<String, String>>> res)
   {
-    contents[InstallmentTabState.Infos.index].add(SupplyInfo(uppAisTpCd, _defaultData, _publicInstallment, _publicLease, _publicInstallmentLease, res["dsHsAhtlList"]));
+    _imageDatas[aisInfSn] = res["dsHsAhtlList"];
+
+    if(_defaultData.length == _imageDatas.length && _defaultData.length == _publicInstallment.length &&
+    _defaultData.length == _publicLease.length && _defaultData.length == _publicInstallmentLease.length)
+    {
+      onLoadComplete();
+    }
+  }
+
+  void onLoadComplete()
+  {
+    if(_defaultData.length == 1)
+    {
+      contents[InstallmentTabState.Infos.index].add(SupplyInfo
+      (
+        uppAisTpCd,
+        _defaultData.values.first,
+        _publicInstallment.values.first,
+        _publicLease.values.first,
+        _publicInstallmentLease.values.first,
+        _imageDatas.values.first)
+      );
+    }
+    else
+    {
+      contents[InstallmentTabState.Infos.index].add(SupplyInfos
+      (
+        uppAisTpCd,
+        _defaultData.values,
+        _publicInstallment.values,
+        _publicLease.values,
+        _publicInstallmentLease.values,
+        _imageDatas.values)
+      );
+    }
 
     setState(() {
-        loadingState = LoadingState.DONE;
+      loadingState = LoadingState.DONE;
     });
   }
 }

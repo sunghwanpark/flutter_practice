@@ -3,7 +3,7 @@ import 'package:bunyang/MenuItem/IntallmentHouse/InstallmentHouseModel.dart';
 import 'package:bunyang/MenuItem/IntallmentHouse/InstallmentHouseView.dart';
 import 'package:bunyang/MenuItem/MenuItemPresenter.dart';
 
-typedef void InstallmentResponseCallback(Map<String, List<Map<String, String>>> r);
+typedef void InstallmentResponseCallback(String aisInfSn, Map<String, List<Map<String, String>>> r);
 
 class InstallmentHousePresenter extends MenuItemPresenter<InstallmentHouseModel>
 {
@@ -21,9 +21,9 @@ class InstallmentHousePresenter extends MenuItemPresenter<InstallmentHouseModel>
   void onRequestSupplyInfoPublicInstallment(String panId, String ccrCnntSysDsCd, String aisInfSn,
    String otxtPanId, String uppAisTpCd, InstallmentResponseCallback successCallback, [bool dynamic0708 = false, bool dynamic11 = false])
   {
-    model
+     model
       .fetchSupplyInfo(panId, ccrCnntSysDsCd, aisInfSn, otxtPanId, uppAisTpCd, dynamic0708, dynamic11)
-      .then((res) => successCallback(res))
+      .then((res) => successCallback(aisInfSn, res))
       .catchError((err) => view.onError());
   }
   
@@ -32,7 +32,7 @@ class InstallmentHousePresenter extends MenuItemPresenter<InstallmentHouseModel>
   {
     model
       .fetchSupplyInfoImage(panId, ccrCnntSysDsCd, aisInfSn, otxtPanId, uppAisTpCd, bzdtCd, hcBlkCd)
-      .then((res) => successCallback(res))
+      .then((res) => successCallback(aisInfSn, res))
       .catchError((err) => view.onError());
   }
 }

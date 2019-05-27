@@ -4,7 +4,6 @@ import 'package:bunyang/MenuItem/IntallmentHouse/InstallmentHouseInquiry/Install
 import 'package:bunyang/MenuItem/IntallmentHouse/IntallmentDetail/InstallmentSupplyInfoDetailView.dart';
 import 'package:bunyang/Secret/URL.dart';
 import 'package:bunyang/Util/HighlightImageView.dart';
-import 'package:bunyang/Util/WebViewer.dart';
 import 'package:bunyang/Util/Util.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';

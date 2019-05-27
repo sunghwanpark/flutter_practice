@@ -15,6 +15,7 @@ enum MenuItemType
   land,                       // 토지매각공고상세내역
   installment_house,          // 분양주택분양공고상세내역
   installment_change_sale,    // 분양전환일반매각공고상세내역
+  lease_house_installment,    // 임대주택 공공임대
 }
 
 class MainMenuData

@@ -34,7 +34,7 @@ class InstallmentHouseInquiryGuideView extends StatelessWidget
         sprintf('· 전용면적(㎡): %s', [map['RSDN_DDO_AR']]),
         sprintf('· 세대수: %s', [map['TOT_HSH_CNT']]),
         sprintf('· 수의계약대상 세대수: %s', [map['PVTC_TRG_HSH_CNT']]),
-        sprintf('· 분양가격(원): %s', [f.format(int.parse(map['SIL_AMT']))])
+        sprintf('· 분양가격(원): %s', [map['SIL_AMT'].isNotEmpty ? f.format(int.parse(map['SIL_AMT'])) : ''])
       ];
 
       values.forEach((str)
