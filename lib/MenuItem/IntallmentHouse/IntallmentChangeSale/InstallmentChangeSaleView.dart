@@ -5,6 +5,8 @@ import 'package:bunyang/MenuItem/IntallmentHouse/IntallmentChangeSale/ChargeSche
 import 'package:bunyang/MenuItem/IntallmentHouse/IntallmentChangeSale/ChargeSupplyInfoView.dart';
 import 'package:bunyang/MenuItem/IntallmentHouse/IntallmentChangeSale/InstallmentChangeSalePresenter.dart';
 import 'package:bunyang/Util/Util.dart';
+import 'package:bunyang/Util/WidgetInsideTabBarView.dart';
+import 'package:flutter/material.dart';
 
 class InstallmentChangeSale extends AbstractInstallmentHouse
 {
@@ -68,7 +70,32 @@ class InstallmentChangeSaleView extends AbstractInstallmentHouseView<Installment
 
     if(_typeofHouseData.length == _tabLen && _typeofHouseDataAttachment.length == _tabLen)
     {
-      contents[InstallmentTabState.Infos.index].add(ChargeSupplyInfo(_defaultData["dsSbdInf"], _typeofHouseData, _typeofHouseDataAttachment));
+      if(_tabLen == 1)
+      {
+        contents[InstallmentTabState.Infos.index].add(ChargeSupplyInfoView
+        (
+          _defaultData["dsSbdInf"].first,
+          _typeofHouseData.first,
+          _typeofHouseDataAttachment.first
+        ));
+      }
+      else
+      {
+        contents[InstallmentTabState.Infos.index].add(WidgetInsideTabBar
+        (
+          tabNames: _defaultData["dsSbdInf"].map((map) => map['LCC_NT_NM']).toList(),
+          contents: List<Widget>.generate(_tabLen, (index)
+          {
+            return ChargeSupplyInfoView
+            (
+              _defaultData['dsSbdInf'].elementAt(index),
+              _typeofHouseData.elementAt(index),
+              _typeofHouseDataAttachment.elementAt(index)
+            ); 
+          }),
+        ));
+      }
+
       setState(() {
        loadingState = LoadingState.DONE; 
       });

@@ -3,9 +3,9 @@ import 'package:bunyang/MenuItem/IntallmentHouse/Abstract/AbstractInstallmentHou
 import 'package:bunyang/MenuItem/IntallmentHouse/InstallmentHousePresenter.dart';
 import 'package:bunyang/MenuItem/IntallmentHouse/SummaryInfoView.dart';
 import 'package:bunyang/MenuItem/IntallmentHouse/SupplyInfoView.dart';
-import 'package:bunyang/MenuItem/IntallmentHouse/SupplyInfosView.dart';
 import 'package:bunyang/MenuItem/MenuItemModel.dart';
 import 'package:bunyang/Util/Util.dart';
+import 'package:bunyang/Util/WidgetInsideTabBarView.dart';
 import 'package:flutter/material.dart';
 
 import 'SupplyScheduleView.dart';
@@ -137,7 +137,7 @@ class InstallmentHouseView extends AbstractInstallmentHouseView<InstallmentHouse
   {
     if(_defaultData.length == 1)
     {
-      contents[InstallmentTabState.Infos.index].add(SupplyInfo
+      contents[InstallmentTabState.Infos.index].add(SupplyInfoView
       (
         uppAisTpCd,
         _defaultData.values.first,
@@ -149,15 +149,22 @@ class InstallmentHouseView extends AbstractInstallmentHouseView<InstallmentHouse
     }
     else
     {
-      contents[InstallmentTabState.Infos.index].add(SupplyInfos
+      contents[InstallmentTabState.Infos.index].add(WidgetInsideTabBar
       (
-        uppAisTpCd,
-        _defaultData.values,
-        _publicInstallment.values,
-        _publicLease.values,
-        _publicInstallmentLease.values,
-        _imageDatas.values)
-      );
+        tabNames: _defaultData.values.map((k) => k['BZDT_NM']).toList(),
+        contents: List<Widget>.generate(_defaultData.length, (index)
+        {
+          return SupplyInfoView
+          (
+            uppAisTpCd,
+            _defaultData.values.elementAt(index),
+            _publicInstallment.values.elementAt(index),
+            _publicLease.values.elementAt(index),
+            _publicInstallmentLease.values.elementAt(index),
+            _imageDatas.values.elementAt(index)
+          );
+        })
+      ));
     }
 
     setState(() {

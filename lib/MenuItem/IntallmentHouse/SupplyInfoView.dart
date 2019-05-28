@@ -2,17 +2,16 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:bunyang/Map/MyGoogleMapView.dart';
 import 'package:bunyang/MenuItem/IntallmentHouse/InstallmentHouseInquiry/InstallmentHouseInquiryView.dart';
 import 'package:bunyang/MenuItem/IntallmentHouse/IntallmentDetail/InstallmentSupplyInfoDetailView.dart';
-import 'package:bunyang/Secret/URL.dart';
-import 'package:bunyang/Util/HighlightImageView.dart';
+import 'package:bunyang/Util/NetworkImageWidget.dart';
 import 'package:bunyang/Util/Util.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:sprintf/sprintf.dart';
 
-class SupplyInfo extends StatefulWidget
+class SupplyInfoView extends StatelessWidget
 {
-  SupplyInfo(this._uppAisTpCd, this._defaultData, this._publicInstallment, this._publicLease, this._publicInstallmentLease, this._imageData);
+  SupplyInfoView(this._uppAisTpCd, this._defaultData, this._publicInstallment, this._publicLease, this._publicInstallmentLease, this._imageData);
 
   final String _uppAisTpCd;
   final Map<String, String> _defaultData;
@@ -21,23 +20,6 @@ class SupplyInfo extends StatefulWidget
   final List<Map<String, String>> _publicInstallmentLease;
   final List<Map<String, String>> _imageData;
 
-  @override
-  SupplyInfoView createState() => SupplyInfoView();
-}
-
-class SupplyInfoView extends State<SupplyInfo>
-{
-  SupplyInfoView();
-
-  List<bool> _imageLoadingState = new List<bool>();
-
-  @override
-  void initState()
-  {
-    super.initState();
-  }
-
-  
   List<Widget> _getContents(BuildContext context)
   {
     List<Widget> widgets = new List<Widget>();
@@ -52,15 +34,15 @@ class SupplyInfoView extends State<SupplyInfo>
       ]
     ));
 
-    if(widget._defaultData["BZDT_NM"].isNotEmpty)
+    if(_defaultData["BZDT_NM"].isNotEmpty)
     {
       widgets.add(Align
       (
         alignment: Alignment.centerLeft,
         child: AutoSizeText
         (
-          widget._defaultData["HC_BLK_CD_NM"].isNotEmpty ?
-          sprintf("%s %s단지", [widget._defaultData["BZDT_NM"], widget._defaultData["HC_BLK_CD_NM"]]) : widget._defaultData["BZDT_NM"],
+          _defaultData["HC_BLK_CD_NM"].isNotEmpty ?
+          sprintf("%s %s단지", [_defaultData["BZDT_NM"], _defaultData["HC_BLK_CD_NM"]]) : _defaultData["BZDT_NM"],
           maxLines: 2,
           style: TextStyle(color: Colors.black, fontSize: 25, fontFamily: 'TmonTium'),
         )
@@ -74,14 +56,9 @@ class SupplyInfoView extends State<SupplyInfo>
       (
         children: <Widget>
         [
-          widget._defaultData['CYB_MODH_URL'].isNotEmpty ? RaisedButton.icon
+          _defaultData['CYB_MODH_URL'].isNotEmpty ? RaisedButton.icon
           (
-            /*onPressed: () => Navigator.push
-            (
-              context,
-              MaterialPageRoute(builder: (context) => WebViewer(url: widget._defaultData['CYB_MODH_URL']))
-            ),*/
-            onPressed: () => launchURL(widget._defaultData['CYB_MODH_URL']),
+            onPressed: () => launchURL(_defaultData['CYB_MODH_URL']),
             color: Colors.amber[300],
             icon: Icon(Icons.details),
             label: Container
@@ -90,13 +67,13 @@ class SupplyInfoView extends State<SupplyInfo>
               child: AutoSizeText('사이버모델하우스', maxLines: 1, textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'TmonTium'))
             )
           ) : SizedBox(),
-          widget._defaultData['CYB_MODH_URL'].isNotEmpty ? SizedBox(width: 10) : SizedBox(),
+          _defaultData['CYB_MODH_URL'].isNotEmpty ? SizedBox(width: 10) : SizedBox(),
           RaisedButton.icon
           (
             onPressed: () => Navigator.push
             (
               context,
-              MaterialPageRoute(builder: (context) => InstallmentHouseInquiry(widget._defaultData, widget._uppAisTpCd))
+              MaterialPageRoute(builder: (context) => InstallmentHouseInquiry(_defaultData, _uppAisTpCd))
             ),
             color: Colors.amber[300],
             icon: Icon(Icons.details),
@@ -110,65 +87,53 @@ class SupplyInfoView extends State<SupplyInfo>
       )
     ));
 
-    if(widget._defaultData["LAT"].isNotEmpty && widget._defaultData["LTD"].isNotEmpty)
+    if(_defaultData["LAT"].isNotEmpty && _defaultData["LTD"].isNotEmpty)
     {
       widgets.add(MyGoogleMapViewLatLtd
       (
         '소재지',
-        sprintf('%s %s', [widget._defaultData['LCT_ARA_ADR'], widget._defaultData['LCT_ARA_DTL_ADR']]),
-        LatLng(double.parse(widget._defaultData["LAT"]), double.parse(widget._defaultData["LTD"]))
+        sprintf('%s %s', [_defaultData['LCT_ARA_ADR'], _defaultData['LCT_ARA_DTL_ADR']]),
+        LatLng(double.parse(_defaultData["LAT"]), double.parse(_defaultData["LTD"]))
       ));
     }
     else 
     {
-      widgets.add(MyGoogleMap('소재지', sprintf('%s %s', [widget._defaultData['LCT_ARA_ADR'], widget._defaultData['LCT_ARA_DTL_ADR']])));
+      widgets.add(MyGoogleMap('소재지', sprintf('%s %s', [_defaultData['LCT_ARA_ADR'], _defaultData['LCT_ARA_DTL_ADR']])));
     }
 
     widgets.add(Align
     (
       alignment: Alignment.centerLeft,
-      child: Text(sprintf('· 적용면적(㎡) : %s ~ %s', [widget._defaultData["MIN_RSDN_DDO_AR"], widget._defaultData["MAX_RSDN_DDO_AR"]]), textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'TmonTium'))
+      child: Text(sprintf('· 적용면적(㎡) : %s ~ %s', [_defaultData["MIN_RSDN_DDO_AR"], _defaultData["MAX_RSDN_DDO_AR"]]), textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'TmonTium'))
     ));
     widgets.add(Align
     (
       alignment: Alignment.centerLeft,
-      child: Text(sprintf('· 총 세대수 : %s', [widget._defaultData["SUM_TOT_HSH_CNT"].isEmpty ? "" : widget._defaultData["SUM_TOT_HSH_CNT"]]), textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'TmonTium'))
+      child: Text(sprintf('· 총 세대수 : %s', [_defaultData["SUM_TOT_HSH_CNT"].isEmpty ? "" : _defaultData["SUM_TOT_HSH_CNT"]]), textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'TmonTium'))
     ));
     
-    if(widget._defaultData["HTN_FMLA_DS_CD_NM"].isNotEmpty)
+    if(_defaultData["HTN_FMLA_DS_CD_NM"].isNotEmpty)
     {
       widgets.add(Align
       (
         alignment: Alignment.centerLeft,
-        child: Text(sprintf('· 난방방식 : %s', [widget._defaultData["HTN_FMLA_DS_CD_NM"]]), textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'TmonTium'))
+        child: Text(sprintf('· 난방방식 : %s', [_defaultData["HTN_FMLA_DS_CD_NM"]]), textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'TmonTium'))
       ));
     }
     
-    if(widget._defaultData["MVIN_XPC_YM"].isNotEmpty)
+    if(_defaultData["MVIN_XPC_YM"].isNotEmpty)
     {
       widgets.add(Align
       (
         alignment: Alignment.centerLeft,
-        child: Text(sprintf('· 입주 예정월 : %s년 %s월', [widget._defaultData["MVIN_XPC_YM"].substring(0, 4), widget._defaultData["MVIN_XPC_YM"].substring(4, 6)]), textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'TmonTium'))
+        child: Text(sprintf('· 입주 예정월 : %s년 %s월', [_defaultData["MVIN_XPC_YM"].substring(0, 4), _defaultData["MVIN_XPC_YM"].substring(4, 6)]), textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'TmonTium'))
       ));
     }
 
-    _imageLoadingState.clear();
-    for(int i = 0; i < widget._imageData.length; i++)
+    for(int i = 0; i < _imageData.length; i++)
     {
-      var map = widget._imageData[i];
-      _imageLoadingState.add(false);
+      var map = _imageData[i];
       String urlSerial = map["CMN_AHFL_SN"];
-      var _image = Image.network("$imageURL$urlSerial");
-      _image.image.resolve(new ImageConfiguration()).addListener((_, __) 
-      {
-        if (mounted) 
-        {
-          setState(() {
-            _imageLoadingState[i] = true;
-          });
-        }
-      });
       
       widgets.add(Align
       (
@@ -176,19 +141,7 @@ class SupplyInfoView extends State<SupplyInfo>
         child: Text(sprintf("· %s", [map["SL_PAN_AHFL_DS_CD_NM"]]), textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 20, fontWeight: FontWeight.w500, fontFamily: 'TmonTium'))
       ));
 
-      widgets.add(_imageLoadingState[i] ? InkWell
-      (
-        child: Hero
-        (
-          tag: urlSerial,
-          child: _image
-        ),
-        onTap: () => Navigator.push
-        (
-          context,
-          MaterialPageRoute(builder: (context) => HighlightImageView(urlSerial, _image))
-        )
-      ) : CircularProgressIndicator(backgroundColor: Colors.black));
+      widgets.add(NetworkImageWidget(serialNum: urlSerial));
     }
     
     widgets.add(Row
@@ -201,44 +154,44 @@ class SupplyInfoView extends State<SupplyInfo>
       ]
     ));
 
-    if(widget._defaultData["TFFC_FCL_CTS"].isNotEmpty)
+    if(_defaultData["TFFC_FCL_CTS"].isNotEmpty)
     {
       widgets.add(Align
       (
         alignment: Alignment.centerLeft,
-        child: Text(sprintf('· 교통여건 : %s', [widget._defaultData["TFFC_FCL_CTS"]]), textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'TmonTium'))
+        child: Text(sprintf('· 교통여건 : %s', [_defaultData["TFFC_FCL_CTS"]]), textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'TmonTium'))
       ));
     }
      
-    if(widget._defaultData["EDC_FCL_CTS"].isNotEmpty)
+    if(_defaultData["EDC_FCL_CTS"].isNotEmpty)
     {
       widgets.add(Align
       (
         alignment: Alignment.centerLeft,
-        child: Text(sprintf('· 교육환경 : %s', [widget._defaultData["EDC_FCL_CTS"]]), textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'TmonTium'))
+        child: Text(sprintf('· 교육환경 : %s', [_defaultData["EDC_FCL_CTS"]]), textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'TmonTium'))
       ));
     }
 
-    if(widget._defaultData["CVN_FCL_CTS"].isNotEmpty)
+    if(_defaultData["CVN_FCL_CTS"].isNotEmpty)
     {
       widgets.add(Align
       (
         alignment: Alignment.centerLeft,
-        child: Text(sprintf('· 편의시설 : %s', [widget._defaultData["CVN_FCL_CTS"]]), textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'TmonTium'))
+        child: Text(sprintf('· 편의시설 : %s', [_defaultData["CVN_FCL_CTS"]]), textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'TmonTium'))
       ));
     }
     
-    if(widget._defaultData["IDT_FCL_CTS"].isNotEmpty)
+    if(_defaultData["IDT_FCL_CTS"].isNotEmpty)
     {
       widgets.add(Align
       (
         alignment: Alignment.centerLeft,
-        child: Text(sprintf('· 부대시설 : %s', [widget._defaultData["IDT_FCL_CTS"]]), textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'TmonTium'))
+        child: Text(sprintf('· 부대시설 : %s', [_defaultData["IDT_FCL_CTS"]]), textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'TmonTium'))
       ));
     }
     
     final f = NumberFormat("#,###");
-    if(widget._publicInstallment.length > 0) // 공공분양
+    if(_publicInstallment.length > 0) // 공공분양
     {
       widgets.add(_setSubject('공공분양'));
 
@@ -248,7 +201,7 @@ class SupplyInfoView extends State<SupplyInfo>
         child: Text('상세공급정보를 확인하시려면 카드를 길게 눌러주세요', textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 15, fontFamily: 'TmonTium', decoration: TextDecoration.underline))
       ));
 
-      widget._publicInstallment.forEach((map)
+      _publicInstallment.forEach((map)
       {
         var values = 
         [
@@ -277,7 +230,7 @@ class SupplyInfoView extends State<SupplyInfo>
         widgets.add(_setDetailCard(context, contents, map));
       });
     }
-    else if(widget._publicLease.length > 0) // 공공임대
+    else if(_publicLease.length > 0) // 공공임대
     {
       widgets.add(_setSubject('공공임대'));
 
@@ -287,7 +240,7 @@ class SupplyInfoView extends State<SupplyInfo>
         child: Text('상세공급정보를 확인하시려면 카드를 길게 눌러주세요', textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 15, fontFamily: 'TmonTium', decoration: TextDecoration.underline))
       ));
 
-      widget._publicInstallment.forEach((map)
+      _publicInstallment.forEach((map)
       {
         var values = 
         [
@@ -317,7 +270,7 @@ class SupplyInfoView extends State<SupplyInfo>
         widgets.add(_setDetailCard(context, contents, map));
       });
     }
-    else if(widget._publicInstallmentLease.length > 0) // 분납임대
+    else if(_publicInstallmentLease.length > 0) // 분납임대
     {
       widgets.add(_setSubject('분납임대'));
 
@@ -327,7 +280,7 @@ class SupplyInfoView extends State<SupplyInfo>
         child: Text('상세공급정보를 확인하시려면 카드를 길게 눌러주세요', textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 15, fontFamily: 'TmonTium', decoration: TextDecoration.underline))
       ));
 
-      widget._publicInstallment.forEach((map)
+      _publicInstallment.forEach((map)
       {
         var values = 
         [
@@ -371,7 +324,7 @@ class SupplyInfoView extends State<SupplyInfo>
     widgets.add(Align
     (
       alignment: Alignment.centerLeft,
-      child: Text(widget._defaultData['SPL_INF_GUD_FCTS'], textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'TmonTium'))
+      child: Text(_defaultData['SPL_INF_GUD_FCTS'], textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'TmonTium'))
     ));
 
     return widgets;

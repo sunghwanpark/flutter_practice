@@ -55,7 +55,7 @@ class InstallmentHouseInquiryView extends TabStateView<InstallmentHouseInquiry>
 
   void onComplete(Map<String, List<Map<String, String>>> res)
   {
-    contents[InstallmentHouseInquiryTabState.Info.index].add(InstallmentHouseInquiryInfo(res['dsHsInf'].first, res['dsHsAhflList']));
+    contents[InstallmentHouseInquiryTabState.Info.index].add(InstallmentHouseInquiryInfoView(res['dsHsInf'].first, res['dsHsAhflList']));
     contents[InstallmentHouseInquiryTabState.Guide.index].add(InstallmentHouseInquiryGuideView(res['dsHsList']));
 
     setState(() {
