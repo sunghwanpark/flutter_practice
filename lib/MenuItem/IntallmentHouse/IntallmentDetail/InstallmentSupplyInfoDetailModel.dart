@@ -5,7 +5,7 @@ import 'package:http/http.dart' as http;
 
 class InstallmentSupplyInfoDetailModel extends MenuItemModel
 {
-  InstallmentSupplyInfoDetailModel() : super('OCMC_LCC_SIL_SILSNOT_R0002');
+  InstallmentSupplyInfoDetailModel() : super(detailFormURL : 'OCMC_LCC_SIL_SILSNOT_R0002');
 
   @override
   String defaultDetailFormXml ='''<?xml version="1.0" encoding="UTF-8"?>

@@ -5,7 +5,7 @@ import 'package:http/http.dart' as http;
 
 class ContractScheduleModel extends MenuItemModel
 {
-  ContractScheduleModel() : super("OCMC_LCC_SIL_AIS_R0002");
+  ContractScheduleModel() : super(detailFormURL : "OCMC_LCC_SIL_AIS_R0002");
 
   @override
   String defaultDetailFormXml = '''<?xml version="1.0" encoding="UTF-8"?>

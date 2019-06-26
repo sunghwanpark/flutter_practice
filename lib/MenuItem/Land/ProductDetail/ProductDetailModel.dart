@@ -5,7 +5,7 @@ import 'package:http/http.dart' as http;
 
 class ProductDetailModel extends MenuItemModel
 {
-  ProductDetailModel() : super("OCMC_LCC_SIL_AIS_R0001");
+  ProductDetailModel() : super(detailFormURL : "OCMC_LCC_SIL_AIS_R0001");
 
   Map<String, List<Map<String, String>>> cachedDetailInfos;
 

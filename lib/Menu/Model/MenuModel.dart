@@ -42,6 +42,8 @@ class MenuData
       return MenuItemType.installment_house;
     else if(subString.contains("0062"))
       return MenuItemType.installment_change_sale;
+    else if(subString.contains("0060"))
+      return MenuItemType.lease_house_installment;
 
     return MenuItemType.land;
   }

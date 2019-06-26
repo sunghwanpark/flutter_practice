@@ -15,7 +15,11 @@ class RequestPanInfo
 
 abstract class MenuItemModel
 {
-  MenuItemModel(this.detailFormURL);
+  MenuItemModel(
+    {
+      @required this.detailFormURL
+    }
+  );
 
   final String detailFormURL;
   final String detailFormAdapter = "/lhCmcNoSessionAdapter.lh";
@@ -70,7 +74,7 @@ abstract class MenuItemModel
 
 abstract class MenuPanInfoModel extends MenuItemModel
 {
-  MenuPanInfoModel(String detailForm) : super(detailForm);
+  MenuPanInfoModel(String detailForm) : super(detailFormURL : detailForm);
   
   String _requestPanInfo = "OCMC_LCC_SIL_PAN_IFNO_R0001";
 

@@ -1,10 +1,8 @@
+import 'package:bunyang/MenuItem/IntallmentHouse/IntallmentChangeSale/InstallmentChangeSalePresenter.dart';
 import 'package:bunyang/MenuItem/LeaseHouse/PublicLeaseModel.dart';
-import 'package:bunyang/MenuItem/MenuItemModel.dart';
-import 'package:bunyang/MenuItem/MenuItemPageView.dart';
-import 'package:bunyang/MenuItem/MenuItemPresenter.dart';
+import 'package:bunyang/MenuItem/LeaseHouse/PublicLeaseView.dart';
 
-class PublicLeasePresenter extends MenuItemPresenter<PublicLeaseModel>
+class PublicLeasePresenter extends InstallmentChangeSalePresenter<PublicLeaseViewWidget>
 {
-  PublicLeasePresenter(MenuItemPageView<MenuItemPage> view) : super(new PublicLeaseModel(), view);
-  
+  PublicLeasePresenter(PublicLeaseViewWidget view) : super.model(new PublicLeaseModel(), view);
 }

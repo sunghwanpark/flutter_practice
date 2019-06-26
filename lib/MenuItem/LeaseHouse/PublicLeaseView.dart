@@ -1,39 +1,23 @@
-
-import 'package:bunyang/Abstract/TabStateView.dart';
 import 'package:bunyang/Menu/Model/MenuModel.dart';
-import 'package:bunyang/MenuItem/IntallmentHouse/Abstract/AbstractInstallmentHouseView.dart';
-import 'package:flutter/material.dart';
+import 'package:bunyang/MenuItem/IntallmentHouse/IntallmentChangeSale/InstallmentChangeSaleView.dart';
+import 'package:bunyang/MenuItem/LeaseHouse/PublicLeasePresenter.dart';
 
-class PublicLeaseView extends TabStatefull
+class PublicLeaseView extends InstallmentChangeSale
 {
-  PublicLeaseView(this._data) : super(noticeCode: _data.type, appBarTitle: _data.panName);
-  
-  final MenuData _data;
+  PublicLeaseView(MenuData data) : super(data);
 
   @override
-  PublicLeaseViewWidget createState() => PublicLeaseViewWidget(_data);
+  PublicLeaseViewWidget createState() => PublicLeaseViewWidget(data);
 }
 
-class PublicLeaseViewWidget extends TabStateView<PublicLeaseView>
+class PublicLeaseViewWidget extends InstallmentChangeSaleView
 {
-  PublicLeaseViewWidget()
-  {
-    tabNames = ['공고내용', '공급정보', '공고일정'];
-
-    for(int i = 0; i < InstallmentTabState.values.length; i++)
-    {
-      contents[i] = new List<Widget>();
-    }
-  }
+  PublicLeaseViewWidget(MenuData data) : super(data);
 
   @override
-  void initState()
+  void request() 
   {
-    super.initState();
-
-  }
-
-  @override
-  void onResponseSuccessPanInfo(Map<String, String> panInfo) {
+    presenter = new PublicLeasePresenter(this);
+    (presenter as PublicLeasePresenter).onRequestDetail(type, panId, ccrCnntSysDsCd);
   }
 }

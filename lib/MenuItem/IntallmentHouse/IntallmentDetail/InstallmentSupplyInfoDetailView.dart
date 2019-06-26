@@ -68,25 +68,6 @@ class InstallmentSupplyInfoDetailView extends State<InstallmentSupplyInfoDetail>
       ]
     ));
 
-    final f = NumberFormat("#,###");
-    // 계약금
-    var contractData = _datas.where((map) => map['PC_KD_CD'] == '01');
-    var contractMoney = contractData.isNotEmpty ? 
-      contractData.first['PC_PYM_AMT'].isNotEmpty ? f.format(int.parse(contractData.first['PC_PYM_AMT'])) : ''
-      : '';
-    
-    // 중도금
-    var middlePayData = _datas.where((map) => map['PC_KD_CD'] == '02');
-    var middlePayMoney = middlePayData.isNotEmpty ? 
-      middlePayData.first['PC_PYM_AMT'].isNotEmpty ? f.format(int.parse(middlePayData.first['PC_PYM_AMT'])) : ''
-      : '';
-
-    // 잔금
-    var balanceData = _datas.where((map) => map['PC_KD_CD'] == '03');
-    var balanceMoney = balanceData.isNotEmpty ? 
-      balanceData.first['PC_PYM_AMT'].isNotEmpty ? f.format(int.parse(balanceData.first['PC_PYM_AMT'])) : ''
-      : '';
-
     List<String> subjectTexts = 
     [
       sprintf('· 주택형 : %s', [widget._datas['HTY_NM']]),
@@ -97,13 +78,36 @@ class InstallmentSupplyInfoDetailView extends State<InstallmentSupplyInfoDetail>
       sprintf('· 지하주차장면적(㎡) : %s', [widget._datas['UNG_PKPL_AR']]),
       sprintf('· 계약면적(㎡) : %s', [widget._datas['CTRL_AR']]),
       sprintf('· 세대수 : %s', [widget._datas['TOT_HSH_CNT']]),
-      sprintf('· 금회공급 세대수 : %s', [widget._datas['SIL_HSH_CNT']]),
-      sprintf('· 분양가격(원) : %s', [_datas.first['SIL_AMT'].isNotEmpty ? f.format(int.parse(_datas.first['SIL_AMT'])) : '']),
-      sprintf('· 계약금(원) : %s', [contractMoney]),
-      sprintf('· 중도금(원) : %s', [middlePayMoney]),
-      sprintf('· 잔금(원) : %s', [balanceMoney]),
-      sprintf('· 융자금(원) : %s', [_datas.first['LOA'].isNotEmpty ? f.format(int.parse(_datas.first['LOA'])) : '']),
+      sprintf('· 금회공급 세대수 : %s', [widget._datas['SIL_HSH_CNT']])
     ];
+
+    if(_datas.length > 0)
+    {
+      final f = NumberFormat("#,###");
+      // 계약금
+      var contractData = _datas.where((map) => map['PC_KD_CD'] == '01');
+      var contractMoney = contractData.isNotEmpty ? 
+        contractData.first['PC_PYM_AMT'].isNotEmpty ? f.format(int.parse(contractData.first['PC_PYM_AMT'])) : ''
+        : '';
+      
+      // 중도금
+      var middlePayData = _datas.where((map) => map['PC_KD_CD'] == '02');
+      var middlePayMoney = middlePayData.isNotEmpty ? 
+        middlePayData.first['PC_PYM_AMT'].isNotEmpty ? f.format(int.parse(middlePayData.first['PC_PYM_AMT'])) : ''
+        : '';
+
+      // 잔금
+      var balanceData = _datas.where((map) => map['PC_KD_CD'] == '03');
+      var balanceMoney = balanceData.isNotEmpty ? 
+        balanceData.first['PC_PYM_AMT'].isNotEmpty ? f.format(int.parse(balanceData.first['PC_PYM_AMT'])) : ''
+        : '';
+
+      subjectTexts.add(sprintf('· 분양가격(원) : %s', [_datas.first['SIL_AMT'].isNotEmpty ? f.format(int.parse(_datas.first['SIL_AMT'])) : '']));
+      subjectTexts.add(sprintf('· 계약금(원) : %s', [contractMoney]));
+      subjectTexts.add(sprintf('· 중도금(원) : %s', [middlePayMoney]));
+      subjectTexts.add(sprintf('· 잔금(원) : %s', [balanceMoney]));
+      subjectTexts.add(sprintf('· 융자금(원) : %s', [_datas.first['LOA'].isNotEmpty ? f.format(int.parse(_datas.first['LOA'])) : '']));
+    }
 
     subjectTexts.forEach((str)
     {

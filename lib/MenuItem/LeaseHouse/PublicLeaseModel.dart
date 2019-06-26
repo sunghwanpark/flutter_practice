@@ -1,7 +1,9 @@
-import 'package:bunyang/MenuItem/MenuItemModel.dart';
+import 'package:bunyang/MenuItem/IntallmentHouse/IntallmentChangeSale/InstallmentChangeSaleModel.dart';
 
-class PublicLeaseModel extends MenuItemModel
+class PublicLeaseModel extends InstallmentChangeSaleModel
 {
-  PublicLeaseModel() : super("OCMC_LCC_SIL_SILSNOT_R0006");
-  
+  PublicLeaseModel();
+
+  @override
+  String get supplyTabServiceId => "OCMC_LCC_SIL_SILSNOT_L0008";
 }

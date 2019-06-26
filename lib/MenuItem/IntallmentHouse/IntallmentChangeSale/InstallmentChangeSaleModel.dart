@@ -1,6 +1,7 @@
 import 'package:bunyang/Data/Address.dart';
 import 'package:bunyang/Secret/URL.dart';
 import 'package:bunyang/MenuItem/MenuItemModel.dart';
+import 'package:flutter/material.dart';
 import 'package:xml/xml.dart' as xml;
 import 'package:http/http.dart' as http;
 
@@ -8,7 +9,8 @@ class InstallmentChangeSaleModel extends MenuPanInfoModel
 {
   InstallmentChangeSaleModel() : super('OCMC_LCC_SIL_SILSNOT_R0006');
   
-  String _supplyTabServiceId = 'OCMC_LCC_SIL_SILSNOT_L0014';
+  @protected
+  String get supplyTabServiceId => 'OCMC_LCC_SIL_SILSNOT_L0014';
   String _supplyTabAttachmentId = 'OCMC_LCC_SIL_SILSNOT_L0009';
 
   @override
@@ -164,7 +166,7 @@ class InstallmentChangeSaleModel extends MenuPanInfoModel
     stringBuffer.write(noticeURL);
     stringBuffer.write(detailFormAdapter);
     stringBuffer.write("?&serviceID=");
-    stringBuffer.write(isAttachment ? _supplyTabAttachmentId : _supplyTabServiceId);
+    stringBuffer.write(isAttachment ? _supplyTabAttachmentId : supplyTabServiceId);
 
     return await http.post
     (

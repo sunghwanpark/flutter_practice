@@ -5,7 +5,7 @@ import 'package:http/http.dart' as http;
 
 class InstallmentHouseInquiryModel extends MenuItemModel
 {
-  InstallmentHouseInquiryModel() : super('OCMC_LCC_SIL_AIS_R0004');
+  InstallmentHouseInquiryModel() : super(detailFormURL : 'OCMC_LCC_SIL_AIS_R0004');
 
   @override
   String defaultDetailFormXml ='''<?xml version="1.0" encoding="UTF-8"?>

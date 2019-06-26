@@ -3,15 +3,17 @@ import 'package:bunyang/MenuItem/IntallmentHouse/IntallmentChangeSale/Installmen
 import 'package:bunyang/MenuItem/IntallmentHouse/IntallmentChangeSale/InstallmentChangeSaleView.dart';
 import 'package:bunyang/MenuItem/MenuItemPresenter.dart';
 
-class InstallmentChangeSalePresenter extends MenuItemPresenter<InstallmentChangeSaleModel>
+class InstallmentChangeSalePresenter<TView extends InstallmentChangeSaleView> 
+  extends MenuItemPresenter<InstallmentChangeSaleModel>
 {
-  InstallmentChangeSalePresenter(InstallmentChangeSaleView view) : super(new InstallmentChangeSaleModel(), view);
+  InstallmentChangeSalePresenter(TView view) : super(InstallmentChangeSaleModel(), view);
+  InstallmentChangeSalePresenter.model(InstallmentChangeSaleModel _model, view) : super(_model, view);
 
   void onRequestDetail(Notice_Code code, String panId, String ccrCnntSysDsCd)
   {
     model
       .fetchData(code, panId, ccrCnntSysDsCd)
-      .then((res) => (view as InstallmentChangeSaleView).onResponseDetail(res))
+      .then((res) => (view as TView).onResponseDetail(res))
       .catchError((onError) => view.onError());
   }
 
@@ -23,8 +25,8 @@ class InstallmentChangeSalePresenter extends MenuItemPresenter<InstallmentChange
                           .catchError((onError) => view.onError());
 
     if(res1 != null)
-      (view as InstallmentChangeSaleView).onResponseHouseType(res1);
+      (view as TView).onResponseHouseType(res1);
     if(res2 != null)
-      (view as InstallmentChangeSaleView).onResponseHouseAttatchment(res2);
+      (view as TView).onResponseHouseAttatchment(res2);
   }
 }

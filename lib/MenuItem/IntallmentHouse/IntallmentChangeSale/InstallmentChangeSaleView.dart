@@ -30,6 +30,12 @@ class InstallmentChangeSaleView extends AbstractInstallmentHouseView<Installment
   void initState() 
   {
     super.initState();
+    request();
+  }
+
+  @protected
+  void request()
+  {
     presenter = new InstallmentChangeSalePresenter(this);
     (presenter as InstallmentChangeSalePresenter).onRequestDetail(type, panId, ccrCnntSysDsCd);
   }
