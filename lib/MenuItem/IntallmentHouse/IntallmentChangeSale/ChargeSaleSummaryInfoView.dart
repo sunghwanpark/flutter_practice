@@ -65,6 +65,27 @@ class ChargeSaleSummaryInfoView extends StatelessWidget
         MaterialPageRoute(builder: (context) => PDFViewer(pdfFileName, pdfSerialNum))
       )
     ));
+
+    String rsn = _defaultData['dsPanInf'].first['CRC_RSN'];
+    if(rsn.isNotEmpty)
+    {
+      widgets.add(Row
+      (
+        children : <Widget>
+        [
+          Icon(Icons.warning, color: Colors.red),
+          SizedBox(width: 10),
+          Text(sprintf('%s 사유', [_defaultData['dsPanInf'].first['PAN_KD_CD_NM'].substring(0, 2)]), textAlign: TextAlign.left, style: TextStyle(color: Colors.red, fontSize: 25, fontFamily: 'TmonTium', fontWeight: FontWeight.w500))
+        ]
+      ));
+
+      widgets.add(Align
+      (
+        alignment: Alignment.centerLeft,
+        child: Text(rsn, textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'TmonTium'))
+      ));
+    }
+
     return widgets;
   }
 

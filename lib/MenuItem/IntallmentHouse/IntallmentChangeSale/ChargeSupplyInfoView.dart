@@ -109,9 +109,9 @@ class ChargeSupplyInfoView extends StatelessWidget
         child: Text('상세공급정보를 확인하시려면 카드를 길게 눌러주세요', textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 15, fontFamily: 'TmonTium', decoration: TextDecoration.underline))
       ));
 
-      List<Widget> cards = new List<Widget>();
       for(int j = 0; j < _detailData.length; j++)
       {
+        List<Widget> cards = new List<Widget>();
         var detail = _detailData[j];
 
         var values = 

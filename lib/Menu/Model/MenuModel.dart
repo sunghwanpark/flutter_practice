@@ -38,11 +38,11 @@ class MenuData
     String subString = detailURL.substring(findIdx, findIdx + 30);
     if(subString.contains("0040"))
       return MenuItemType.land;
-    else if(subString.contains("0050"))
+    else if(subString.contains("0050") || subString.contains("0051"))
       return MenuItemType.installment_house;
     else if(subString.contains("0062"))
       return MenuItemType.installment_change_sale;
-    else if(subString.contains("0060"))
+    else if(subString.contains("0060") || subString.contains("0065"))
       return MenuItemType.lease_house_installment;
 
     return MenuItemType.land;
