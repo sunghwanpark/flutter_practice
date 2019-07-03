@@ -1,4 +1,5 @@
 import 'package:bunyang/Menu/Model/MenuModel.dart';
+import 'package:bunyang/MenuItem/HoneymoonTown/HoneymoonTownView.dart';
 import 'package:bunyang/MenuItem/IntallmentHouse/InstallmentHouseView.dart';
 import 'package:bunyang/MenuItem/Land/LandPageView.dart';
 import 'package:bunyang/MenuItem/LeaseHouse/PublicLeaseView.dart';
@@ -22,6 +23,8 @@ class NoticeElementRouteFactory
         return InstallmentChangeSale(item);
       case MenuItemType.lease_house_installment:
         return PublicLeaseView(item);
+      case MenuItemType.honeymoon_lease:
+        return HoneymoonTownView(item);
       default:
         return myText('아직 개발중이야~');
     }

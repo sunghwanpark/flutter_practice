@@ -10,16 +10,19 @@ enum InstallmentHouseInquiryTabState { Info, Guide }
 
 class InstallmentHouseInquiry extends TabStatefull
 {
-  InstallmentHouseInquiry(this._requestData, this._uppAisTpCd) 
+  InstallmentHouseInquiry(this.requestData, this.uppAisTpCd) 
   : super
     (
-      noticeCode : Notice_Code.installment_house,
+      noticeCode : getNoticeCodeByUppAisTpCd(uppAisTpCd),
       appBarTitle : '분양, 임대주택 상세정보',
       expandedHeight : 200
     );
 
-  final Map<String, String> _requestData;
-  final String _uppAisTpCd;
+  InstallmentHouseInquiry.extend(this.requestData, this.uppAisTpCd, Notice_Code _code, String _appBarTitle, double _expandedHeight)
+  : super(noticeCode : _code, appBarTitle : _appBarTitle, expandedHeight : _expandedHeight);
+
+  final Map<String, String> requestData;
+  final String uppAisTpCd;
 
   @override
   InstallmentHouseInquiryView createState() => InstallmentHouseInquiryView();
@@ -36,21 +39,20 @@ class InstallmentHouseInquiryView extends TabStateView<InstallmentHouseInquiry>
     }
   }
 
-  InstallmentHouseInquiryPresenter _presenter;
+  @protected
+  InstallmentHouseInquiryPresenter presenter;
 
   @override
-  void initState()
+  void makePresenter()
   {
-    super.initState();
-
-    _presenter = InstallmentHouseInquiryPresenter(this);
-    _presenter.onRequestData(
-      widget._requestData['PAN_ID'],
-      widget._requestData['CCR_CNNT_SYS_DS_CD'],
-      widget._uppAisTpCd,
-      widget._requestData['AIS_INF_SN'],
-      widget._requestData['BZDT_CD'],
-      widget._requestData['HC_BLK_CD']);
+    presenter = InstallmentHouseInquiryPresenter(this);
+    presenter.onRequestData(
+      widget.requestData['PAN_ID'],
+      widget.requestData['CCR_CNNT_SYS_DS_CD'],
+      widget.uppAisTpCd,
+      widget.requestData['AIS_INF_SN'],
+      widget.requestData['BZDT_CD'],
+      widget.requestData['HC_BLK_CD']);
   }
 
   void onComplete(Map<String, List<Map<String, String>>> res)

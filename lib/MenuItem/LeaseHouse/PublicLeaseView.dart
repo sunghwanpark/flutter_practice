@@ -15,7 +15,7 @@ class PublicLeaseViewWidget extends InstallmentChangeSaleView
   PublicLeaseViewWidget(MenuData data) : super(data);
 
   @override
-  void request() 
+  void makePresenter() 
   {
     presenter = new PublicLeasePresenter(this);
     (presenter as PublicLeasePresenter).onRequestDetail(type, panId, ccrCnntSysDsCd);

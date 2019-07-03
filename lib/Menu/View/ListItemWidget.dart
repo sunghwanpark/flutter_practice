@@ -23,11 +23,11 @@ class ListItemWidget extends StatelessWidget
         return Icons.grid_on;
       case Notice_Code.lease_house:
         return Icons.home;
-      case Notice_Code.house_welfare:
+      case Notice_Code.lease:
         return Icons.favorite;
       case Notice_Code.shopping_district:
         return Icons.shopping_cart;
-      case Notice_Code.public_installment_house:
+      case Notice_Code.honeymoon_lease:
         return Icons.group;
       default:
         return Icons.perm_device_information;

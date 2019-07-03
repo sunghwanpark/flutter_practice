@@ -7,6 +7,8 @@ class InstallmentHouseInquiryModel extends MenuItemModel
 {
   InstallmentHouseInquiryModel() : super(detailFormURL : 'OCMC_LCC_SIL_AIS_R0004');
 
+  InstallmentHouseInquiryModel.extend(String detailURL) : super(detailFormURL : detailURL);
+
   @override
   String defaultDetailFormXml ='''<?xml version="1.0" encoding="UTF-8"?>
     <Root xmlns="http://www.nexacroplatform.com/platform/dataset">

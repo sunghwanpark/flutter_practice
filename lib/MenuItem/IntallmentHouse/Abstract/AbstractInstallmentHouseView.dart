@@ -36,4 +36,7 @@ abstract class AbstractInstallmentHouseView<T extends AbstractInstallmentHouse> 
 
   @protected
   String uppAisTpCd;
+
+  @required
+  void makePresenter();
 }

@@ -44,6 +44,8 @@ class MenuData
       return MenuItemType.installment_change_sale;
     else if(subString.contains("0060") || subString.contains("0065"))
       return MenuItemType.lease_house_installment;
+    else if(subString.contains("9910"))
+      return MenuItemType.honeymoon_lease;
 
     return MenuItemType.land;
   }
@@ -64,14 +66,15 @@ class MenuData
 
   getUppAisTPCD()
   {
-    assert(detailURL.contains('gv_menuId'));
+    return constNoticeCodeMap[this.type].code;
+    /*assert(detailURL.contains('gv_menuId'));
 
     var menuId = detailURL.split('&')
     .firstWhere((str) => str.contains('gv_menuId'))
     .split('=')
     .toList()[1];
 
-    return menuId == '1010202' ? "05" : "06";
+    return menuId == '1010202' ? "05" : "06";*/
   }
 }
 

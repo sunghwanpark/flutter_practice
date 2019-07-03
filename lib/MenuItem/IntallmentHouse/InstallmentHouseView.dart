@@ -31,9 +31,8 @@ class InstallmentHouseView extends AbstractInstallmentHouseView<InstallmentHouse
   final Map<String, List<Map<String, String>>> _imageDatas = new Map<String, List<Map<String, String>>>();
 
   @override
-  void initState() 
+  void makePresenter()
   {
-    super.initState();
     presenter = new InstallmentHousePresenter(this);
     presenter.onRequestPanInfo(type, RequestPanInfo(panId, ccrCnntSysDsCd, uppAisTpCd));
   }
@@ -56,6 +55,7 @@ class InstallmentHouseView extends AbstractInstallmentHouseView<InstallmentHouse
     (presenter as InstallmentHousePresenter).onRequestDetail(type, panId, ccrCnntSysDsCd, _otxtPanId, uppAisTpCd);
   }
 
+  @protected
   void onResponseDetail(Map<String, List<Map<String, String>>> res)
   {
     contents[InstallmentTabState.Contents.index].add(SummaryInfoView(res["dsHsSlpa"].first, res["dsAhflList"]));
@@ -144,6 +144,7 @@ class InstallmentHouseView extends AbstractInstallmentHouseView<InstallmentHouse
         _publicInstallment.values.first,
         _publicLease.values.first,
         _publicInstallmentLease.values.first,
+        null,
         _imageDatas.values.first)
       );
     }
@@ -161,6 +162,7 @@ class InstallmentHouseView extends AbstractInstallmentHouseView<InstallmentHouse
             _publicInstallment.values.elementAt(index),
             _publicLease.values.elementAt(index),
             _publicInstallmentLease.values.elementAt(index),
+            null,
             _imageDatas.values.elementAt(index)
           );
         })

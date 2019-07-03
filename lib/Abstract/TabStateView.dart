@@ -45,7 +45,12 @@ abstract class TabStateView<T extends TabStatefull> extends State<T> with Single
 
     _scrollController = ScrollController();
     _tabController = TabController(length: tabNames.length, vsync: this, initialIndex: 0);
+
+    makePresenter();
   }
+
+  @protected
+  void makePresenter();
 
   @override
   void dispose()

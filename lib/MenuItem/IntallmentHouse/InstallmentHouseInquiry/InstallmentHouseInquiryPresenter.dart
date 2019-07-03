@@ -7,10 +7,8 @@ class InstallmentHouseInquiryPresenter
   InstallmentHouseInquiryModel _model;
   InstallmentHouseInquiryView _view;
 
-  InstallmentHouseInquiryPresenter(this._view)
-  {
-    _model = new InstallmentHouseInquiryModel();
-  }
+  InstallmentHouseInquiryPresenter(this._view) : _model = InstallmentHouseInquiryModel();
+  InstallmentHouseInquiryPresenter.extend(this._model, this._view);
 
   void onRequestData(String panId, String ccrCnntSysDsCd, String uppAisTpCd, String aisInfSn, String bzdtCd, String hcBlkCd)
   {

@@ -74,9 +74,12 @@ abstract class MenuItemModel
 
 abstract class MenuPanInfoModel extends MenuItemModel
 {
-  MenuPanInfoModel(String detailForm) : super(detailFormURL : detailForm);
-  
-  String _requestPanInfo = "OCMC_LCC_SIL_PAN_IFNO_R0001";
+  MenuPanInfoModel(String detailForm,
+    {
+      String panInfoURL = "OCMC_LCC_SIL_PAN_IFNO_R0001"
+    }) : _requestPanInfo = panInfoURL, super(detailFormURL : detailForm);
+
+  final String _requestPanInfo;
 
   @protected
   String get panInfoFormXml;

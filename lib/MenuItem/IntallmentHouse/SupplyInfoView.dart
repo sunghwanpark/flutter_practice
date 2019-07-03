@@ -1,5 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:bunyang/Map/MyGoogleMapView.dart';
+import 'package:bunyang/MenuItem/HoneymoonTown/HoneymoonInquiry/HoneymoonInquiryView.dart';
 import 'package:bunyang/MenuItem/IntallmentHouse/InstallmentHouseInquiry/InstallmentHouseInquiryView.dart';
 import 'package:bunyang/MenuItem/IntallmentHouse/IntallmentDetail/InstallmentSupplyInfoDetailView.dart';
 import 'package:bunyang/Util/NetworkImageWidget.dart';
@@ -11,13 +12,14 @@ import 'package:sprintf/sprintf.dart';
 
 class SupplyInfoView extends StatelessWidget
 {
-  SupplyInfoView(this._uppAisTpCd, this._defaultData, this._publicInstallment, this._publicLease, this._publicInstallmentLease, this._imageData);
+  SupplyInfoView(this._uppAisTpCd, this._defaultData, this._publicInstallment, this._publicLease, this._publicInstallmentLease, this._honeymoonLease, this._imageData);
 
   final String _uppAisTpCd;
   final Map<String, String> _defaultData;
   final List<Map<String, String>> _publicInstallment;
   final List<Map<String, String>> _publicLease;
   final List<Map<String, String>> _publicInstallmentLease;
+  final List<Map<String, String>> _honeymoonLease;
   final List<Map<String, String>> _imageData;
 
   List<Widget> _getContents(BuildContext context)
@@ -73,7 +75,8 @@ class SupplyInfoView extends StatelessWidget
             onPressed: () => Navigator.push
             (
               context,
-              MaterialPageRoute(builder: (context) => InstallmentHouseInquiry(_defaultData, _uppAisTpCd))
+              MaterialPageRoute(builder: (context) => _honeymoonLease != null ? 
+                HoneymoonInquiry(_defaultData, _uppAisTpCd) : InstallmentHouseInquiry(_defaultData, _uppAisTpCd))
             ),
             color: Colors.amber[300],
             icon: Icon(Icons.details),
@@ -191,7 +194,7 @@ class SupplyInfoView extends StatelessWidget
     }
     
     final f = NumberFormat("#,###");
-    if(_publicInstallment.length > 0) // 공공분양
+    if(_publicInstallment != null && _publicInstallment.length > 0) // 공공분양
     {
       widgets.add(_setSubject('공공분양'));
 
@@ -230,7 +233,7 @@ class SupplyInfoView extends StatelessWidget
         widgets.add(_setDetailCard(context, contents, map));
       });
     }
-    else if(_publicLease.length > 0) // 공공임대
+    else if(_publicLease != null && _publicLease.length > 0) // 공공임대
     {
       widgets.add(_setSubject('공공임대'));
 
@@ -270,7 +273,7 @@ class SupplyInfoView extends StatelessWidget
         widgets.add(_setDetailCard(context, contents, map));
       });
     }
-    else if(_publicInstallmentLease.length > 0) // 분납임대
+    else if(_publicInstallmentLease != null && _publicInstallmentLease.length > 0) // 분납임대
     {
       widgets.add(_setSubject('분납임대'));
 
@@ -290,6 +293,45 @@ class SupplyInfoView extends StatelessWidget
           sprintf('금화공급 세대수: %s', [map['SIL_HSH_CNT']]),
           sprintf('초기분납금(원): %s', [f.format(int.parse(map['ELY_DSU_AMT']))]),
           sprintf('월임대료(원): %s', [f.format(int.parse(map['MM_RFE']))]),
+          sprintf('인터넷청약: %s', [map['BTN_NM']])
+        ];
+
+        List<Widget> contents = new List<Widget>(); 
+        values.forEach((value)
+        {
+          contents.add(Padding
+          (
+            padding: EdgeInsets.only(left:10, right:10),
+            child: Align
+            (
+              alignment: Alignment.centerLeft,
+              child: Text(value, textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'TmonTium'))
+            )
+          ));
+        });
+
+        widgets.add(_setDetailCard(context, contents, map));
+      });
+    }
+    if(_honeymoonLease != null && _honeymoonLease.length > 0) // 신혼희망타운
+    {
+      widgets.add(_setSubject('신혼희망타운'));
+
+      widgets.add(Align
+      (
+        alignment: Alignment.centerLeft,
+        child: Text('상세공급정보를 확인하시려면 카드를 길게 눌러주세요', textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 15, fontFamily: 'TmonTium', decoration: TextDecoration.underline))
+      ));
+
+      _honeymoonLease.forEach((map)
+      {
+        var values = 
+        [
+          sprintf('주택형: %s', [map['HTY_NM']]),
+          sprintf('전용면적(㎡): %s', [map['RSDN_DDO_AR']]),
+          sprintf('세대수: %s', [map['TOT_HSH_CNT']]),
+          sprintf('금화공급 세대수: %s', [map['SIL_HSH_CNT']]),
+          sprintf('평균분양가격(원): %s', [f.format(int.parse(map['SIL_AMT']))]),
           sprintf('인터넷청약: %s', [map['BTN_NM']])
         ];
 

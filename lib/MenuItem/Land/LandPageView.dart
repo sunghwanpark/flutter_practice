@@ -32,9 +32,8 @@ class LandPageView extends MenuItemPageView<LandPage>
   }
   
   @override
-  void initState() 
+  void makePresenter() 
   {
-    super.initState();
     presenter = new LandPagePresenter(this);
     presenter.onRequestPanInfo(type, RequestPanInfo(panId, ccrCnntSysDsCd, ''));
   }
