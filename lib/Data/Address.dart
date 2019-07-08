@@ -17,6 +17,7 @@ enum MenuItemType
   installment_change_sale,    // 분양전환일반매각공고상세내역
   lease_house_installment,    // 임대주택 공공임대
   honeymoon_lease,            // 신혼희망타운
+  all_lease,                  // 매입/전세 임대
 }
 
 class MainMenuData

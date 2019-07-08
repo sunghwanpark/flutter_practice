@@ -36,6 +36,16 @@ class ChargeSaleSummaryInfoView extends StatelessWidget
       child: Text(sprintf('공고일 : %s', [getDateFormat(_defaultData['dsPanInf'].first['PAN_DT'])]), textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'TmonTium'))
     ));
 
+    var callNum = _defaultData['dsPanInf'].first['TLNO_CTS'];
+    if(callNum.isNotEmpty)
+    {
+      widgets.add(Align
+      (
+        alignment: Alignment.centerLeft,
+        child: Text(sprintf('문의처 : %s', [callNum]), textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'TmonTium'))
+      ));
+    }
+
     String pdfFileName = _defaultData['dsAhflList'].where((map) => map['SL_PAN_AHFL_DS_CD'] == '01').first['CMN_AHFL_NM'];
     String pdfSerialNum = _defaultData['dsAhflList'].where((map) => map['SL_PAN_AHFL_DS_CD'] == '01').first['CMN_AHFL_SN'];
     widgets.add(FlatButton

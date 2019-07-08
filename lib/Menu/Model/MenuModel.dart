@@ -46,6 +46,8 @@ class MenuData
       return MenuItemType.lease_house_installment;
     else if(subString.contains("9910"))
       return MenuItemType.honeymoon_lease;
+    else if(subString.contains("0070"))
+      return MenuItemType.all_lease;
 
     return MenuItemType.land;
   }

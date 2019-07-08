@@ -192,3 +192,52 @@ class MyGoogleMapViewLatLtd extends StatelessWidget
     );
   }
 }
+
+class MyGoogleMapWidget extends StatelessWidget
+{
+  MyGoogleMapWidget(this._latLng)
+  {
+    _markers.add(Marker
+    (
+      markerId: MarkerId(_latLng.toString()),
+      position: _latLng,
+      icon: BitmapDescriptor.defaultMarker
+    ));
+  }
+
+  final LatLng _latLng;
+  final Completer<GoogleMapController> _controller = Completer();
+  final Set<Marker> _markers = {};
+
+  void _onMapCreated(GoogleMapController controller) 
+  {
+    _controller.complete(controller);
+  }
+
+  @override
+  Widget build(BuildContext context) 
+  {
+    return Container
+    (
+      width: MediaQuery.of(context).size.width,
+      child: Padding
+      (
+        padding: EdgeInsets.only(left: 10, right: 10),
+        child: Container
+        (
+          height: 500,
+          child: GoogleMap
+          (
+            onMapCreated: _onMapCreated,
+            markers: _markers,
+            initialCameraPosition: CameraPosition
+            (
+              target: _latLng,
+              zoom: 15.0,
+            )
+          )
+        )
+      )
+    );
+  }
+}

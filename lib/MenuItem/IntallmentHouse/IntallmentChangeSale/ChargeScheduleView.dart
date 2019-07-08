@@ -170,40 +170,40 @@ class ChargeScheduleView extends StatelessWidget
       addressBuffer.write(_data["dsPanInf"].first["CTRT_PLC_DTL_ADR"]);
 
       widgets.add(MyGoogleMap("접수처 정보", addressBuffer.toString()));
+    }
       
+    widgets.add(Align
+    (
+      alignment: Alignment.centerLeft,
+      child: Text(sprintf('전화번호 : %s', [_data["dsPanInf"].first["SIL_OFC_TLNO"]]), textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'TmonTium'))
+    ));
+
+    if(_data['dsPanInf'].first['TSK_ST_DTTM'].isNotEmpty && _data['dsPanInf'].first['TSK_ED_DTTM'].isNotEmpty)
+    {
       widgets.add(Align
       (
         alignment: Alignment.centerLeft,
-        child: Text(sprintf('전화번호 : %s', [_data["dsPanInf"].first["SIL_OFC_TLNO"]]), textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'TmonTium'))
+        child: AutoSizeText(sprintf('운영기간 : %s ~ %s', [_data["dsPanInf"].first["TSK_ST_DTTM"], _data["dsPanInf"].first["TSK_ED_DTTM"]]), maxLines: 1, textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'TmonTium'))
+      ));
+    }
+
+    if(_data["dsPanInf"].first["SIL_OFC_GUD_FCTS"].isNotEmpty)
+    {
+      widgets.add(Row
+      (
+        children : <Widget>
+        [
+          Icon(Icons.info, color: Colors.red),
+          SizedBox(width: 10),
+          Text('안내사항', textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'TmonTium', fontWeight: FontWeight.w800))
+        ]
       ));
 
-      if(_data['dsPanInf'].first['TSK_ST_DTTM'].isNotEmpty && _data['dsPanInf'].first['TSK_ED_DTTM'].isNotEmpty)
-      {
-        widgets.add(Align
-        (
-          alignment: Alignment.centerLeft,
-          child: AutoSizeText(sprintf('운영기간 : %s ~ %s', [_data["dsPanInf"].first["TSK_ST_DTTM"], _data["dsPanInf"].first["TSK_ED_DTTM"]]), maxLines: 1, textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'TmonTium'))
-        ));
-      }
-
-      if(_data["dsPanInf"].first["SIL_OFC_GUD_FCTS"].isNotEmpty)
-      {
-        widgets.add(Row
-        (
-          children : <Widget>
-          [
-            Icon(Icons.info, color: Colors.red),
-            SizedBox(width: 10),
-            Text('안내사항', textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'TmonTium', fontWeight: FontWeight.w800))
-          ]
-        ));
-
-        widgets.add(Align
-        (
-          alignment: Alignment.centerLeft,
-          child: Text(_data["dsPanInf"].first["SIL_OFC_GUD_FCTS"], textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'TmonTium'))
-        ));
-      }
+      widgets.add(Align
+      (
+        alignment: Alignment.centerLeft,
+        child: Text(_data["dsPanInf"].first["SIL_OFC_GUD_FCTS"], textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'TmonTium'))
+      ));
     }
 
     return widgets;
