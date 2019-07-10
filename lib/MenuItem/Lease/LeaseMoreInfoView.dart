@@ -2,16 +2,15 @@ import 'package:flutter/material.dart';
 
 class LeaseMoreInfoView extends StatelessWidget
 {
-  LeaseMoreInfoView(this._detailData, this._etcDatas);
+  LeaseMoreInfoView(this._defaultDatas);
 
-  final Map<String, String> _detailData;
-  final List<Map<String, String>> _etcDatas;
+  final Map<String, List<Map<String, String>>> _defaultDatas;
 
   List<Widget> _getContents(BuildContext context)
   {
     List<Widget> widgets = List<Widget>();
 
-    if(_detailData['LSTR_CTS'].isNotEmpty)
+    if(_defaultDatas['dsLsPanDtl'].first['LSTR_CTS'].isNotEmpty)
     {
       widgets.add(Row
       (
@@ -26,13 +25,13 @@ class LeaseMoreInfoView extends StatelessWidget
       widgets.add(Align
       (
         alignment: Alignment.centerLeft,
-        child: Text(_detailData["LSTR_CTS"], textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'TmonTium'))
+        child: Text(_defaultDatas['dsLsPanDtl'].first["LSTR_CTS"], textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'TmonTium'))
       ));
 
       widgets.add(SizedBox(height: 10));
     }
 
-    if(_detailData['LSC_CTS'].isNotEmpty)
+    if(_defaultDatas['dsLsPanDtl'].first['LSC_CTS'].isNotEmpty)
     {
       widgets.add(Row
       (
@@ -47,7 +46,28 @@ class LeaseMoreInfoView extends StatelessWidget
       widgets.add(Align
       (
         alignment: Alignment.centerLeft,
-        child: Text(_detailData["LSC_CTS"], textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'TmonTium'))
+        child: Text(_defaultDatas['dsLsPanDtl'].first["LSC_CTS"], textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'TmonTium'))
+      ));
+
+      widgets.add(SizedBox(height: 10));
+    }
+
+    if(_defaultDatas['dsLsPanDtl'].first['SPPT_LMT_AMT_CTS'].isNotEmpty)
+    {
+      widgets.add(Row
+      (
+        children : <Widget>
+        [
+          Icon(Icons.monetization_on, color: Colors.black),
+          SizedBox(width: 10),
+          Text('지원한도액', textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 27, fontFamily: 'TmonTium', fontWeight: FontWeight.w500))
+        ]
+      ));
+
+      widgets.add(Align
+      (
+        alignment: Alignment.centerLeft,
+        child: Text(_defaultDatas['dsLsPanDtl'].first["SPPT_LMT_AMT_CTS"], textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'TmonTium'))
       ));
 
       widgets.add(SizedBox(height: 10));
@@ -63,9 +83,9 @@ class LeaseMoreInfoView extends StatelessWidget
       ]
     ));
 
-    for(int i = 0; i < _etcDatas.length; i++)
+    for(int i = 0; i < _defaultDatas['dsLsPanEtc'].length; i++)
     {
-      var etcData = _etcDatas[i];
+      var etcData = _defaultDatas['dsLsPanEtc'][i];
       
       String type = etcData["PAN_ETC_INF_CD_NM"];
       widgets.add(Align

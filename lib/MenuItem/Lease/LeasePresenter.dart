@@ -26,4 +26,20 @@ class LeasePresenter
       .then((res) => _view.onResponseMoreData(res))
       .catchError((err) => _view.onError());
   }
+
+  void onRequestRentalLeaseMoreData(String panId, String ccrCnntSysDsCd, String lohTpCd)
+  {
+    _model
+      .fetchRentalLeaseMoreData(panId, ccrCnntSysDsCd, lohTpCd)
+      .then((res) => _view.onResponseRentalLeaseMoreData(res))
+      .catchError((err) => _view.onError());
+  }
+
+  void onRequestRentalLeaseStTypeData(String panId, String ccrCnntSysDsCd, String lohTpCd)
+  {
+    _model
+      .fetchRentalLeaseStTypeData(panId, ccrCnntSysDsCd, lohTpCd)
+      .then((res) => _view.onResponseRentalLeaseStTypeData(res))
+      .catchError((err) => _view.onError());
+  }
 }

@@ -31,6 +31,20 @@ class LeaseScheduleView extends StatelessWidget
         child: Text(sprintf('· 접수기간 : %s ~ %s', [_data['dsSplScdInf'].first['SBSC_ACP_ST_DT'], _data['dsSplScdInf'].first['SBSC_ACP_CLSG_DT']]), textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'TmonTium'))
       ));
     }
+    else if(_data['dsSplScdInf'].first['UST_ACP_ST_DTTM'].isNotEmpty || _data['dsSplScdInf'].first['UST_ACP_CLSG_DTTM'].isNotEmpty)
+    {
+      String startAt = _data['dsSplScdInf'].first['UST_ACP_ST_DTTM'];
+      String endAt = _data['dsSplScdInf'].first['UST_ACP_CLSG_DTTM'];
+      String contents = startAt.isNotEmpty && endAt.isNotEmpty ? '· 접수기간 : $startAt ~ $endAt' : 
+        startAt.isNotEmpty && endAt.isEmpty ? '· 접수기간 : $startAt ~' :
+        startAt.isEmpty && endAt.isNotEmpty ? '· 접수기간 : $endAt' : '';
+
+      widgets.add(Align
+      (
+        alignment: Alignment.centerLeft,
+        child: Text(contents, textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'TmonTium'))
+      ));
+    }
     
     if(_data['dsSplScdInf'].first['PPR_SBM_OPE_ANC_DT'].isNotEmpty)
     {
@@ -64,7 +78,8 @@ class LeaseScheduleView extends StatelessWidget
       widgets.add(Align
       (
         alignment: Alignment.centerLeft,
-        child: Text(sprintf('· 당첨자발표일 : %s', [_data['dsSplScdInf'].first['PZWR_ANC_DT']]), textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'TmonTium'))
+        child: Text(sprintf(_data['dsLohTpCdInf'].first['LOH_TP_CD'] == '03' ? '· 입주대상자발표일 : %s': '· 당첨자발표일 : %s',
+          [_data['dsSplScdInf'].first['PZWR_ANC_DT']]), textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'TmonTium'))
       ));
     }
 
@@ -79,6 +94,8 @@ class LeaseScheduleView extends StatelessWidget
 
     if(_data["dsPanInf"].first["ETC_CTS2"].isNotEmpty)
     {
+      widgets.add(SizedBox(height: 10));
+      
       widgets.add(Row
       (
         children : <Widget>
@@ -95,6 +112,8 @@ class LeaseScheduleView extends StatelessWidget
         child: Text(_data["dsPanInf"].first["ETC_CTS2"], textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'TmonTium'))
       ));
     }
+
+    widgets.add(SizedBox(height: 10));
 
     if(_data["dsPanInf"].first["CTRT_PLC_ADR"].isNotEmpty && _data["dsPanInf"].first["CTRT_PLC_DTL_ADR"].isNotEmpty)
     {
@@ -137,6 +156,8 @@ class LeaseScheduleView extends StatelessWidget
 
     if(_data["dsPanInf"].first["SIL_OFC_GUD_FCTS"].isNotEmpty)
     {
+      widgets.add(SizedBox(height: 10));
+
       widgets.add(Row
       (
         children : <Widget>

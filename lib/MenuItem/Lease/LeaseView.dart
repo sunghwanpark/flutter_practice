@@ -2,6 +2,7 @@ import 'package:bunyang/Menu/Model/MenuModel.dart';
 import 'package:bunyang/MenuItem/IntallmentHouse/IntallmentChangeSale/ChargeSaleSummaryInfoView.dart';
 import 'package:bunyang/MenuItem/Lease/LeaseMoreInfoView.dart';
 import 'package:bunyang/MenuItem/Lease/LeasePresenter.dart';
+import 'package:bunyang/MenuItem/Lease/LeaseRentalSupplyView.dart';
 import 'package:bunyang/MenuItem/Lease/LeaseScheduleView.dart';
 import 'package:bunyang/MenuItem/Lease/LeaseSupplyView.dart';
 import 'package:bunyang/MenuItem/MenuItemPageView.dart';
@@ -32,6 +33,7 @@ class LeaseViewWidget extends MenuItemPageView<LeaseView>
 
   LeasePresenter _presenter;
   Map<String, List<Map<String, String>>> _defaultDatas;
+  List<Map<String, String>> _dsList;
 
   @override
   void makePresenter()
@@ -46,15 +48,36 @@ class LeaseViewWidget extends MenuItemPageView<LeaseView>
 
     contents[LeaseState.Contents.index].add(ChargeSaleSummaryInfoView(res));
     contents[LeaseState.Schedule.index].add(LeaseScheduleView(res));
-    contents[LeaseState.LeaseInfo.index].add(LeaseMoreInfoView(res['dsLsPanDtl'].first, res['dsLsPanEtc']));
+    contents[LeaseState.LeaseInfo.index].add(LeaseMoreInfoView(res));
 
-    _presenter.onRequestMoreData(panId, ccrCnntSysDsCd, res['dsSplScdInf'].first['LTR_UNT_NO'], res['dsSplScdInf'].first['LTR_NOT'], 
-      res['dsPanInf'].first['LTRM_NLE_YN']);
+    if(res.containsKey('dsLohTpCdInf') && res['dsLohTpCdInf'].first['LOH_TP_CD'].isNotEmpty)
+    {
+      _presenter.onRequestRentalLeaseMoreData(panId, ccrCnntSysDsCd, res['dsLohTpCdInf'].first['LOH_TP_CD']);
+    }
+    else
+    {
+      _presenter.onRequestMoreData(panId, ccrCnntSysDsCd, res['dsSplScdInf'].first['LTR_UNT_NO'], res['dsSplScdInf'].first['LTR_NOT'], 
+        res['dsPanInf'].first['LTRM_NLE_YN']);
+    }
   }
 
   void onResponseMoreData(Map<String, List<Map<String, String>>> res)
   {
-    contents[LeaseState.Infos.index].add(LeaseSupplyView(_defaultDatas['dsPanInf'].first['LTRM_NLE_YN'], _defaultDatas['dsLsPanDtl'].first, res));
+    contents[LeaseState.Infos.index].add(LeaseSupplyView(_defaultDatas, res));
+    setState(() {
+      loadingState = LoadingState.DONE;
+    });
+  }
+
+  void onResponseRentalLeaseMoreData(Map<String, List<Map<String, String>>> res)
+  {
+    _dsList = res['dsList'];
+    _presenter.onRequestRentalLeaseStTypeData(panId, ccrCnntSysDsCd, _defaultDatas['dsLohTpCdInf'].first['LOH_TP_CD']);
+  }
+
+  void onResponseRentalLeaseStTypeData(Map<String, List<Map<String, String>>> res)
+  {
+    contents[LeaseState.Infos.index].add(LeaseRentalSupplyView(_defaultDatas, _dsList, res['dsList']));
     setState(() {
       loadingState = LoadingState.DONE;
     });
