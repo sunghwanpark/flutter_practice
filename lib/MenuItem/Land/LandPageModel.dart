@@ -16,14 +16,17 @@ class LandPageModel extends MenuPanInfoModel
 	  <Dataset id="dsSch">
 		  <ColumnInfo>
 			  <Column id="PAN_ID" type="STRING" size="256"  />
-			  <Column id="CCR_CNNT_SYS_DS_CD" type="STRING" size="256"  />
-			  <Column id="PAN_LOLD_TYPE" type="STRING" size="256"  />
-			  <Column id="PREVIEW" type="STRING" size="256"  />
-			  <Column id="TRET_PAN_ID" type="STRING" size="256"  />
+        <Column id="CCR_CNNT_SYS_DS_CD" type="STRING" size="256"  />
+        <Column id="PAN_LOLD_TYPE" type="STRING" size="256"  />
+        <Column id="PREVIEW" type="STRING" size="256"  />
+        <Column id="PAN_KD_CD" type="STRING" size="256"  />
+        <Column id="OTXT_PAN_ID" type="STRING" size="256"  />
+        <Column id="TRET_PAN_ID" type="STRING" size="256"  />
+        <Column id="TMP_PAN_SS" type="STRING" size="256"  />
 		  </ColumnInfo>
 	  </Dataset>
   </Root>''';
-
+  
   generateDetailBody(String panId, String ccrCnntSysDsCd, String panKDCD, String otxtPanId)
   {
     var document = xml.parse(defaultDetailFormXml);

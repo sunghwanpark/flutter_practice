@@ -68,6 +68,10 @@ abstract class MenuItemModel
           });
       });
 
+    if(res.containsKey('gdsRpsCmn'))
+    {
+      print(res['gdsRpsCmn'].first['MSG_VL']);
+    }
     return res;
   }
 
@@ -107,6 +111,8 @@ abstract class MenuItemModel
         print(e);
       }
     }
+
+    print(document.toXmlString(pretty: true, indent: '\t'));
     return document.toXmlString(pretty: true, indent: '\t');
   }
 }
