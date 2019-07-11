@@ -38,7 +38,8 @@ class HoneymoonTownWidget extends AbstractInstallmentHouseView<HoneymoonTownView
   void makePresenter()
   {
     presenter = HoneymoonTownPresenter(this);
-    presenter.onRequestPanInfo(data.type, RequestPanInfo(panId, ccrCnntSysDsCd, uppAisTpCd));
+    presenter.onRequestPanInfo(data.type, 
+        {"PAN_ID" : panId, "CCR_CNNT_SYS_DS_CD" : ccrCnntSysDsCd, "UPP_AIS_TP_CD": uppAisTpCd, "PREVIEW" : "N"});
   }
 
   void onResponseDetail(Map<String, List<Map<String, String>>> res)

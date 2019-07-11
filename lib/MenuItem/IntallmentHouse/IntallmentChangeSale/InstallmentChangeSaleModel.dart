@@ -180,9 +180,4 @@ class InstallmentChangeSaleModel extends MenuPanInfoModel
 
   @override
   String get panInfoFormXml => null;
-
-  @override
-  generateRequestPanInfoBody(RequestPanInfo requestPanInfo) {
-    return null;
-  }
 }

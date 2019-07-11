@@ -69,7 +69,46 @@ abstract class MenuItemModel
       });
 
     return res;
-  }  
+  }
+
+  generateXmlBody(String form, Map<String, String> params)
+  {
+    var document = xml.parse(form);
+
+    var builder = new xml.XmlBuilder();
+    builder.element("Rows", nest: ()
+    {
+      builder.element("Row", nest: ()
+      {
+        params.forEach((key, value)
+        {
+          builder.element("Col", attributes: {"id": key}, nest: ()
+          {
+            builder.text(value);
+          });
+        });
+      });
+    });
+
+    var landXml = builder.build();
+    var parent = document.findAllElements("Dataset");
+    if(parent.length > 0)
+    {
+      try
+      {
+        var root = landXml.copy();
+        var child = root.firstChild;
+        child.detachParent(root);
+
+        parent.first.children.add(child);
+      }
+      catch(e)
+      {
+        print(e);
+      }
+    }
+    return document.toXmlString(pretty: true, indent: '\t');
+  }
 }
 
 abstract class MenuPanInfoModel extends MenuItemModel
@@ -85,7 +124,10 @@ abstract class MenuPanInfoModel extends MenuItemModel
   String get panInfoFormXml;
 
   @protected
-  generateRequestPanInfoBody(RequestPanInfo requestPanInfo);
+  generateRequestPanInfoBody(Map<String, String> requestPanInfos)
+  {
+    return generateXmlBody(panInfoFormXml, requestPanInfos);
+  }
 
   @protected
   Map<String, String> getPanInfo(Iterable<xml.XmlElement> iterator)
@@ -94,7 +136,7 @@ abstract class MenuPanInfoModel extends MenuItemModel
     return res["dsPanInfo"].first;
   }
 
-  Future<Map<String, String>> fetchPanInfo(Notice_Code noticeCode, RequestPanInfo requestPanInfo) async
+  Future<Map<String, String>> fetchPanInfo(Notice_Code noticeCode, Map<String, String> requestPanInfos) async
   {
     StringBuffer stringBuffer = new StringBuffer();
     stringBuffer.write(noticeURL);
@@ -106,7 +148,7 @@ abstract class MenuPanInfoModel extends MenuItemModel
     (
       stringBuffer.toString(),
       headers: {"Content-Type" : "application/xml"},
-      body: generateRequestPanInfoBody(requestPanInfo)
+      body: generateRequestPanInfoBody(requestPanInfos)
     ).timeout(const Duration(seconds: 5))
     .then((res) => xml.parse(res.body))
     .then((xmlDocument) => getPanInfo(xmlDocument.findAllElements("Dataset")));

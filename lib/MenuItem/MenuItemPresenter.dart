@@ -13,7 +13,7 @@ abstract class MenuItemPresenter<T extends MenuPanInfoModel>
   @protected
   MenuItemPresenter(this.model, this.view);
 
-  void onRequestPanInfo(Notice_Code code, RequestPanInfo requestPanInfo)
+  void onRequestPanInfo(Notice_Code code, Map<String, String> requestPanInfo)
   {
     model
       .fetchPanInfo(code, requestPanInfo)

@@ -62,58 +62,6 @@ class InstallmentHouseModel extends MenuPanInfoModel
       </Dataset>
     </Root>''';
 
-  @override
-  generateRequestPanInfoBody(RequestPanInfo requestPanInfo)
-  {
-    var document = xml.parse(panInfoFormXml);
-
-    var builder = new xml.XmlBuilder();
-    builder.element("Rows", nest: ()
-    {
-      builder.element("Row", nest: ()
-      {
-        builder.element("Col", attributes: {"id": "PAN_ID"}, nest: ()
-        {
-          builder.text(requestPanInfo.panId);
-        });
-
-        builder.element("Col", attributes: {"id": "CCR_CNNT_SYS_DS_CD"}, nest: ()
-        {
-          builder.text(requestPanInfo.ccrCnntSysDsCd);
-        });
-
-        builder.element("Col", attributes: {"id": "UPP_AIS_TP_CD"}, nest: ()
-        {
-          builder.text(requestPanInfo.uppAisTpCd);
-        });
-
-        builder.element("Col", attributes: {"id": "PREVIEW"}, nest: ()
-        {
-          builder.text("N");
-        });
-      });
-    });
-
-    var landXml = builder.build();
-    var parent = document.findAllElements("Dataset");
-    if(parent.length > 0)
-    {
-      try
-      {
-        var root = landXml.copy();
-        var child = root.firstChild;
-        child.detachParent(root);
-
-        parent.first.children.add(child);
-      }
-      catch(e)
-      {
-        print(e);
-      }
-    }
-    return document.toXmlString(pretty: true, indent: '\t');
-  }
-
   generateDetailBody(String panId, String ccrCnntSysDsCd, String otxtPanId, String uppAisTpCd)
   {
     var document = xml.parse(defaultDetailFormXml);
