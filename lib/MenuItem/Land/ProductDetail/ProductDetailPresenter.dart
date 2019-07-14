@@ -17,6 +17,6 @@ class ProductDetailPresenter
     _model
       .fetchDetailInfo(requestDetailData.ccrCnntSysDsCd, requestDetailData.aisInfSn, requestDetailData.bzdtCd, requestDetailData.loldNo, requestDetailData.panId)
       .then((res) => _view.onComplete(res))
-      .catchError((err) => _view.onError());
+      .catchError((err) => _view.onError(err));
   }
 }

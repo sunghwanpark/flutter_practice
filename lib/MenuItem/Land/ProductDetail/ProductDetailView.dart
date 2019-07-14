@@ -69,8 +69,9 @@ class ProductDetailView extends State<ProductDetail> with SingleTickerProviderSt
     setState(() => loadingState = LoadingState.DONE);
   }
 
-  void onError()
+  void onError(dynamic err)
   {
+    print(err);
     setState(() => loadingState = LoadingState.ERROR);
   }
 

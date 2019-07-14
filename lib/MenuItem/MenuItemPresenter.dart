@@ -18,6 +18,6 @@ abstract class MenuItemPresenter<T extends MenuPanInfoModel>
     model
       .fetchPanInfo(code, requestPanInfo)
       .then((panInfo) => view.onResponseSuccessPanInfo(panInfo))
-      .catchError((onError) => view.onError());
+      .catchError((onError) => view.onError(onError));
   }
 }

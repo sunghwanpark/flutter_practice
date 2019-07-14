@@ -8,10 +8,17 @@ import 'package:auto_size_text/auto_size_text.dart';
 
 class MyGoogleMap extends StatefulWidget
 {
-  MyGoogleMap(this.title, this.address);
+  MyGoogleMap(
+    this.title,
+    this.address,
+    {
+      double titleSize = 25
+    })
+  : mapTitleSize = titleSize;
 
   final String title;
   final String address;
+  final double mapTitleSize;
 
   @override
   State<StatefulWidget> createState() => MyGoogleMapView(this.title, this.address);
@@ -51,8 +58,9 @@ class MyGoogleMapView extends State<MyGoogleMap>
     setState(() => loadingState = LoadingState.DONE);
   }
 
-  void onError()
+  void onError(dynamic err)
   {
+    print(err);
     setState(() => loadingState = LoadingState.ERROR);
   }
 
@@ -80,7 +88,7 @@ class MyGoogleMapView extends State<MyGoogleMap>
                 [
                   Icon(Icons.location_on, color: Colors.black),
                   SizedBox(width: 10),
-                  Text(title, textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 25, fontFamily: 'TmonTium'))
+                  Text(title, textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: widget.mapTitleSize, fontFamily: 'TmonTium'))
                 ]
               ),
               this.address.isNotEmpty ? AutoSizeText
@@ -123,7 +131,13 @@ class MyGoogleMapView extends State<MyGoogleMap>
 
 class MyGoogleMapViewLatLtd extends StatelessWidget
 {
-  MyGoogleMapViewLatLtd(this._title, this._address, this._latLng)
+  MyGoogleMapViewLatLtd(
+    this._title, 
+    this._address, 
+    this._latLng,
+    {
+      double titleSize = 25
+    }) : _mapTitleSize = titleSize
   {
     _markers.add(Marker
     (
@@ -136,6 +150,7 @@ class MyGoogleMapViewLatLtd extends StatelessWidget
   final String _title;
   final String _address;
   final LatLng _latLng;
+  final double _mapTitleSize;
   final Completer<GoogleMapController> _controller = Completer();
   final Set<Marker> _markers = {};
 
@@ -163,7 +178,7 @@ class MyGoogleMapViewLatLtd extends StatelessWidget
               [
                 Icon(Icons.location_on, color: Colors.black),
                 SizedBox(width: 10),
-                Text(_title, textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 25, fontFamily: 'TmonTium'))
+                Text(_title, textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: _mapTitleSize, fontFamily: 'TmonTium'))
               ]
             ),
             this._address.isNotEmpty ? AutoSizeText

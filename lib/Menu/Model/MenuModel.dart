@@ -48,6 +48,8 @@ class MenuData
       return MenuItemType.honeymoon_lease;
     else if(subString.contains("0070"))
       return MenuItemType.all_lease;
+    else if(subString.contains("0080"))
+      return MenuItemType.store_bid;
 
     return MenuItemType.land;
   }

@@ -16,6 +16,6 @@ class ContractSchedulePresenter
     _model
       .fetchContractInfo(ccrCnntSysDsCd, aisInfSn)
       .then((res) => _view.onComplete(res))
-      .catchError((err) => _view.onError());
+      .catchError((err) => _view.onError(err));
   }
 }

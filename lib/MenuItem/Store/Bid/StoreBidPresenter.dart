@@ -11,7 +11,7 @@ class StoreBidPresenter extends MenuItemPresenter<StoreBidModel>
     model
       .fetchData(params)
       .then((res) => (view as StoreBidViewWidget).onResponseDefaultData(res))
-      .catchError((err) => view.onError());
+      .catchError((err) => view.onError(err));
   }
 
   void onRequestAttachmentData(Map<String, String> params)
@@ -19,7 +19,7 @@ class StoreBidPresenter extends MenuItemPresenter<StoreBidModel>
     model
       .fetchAttachmentData(params)
       .then((res) => (view as StoreBidViewWidget).onResponseAttachmentData(res))
-      .catchError((err) => view.onError());
+      .catchError((err) => view.onError(err));
   }
 
   void onRequestStoreData(Map<String, String> params)
@@ -27,7 +27,7 @@ class StoreBidPresenter extends MenuItemPresenter<StoreBidModel>
     model
       .fetchStoreData(params)
       .then((res) => (view as StoreBidViewWidget).onResponseStoreData(params['BZDT_CD'], res))
-      .catchError((err) => view.onError());
+      .catchError((err) => view.onError(err));
   }
 
   void onRequestStoreElemData(Map<String, String> params)
@@ -35,7 +35,7 @@ class StoreBidPresenter extends MenuItemPresenter<StoreBidModel>
     model
       .fetchStoreElemData(params)
       .then((res) => (view as StoreBidViewWidget).onResponseStoreElemData(params['BZDT_CD'], res))
-      .catchError((err) => view.onError());
+      .catchError((err) => view.onError(err));
   }
 
   void onRequestStoreImageData(Map<String, String> params)
@@ -43,6 +43,6 @@ class StoreBidPresenter extends MenuItemPresenter<StoreBidModel>
     model
       .fetchStoreImageData(params)
       .then((res) => (view as StoreBidViewWidget).onResponseStoreImageData(params['BZDT_CD'], params['DNG_SN'], params['SBD_NO'], res))
-      .catchError((err) => view.onError());
+      .catchError((err) => view.onError(err));
   }
 }

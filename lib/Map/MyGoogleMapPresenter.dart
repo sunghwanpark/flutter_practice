@@ -16,6 +16,6 @@ class MyGoogleMapPresenter
     _model
       .fetchGeocode(address)
       .then((res) => _view.onLatLngComplete(res))
-      .catchError((onError) => _view.onError());
+      .catchError((onError) => _view.onError(onError));
   }
 }

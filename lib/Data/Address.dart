@@ -18,6 +18,7 @@ enum MenuItemType
   lease_house_installment,    // 임대주택 공공임대
   honeymoon_lease,            // 신혼희망타운
   all_lease,                  // 매입/전세 임대
+  store_bid,                  // 상가(입찰)
 }
 
 class MainMenuData

@@ -16,7 +16,7 @@ class LeasePresenter
     _model
       .fetchData(panId, ccrCnntSysDsCd)
       .then((res) => _view.onResponseData(res))
-      .catchError((err) => _view.onError());
+      .catchError((err) => _view.onError(err));
   }
 
   void onRequestMoreData(String panId, String ccrCnntSysDsCd, String ltrUntNo, String ltrNot, String ltrmNleYn)
@@ -24,7 +24,7 @@ class LeasePresenter
     _model
       .fetchMoreData(panId, ccrCnntSysDsCd, ltrUntNo, ltrNot, ltrmNleYn)
       .then((res) => _view.onResponseMoreData(res))
-      .catchError((err) => _view.onError());
+      .catchError((err) => _view.onError(err));
   }
 
   void onRequestRentalLeaseMoreData(String panId, String ccrCnntSysDsCd, String lohTpCd)
@@ -32,7 +32,7 @@ class LeasePresenter
     _model
       .fetchRentalLeaseMoreData(panId, ccrCnntSysDsCd, lohTpCd)
       .then((res) => _view.onResponseRentalLeaseMoreData(res))
-      .catchError((err) => _view.onError());
+      .catchError((err) => _view.onError(err));
   }
 
   void onRequestRentalLeaseStTypeData(String panId, String ccrCnntSysDsCd, String lohTpCd)
@@ -40,6 +40,6 @@ class LeasePresenter
     _model
       .fetchRentalLeaseStTypeData(panId, ccrCnntSysDsCd, lohTpCd)
       .then((res) => _view.onResponseRentalLeaseStTypeData(res))
-      .catchError((err) => _view.onError());
+      .catchError((err) => _view.onError(err));
   }
 }

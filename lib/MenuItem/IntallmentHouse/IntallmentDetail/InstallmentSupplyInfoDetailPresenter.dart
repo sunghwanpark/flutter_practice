@@ -16,6 +16,6 @@ class InstallmentSupplyInfoDetailPresenter
     _model
       .fetchData(panId, ccrCnntSysDsCd, aisInfSn, bzdtCd, hcBlkCd, htyCd)
       .then((res) => _view.onComplete(res))
-      .catchError((err) => _view.onError());
+      .catchError((err) => _view.onError(err));
   }
 }

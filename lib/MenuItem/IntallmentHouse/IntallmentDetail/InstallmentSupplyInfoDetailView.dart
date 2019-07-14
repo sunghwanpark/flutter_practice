@@ -47,8 +47,9 @@ class InstallmentSupplyInfoDetailView extends State<InstallmentSupplyInfoDetail>
     });
   }
 
-  void onError()
+  void onError(dynamic err)
   {
+    print(err);
     setState(() {
      _loadingState = LoadingState.ERROR; 
     });

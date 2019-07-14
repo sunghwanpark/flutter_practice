@@ -20,6 +20,9 @@ Text myText(String str, [Color textColor = Colors.black, double _fontSize = 20.0
 
 String getDateFormat(String dateString)
 {
+  if(dateString.isEmpty)
+    return '';
+    
   StringBuffer sb = new StringBuffer();
   sb.write(dateString.substring(0, 4));
   sb.write('.');

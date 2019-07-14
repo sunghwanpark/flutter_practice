@@ -31,8 +31,6 @@ abstract class MenuItemModel
 		    <ColumnInfo>
 			    <Column id="PAN_ID" type="STRING" size="256"  />
 			    <Column id="CCR_CNNT_SYS_DS_CD" type="STRING" size="256"  />
-			    <Column id="PG_SZ" type="STRING" size="256"  />
-			    <Column id="PAGE" type="STRING" size="256"  />
 			    <Column id="PAN_LOLD_TYPE" type="STRING" size="256"  />
 			    <Column id="PREVIEW" type="STRING" size="256"  />
 			    <Column id="PAN_KD_CD" type="STRING" size="256"  />

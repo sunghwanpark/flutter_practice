@@ -15,6 +15,6 @@ class InstallmentHouseInquiryPresenter
     _model
       .fetchData(panId, ccrCnntSysDsCd, uppAisTpCd, aisInfSn, bzdtCd, hcBlkCd)
       .then((res) => _view.onComplete(res))
-      .catchError((err) => _view.onError());
+      .catchError((err) => _view.onError(err));
   }
 }

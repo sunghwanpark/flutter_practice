@@ -67,8 +67,9 @@ class ContractScheduleView extends State<ContractSchedule>
     });
   }
 
-  void onError()
+  void onError(dynamic err)
   {
+    print(err);
     setState(() {
      _loadingState = LoadingState.ERROR; 
     });

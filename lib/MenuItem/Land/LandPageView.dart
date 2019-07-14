@@ -4,7 +4,6 @@ import 'package:bunyang/MenuItem/Land/LandPagePresenter.dart';
 import 'package:bunyang/MenuItem/Land/LandSummaryInfoView.dart';
 import 'package:bunyang/MenuItem/Land/SupplyDateView.dart';
 import 'package:bunyang/MenuItem/Land/SupplyLotOfLandInfoView.dart';
-import 'package:bunyang/MenuItem/MenuItemModel.dart';
 import 'package:bunyang/MenuItem/MenuItemPageView.dart';
 import 'package:bunyang/Util/Util.dart';
 import 'package:flutter/material.dart';

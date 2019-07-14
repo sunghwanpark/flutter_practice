@@ -11,7 +11,7 @@ class HoneymoonTownPresenter extends MenuItemPresenter<HoneymoonTownModel>
     model
       .fetchData(panId, ccrCnntSysDsCd, otxtPanId, uppAisTpCd)
       .then((res) => (view as HoneymoonTownWidget).onResponseDetail(res))
-      .catchError((err) => view.onError());
+      .catchError((err) => view.onError(err));
   }
 
   void onRequestDetail(String panId, String ccrCnntSysDsCd, String otxtPanId, String uppAisTpCd, String aisInfSn)
@@ -19,7 +19,7 @@ class HoneymoonTownPresenter extends MenuItemPresenter<HoneymoonTownModel>
     model
       .fetchDetailData(panId, ccrCnntSysDsCd, otxtPanId, uppAisTpCd, aisInfSn)
       .then((res) => (view as HoneymoonTownWidget).onResponseDetailData(aisInfSn, res))
-      .catchError((err) => view.onError());
+      .catchError((err) => view.onError(err));
   }
 
   void onRequestAttachment(String panId, String ccrCnntSysDsCd, String otxtPanId, String uppAisTpCd, String aisInfSn, String bztdCd, String hcBlkCd)
@@ -27,6 +27,6 @@ class HoneymoonTownPresenter extends MenuItemPresenter<HoneymoonTownModel>
     model
       .fetchAttacementData(panId, ccrCnntSysDsCd, otxtPanId, uppAisTpCd, aisInfSn, bztdCd, hcBlkCd)
       .then((res) => (view as HoneymoonTownWidget).onResponseAttachment(aisInfSn, res))
-      .catchError((err) => view.onError());
+      .catchError((err) => view.onError(err));
   }
 }

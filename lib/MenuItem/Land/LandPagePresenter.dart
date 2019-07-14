@@ -12,6 +12,6 @@ class LandPagePresenter extends MenuItemPresenter<LandPageModel>
     model
       .fetchData(code, panId, ccrCnntSysDsCd, panKDCD, otxtPanId)
       .then((res) => (view as LandPageView).onLoadComplete(res))
-      .catchError((onError) => view.onError());
+      .catchError((onError) => view.onError(onError));
   }
 }

@@ -3,7 +3,6 @@ import 'package:bunyang/MenuItem/IntallmentHouse/Abstract/AbstractInstallmentHou
 import 'package:bunyang/MenuItem/IntallmentHouse/InstallmentHousePresenter.dart';
 import 'package:bunyang/MenuItem/IntallmentHouse/SummaryInfoView.dart';
 import 'package:bunyang/MenuItem/IntallmentHouse/SupplyInfoView.dart';
-import 'package:bunyang/MenuItem/MenuItemModel.dart';
 import 'package:bunyang/Util/Util.dart';
 import 'package:bunyang/Util/WidgetInsideTabBarView.dart';
 import 'package:flutter/material.dart';
@@ -55,7 +54,6 @@ class InstallmentHouseView extends AbstractInstallmentHouseView<InstallmentHouse
     (presenter as InstallmentHousePresenter).onRequestDetail(type, panId, ccrCnntSysDsCd, _otxtPanId, uppAisTpCd);
   }
 
-  @protected
   void onResponseDetail(Map<String, List<Map<String, String>>> res)
   {
     contents[InstallmentTabState.Contents.index].add(SummaryInfoView(res["dsHsSlpa"].first, res["dsAhflList"]));

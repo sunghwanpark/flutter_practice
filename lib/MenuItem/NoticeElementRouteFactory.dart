@@ -4,6 +4,7 @@ import 'package:bunyang/MenuItem/IntallmentHouse/InstallmentHouseView.dart';
 import 'package:bunyang/MenuItem/Land/LandPageView.dart';
 import 'package:bunyang/MenuItem/Lease/LeaseView.dart';
 import 'package:bunyang/MenuItem/LeaseHouse/PublicLeaseView.dart';
+import 'package:bunyang/MenuItem/Store/Bid/StoreBidView.dart';
 import 'package:flutter/material.dart';
 import 'package:bunyang/Data/Address.dart';
 import 'package:bunyang/Util/Util.dart';
@@ -28,6 +29,8 @@ class NoticeElementRouteFactory
         return HoneymoonTownView(item);
       case MenuItemType.all_lease:
         return LeaseView(item);
+      case MenuItemType.store_bid:
+        return StoreBidView(item);
       default:
         return myText('아직 개발중이야~');
     }

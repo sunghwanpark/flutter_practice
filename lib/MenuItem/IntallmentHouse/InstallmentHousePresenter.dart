@@ -14,7 +14,7 @@ class InstallmentHousePresenter extends MenuItemPresenter<InstallmentHouseModel>
     model
       .fetchData(code, panId, ccrCnntSysDsCd, otxtPanId, uppAisTpCd)
       .then((res) => (view as InstallmentHouseView).onResponseDetail(res))
-      .catchError((onError) => view.onError());
+      .catchError((onError) => view.onError(onError));
   }
 
   // UPP_AIS_TP_CD = 05
@@ -24,7 +24,7 @@ class InstallmentHousePresenter extends MenuItemPresenter<InstallmentHouseModel>
      model
       .fetchSupplyInfo(panId, ccrCnntSysDsCd, aisInfSn, otxtPanId, uppAisTpCd, dynamic0708, dynamic11)
       .then((res) => successCallback(aisInfSn, res))
-      .catchError((err) => view.onError());
+      .catchError((err) => view.onError(err));
   }
   
   void onRequestSupplyInfoImage(String panId, String ccrCnntSysDsCd, String aisInfSn,
@@ -33,6 +33,6 @@ class InstallmentHousePresenter extends MenuItemPresenter<InstallmentHouseModel>
     model
       .fetchSupplyInfoImage(panId, ccrCnntSysDsCd, aisInfSn, otxtPanId, uppAisTpCd, bzdtCd, hcBlkCd)
       .then((res) => successCallback(aisInfSn, res))
-      .catchError((err) => view.onError());
+      .catchError((err) => view.onError(err));
   }
 }

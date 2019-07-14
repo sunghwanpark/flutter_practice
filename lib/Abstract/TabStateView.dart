@@ -61,8 +61,9 @@ abstract class TabStateView<T extends TabStatefull> extends State<T> with Single
     super.dispose();
   }
 
-  void onError()
+  void onError(dynamic err)
   {
+    print(err);
     setState(() {
       loadingState = LoadingState.ERROR; 
     });

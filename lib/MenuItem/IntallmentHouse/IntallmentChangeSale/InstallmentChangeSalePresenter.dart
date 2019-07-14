@@ -14,15 +14,15 @@ class InstallmentChangeSalePresenter<TView extends InstallmentChangeSaleView>
     model
       .fetchData(code, panId, ccrCnntSysDsCd)
       .then((res) => (view as TView).onResponseDetail(res))
-      .catchError((onError) => view.onError());
+      .catchError((onError) => view.onError(onError));
   }
 
   void onRequestHouseType(String panId, String ccrCnntSysDsCd, String sbdLgoNo, String ltrNot, String ltrUntNo, String sn) async
   {
     var res1 = await model.fetchHouseType(panId, ccrCnntSysDsCd, sbdLgoNo, ltrNot, ltrUntNo, sn, false)
-                          .catchError((onError) => view.onError());
+                          .catchError((onError) => view.onError(onError));
     var res2 = await model.fetchHouseType(panId, ccrCnntSysDsCd, sbdLgoNo, ltrNot, ltrUntNo, sn, true)
-                          .catchError((onError) => view.onError());
+                          .catchError((onError) => view.onError(onError));
 
     if(res1 != null)
       (view as TView).onResponseHouseType(res1);
