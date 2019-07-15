@@ -70,6 +70,7 @@ class ContractScheduleView extends State<ContractSchedule>
   void onError(dynamic err)
   {
     print(err);
+    print(StackTrace.current);
     setState(() {
      _loadingState = LoadingState.ERROR; 
     });

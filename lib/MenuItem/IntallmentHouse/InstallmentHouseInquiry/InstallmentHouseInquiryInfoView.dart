@@ -77,7 +77,7 @@ class InstallmentHouseInquiryInfoView extends StatelessWidget
           child: Text(sprintf("· %s", [img["SL_PAN_AHFL_DS_CD_NM"]]), textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 20, fontWeight: FontWeight.w500, fontFamily: 'TmonTium'))
         ));
         
-        widgets.add(NetworkImageWidget(serialNum: urlSerial));
+        widgets.add(NetworkImageWidget(serialNum: urlSerial, context: context));
       }
     }
 

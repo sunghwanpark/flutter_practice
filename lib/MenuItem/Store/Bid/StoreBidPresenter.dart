@@ -26,7 +26,7 @@ class StoreBidPresenter extends MenuItemPresenter<StoreBidModel>
   {
     model
       .fetchStoreData(params)
-      .then((res) => (view as StoreBidViewWidget).onResponseStoreData(params['BZDT_CD'], res))
+      .then((res) => (view as StoreBidViewWidget).onResponseStoreData(params['AIS_INF_SN'], res))
       .catchError((err) => view.onError(err));
   }
 
@@ -34,7 +34,7 @@ class StoreBidPresenter extends MenuItemPresenter<StoreBidModel>
   {
     model
       .fetchStoreElemData(params)
-      .then((res) => (view as StoreBidViewWidget).onResponseStoreElemData(params['BZDT_CD'], res))
+      .then((res) => (view as StoreBidViewWidget).onResponseStoreElemData(params['AIS_INF_SN'], res))
       .catchError((err) => view.onError(err));
   }
 
@@ -42,7 +42,7 @@ class StoreBidPresenter extends MenuItemPresenter<StoreBidModel>
   {
     model
       .fetchStoreImageData(params)
-      .then((res) => (view as StoreBidViewWidget).onResponseStoreImageData(params['BZDT_CD'], params['DNG_SN'], params['SBD_NO'], res))
+      .then((res) => (view as StoreBidViewWidget).onResponseStoreImageData(params['AIS_INF_SN'], params['DNG_SN'], params['SBD_NO'], res))
       .catchError((err) => view.onError(err));
   }
 }

@@ -87,7 +87,7 @@ class ChargeSupplyInfoView extends StatelessWidget
           child: Text(sprintf("· %s", [img["LS_SPL_INF_UPL_FL_DS_CD_NM"]]), textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 20, fontWeight: FontWeight.w500, fontFamily: 'TmonTium'))
         ));
 
-        widgets.add(NetworkImageWidget(serialNum: urlSerial));
+        widgets.add(NetworkImageWidget(serialNum: urlSerial, context: context));
       }
     }
 

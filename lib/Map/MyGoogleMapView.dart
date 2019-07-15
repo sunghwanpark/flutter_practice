@@ -61,6 +61,7 @@ class MyGoogleMapView extends State<MyGoogleMap>
   void onError(dynamic err)
   {
     print(err);
+    print(StackTrace.current);
     setState(() => loadingState = LoadingState.ERROR);
   }
 

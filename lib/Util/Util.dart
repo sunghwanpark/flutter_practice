@@ -33,6 +33,19 @@ String getDateFormat(String dateString)
   return sb.toString();
 }
 
+String getYearMonthFormat(String dateString)
+{
+  if(dateString.isEmpty)
+    return '';
+    
+  StringBuffer sb = new StringBuffer();
+  sb.write(dateString.substring(0, 4));
+  sb.write('.');
+  sb.write(dateString.substring(4, 6));
+
+  return sb.toString();
+}
+
 String getDateFormatkr(String dateString)
 {
   StringBuffer sb = new StringBuffer();

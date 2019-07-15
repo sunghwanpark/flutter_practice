@@ -71,7 +71,7 @@ class StoreBidViewWidget extends MenuItemPageView<StoreBidView>
     {
       _sdgList.forEach((map)
       {
-        _defaultStoreBidDatas[map['BZDT_CD']] = map;
+        _defaultStoreBidDatas[map['AIS_INF_SN']] = map;
 
         (presenter as StoreBidPresenter).onRequestStoreData(
           {"PAN_ID": map["PAN_ID"], "CCR_CNNT_SYS_DS_CD" : map["CCR_CNNT_SYS_DS_CD"], "PAN_KD_CD" : map["PAN_KD_CD"],
@@ -92,30 +92,36 @@ class StoreBidViewWidget extends MenuItemPageView<StoreBidView>
     }
   }
 
-  void onResponseStoreData(String bzdtCd, Map<String, List<Map<String, String>>> res)
+  void onResponseStoreData(String aisInfSn, Map<String, List<Map<String, String>>> res)
   {
-    _detailStoreDatas[bzdtCd] = res['dsSstDhgList'];
+    _detailStoreDatas[aisInfSn] = res['dsSstDhgList'];
   }
 
-  void onResponseStoreElemData(String bzdtCd, Map<String, List<Map<String, String>>> res)
+  void onResponseStoreElemData(String aisInfSn, Map<String, List<Map<String, String>>> res)
   {
-    _detailStoreElemDatas[bzdtCd] = res['dsSstDngList'];
+    _detailStoreElemDatas[aisInfSn] = res['dsSstDngList'];
 
-    _detailStoreElemDatas[bzdtCd].forEach((map)
+    _detailStoreElemDatas[aisInfSn].forEach((map)
     {
       (presenter as StoreBidPresenter).onRequestStoreImageData(
-          {"PAN_ID": panId, "CCR_CNNT_SYS_DS_CD" : ccrCnntSysDsCd, "PAN_KD_CD" : _defaultStoreBidDatas[bzdtCd]["PAN_KD_CD"],
-            "OTXT_PAN_ID" : _defaultStoreBidDatas[bzdtCd]["OTXT_PAN_ID"], "TRET_PAN_ID" : _defaultStoreBidDatas[bzdtCd]['TRET_PAN_ID'],
-            "AIS_INF_SN" : _defaultStoreBidDatas[bzdtCd]['AIS_INF_SN'], 'BZDT_CD' : bzdtCd,
-            'HC_BLK_CD' : _defaultStoreBidDatas[bzdtCd]['HC_BLK_CD'], 'DNG_SN' : map['DNG_SN'], 'SBD_NO' : map['SBD_NO']}
+          {"PAN_ID": panId, "CCR_CNNT_SYS_DS_CD" : ccrCnntSysDsCd, "PAN_KD_CD" : _defaultStoreBidDatas[aisInfSn]["PAN_KD_CD"],
+            "OTXT_PAN_ID" : _defaultStoreBidDatas[aisInfSn]["OTXT_PAN_ID"], "TRET_PAN_ID" : _defaultStoreBidDatas[aisInfSn]['TRET_PAN_ID'],
+            "AIS_INF_SN" : aisInfSn, 'BZDT_CD' : _defaultStoreBidDatas[aisInfSn]['BZDT_CD'],
+            'HC_BLK_CD' : _defaultStoreBidDatas[aisInfSn]['HC_BLK_CD'], 'DNG_SN' : map['DNG_SN'], 'SBD_NO' : map['SBD_NO']}
         );
     });
   }
 
-  void onResponseStoreImageData(String bzdtCd, String dngSn, String sbdNo, Map<String, List<Map<String, String>>> res)
+  void onResponseStoreImageData(String aisInfSn, String dngSn, String sbdNo, Map<String, List<Map<String, String>>> res)
   {
-    _detailStoreImageDatas[bzdtCd] = {'$dngSn$sbdNo': res['dsDngAhflList']};
-    checkState();
+    if(!_detailStoreImageDatas.containsKey(aisInfSn))
+      _detailStoreImageDatas[aisInfSn] = Map<String, List<Map<String, String>>>();
+
+    var map = _detailStoreImageDatas[aisInfSn];
+    map['$dngSn$sbdNo'] = res['dsDngAhflList'];
+
+    if(map.length == _detailStoreElemDatas[aisInfSn].length)
+      checkState();
   }
 
   void onResponseAttachmentData(Map<String, List<Map<String, String>>> res)
@@ -147,12 +153,13 @@ class StoreBidViewWidget extends MenuItemPageView<StoreBidView>
           tabNames: _defaultStoreBidDatas.values.map((map) => map['BZDT_NM']).toList(),
           contents: List<Widget>.generate(_sdgList.length, (index)
           {
+            var map = _sdgList.elementAt(index);
             return StoreBidSupplyView
             (
-              _defaultStoreBidDatas.values.elementAt(index),
-              _detailStoreDatas.values.elementAt(index),
-              _detailStoreImageDatas.values.elementAt(index),
-              _detailStoreElemDatas.values.elementAt(index),
+              _defaultStoreBidDatas[map['AIS_INF_SN']],
+              _detailStoreDatas[map['AIS_INF_SN']],
+              _detailStoreImageDatas[map['AIS_INF_SN']],
+              _detailStoreElemDatas[map['AIS_INF_SN']],
               this.widget.data.getUppAisTPCD()
             ); 
           }),

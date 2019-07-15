@@ -6,10 +6,11 @@ import 'package:flutter/material.dart';
 
 class NetworkImageWidget extends StatefulWidget
 {
-  NetworkImageWidget({ @required String serialNum })
-    : _serialNum = serialNum;
+  NetworkImageWidget({ @required String serialNum, BuildContext context })
+    : _serialNum = serialNum, _context = context;
   
   final String _serialNum;
+  final BuildContext _context;
 
   @override
   NetworkImageWidgetState createState() => NetworkImageWidgetState();
@@ -33,17 +34,20 @@ class NetworkImageWidgetState extends State<NetworkImageWidget>
       });
     });
 
-    cachedImageProvider.resolve(new ImageConfiguration()).addListener((_, __) 
+    var imgStreamListener = ImageStreamListener((_, __)
     {
       if (mounted) 
-      {
-        setState(() {
-          _imageLoadingState = LoadingState.DONE;
-        });
-      }
+        {
+          setState(() {
+            _imageLoadingState = LoadingState.DONE;
+          });
+        }
     });
 
-    _image = Image(image: cachedImageProvider);
+    cachedImageProvider.resolve(new ImageConfiguration()).addListener(imgStreamListener);
+
+    double width = MediaQuery.of(widget._context).size.width;
+    _image = Image(image: cachedImageProvider, width: width);
   }
 
   @override
