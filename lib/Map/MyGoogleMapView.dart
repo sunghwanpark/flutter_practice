@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:bunyang/Abstract/IErrorCallBack.dart';
 import 'package:bunyang/Map/MyGoogleMapPresenter.dart';
 import 'package:bunyang/Util/Util.dart';
 import 'package:tuple/tuple.dart';
@@ -24,7 +25,7 @@ class MyGoogleMap extends StatefulWidget
   State<StatefulWidget> createState() => MyGoogleMapView(this.title, this.address);
 }
 
-class MyGoogleMapView extends State<MyGoogleMap>
+class MyGoogleMapView extends State<MyGoogleMap> implements IErrorCallBack
 {
   MyGoogleMapView(this.title, this.address);
 

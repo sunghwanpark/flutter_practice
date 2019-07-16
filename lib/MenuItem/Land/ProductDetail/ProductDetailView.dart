@@ -1,3 +1,4 @@
+import 'package:bunyang/Abstract/IErrorCallBack.dart';
 import 'package:bunyang/Data/Address.dart';
 import 'package:bunyang/MenuItem/Land/ProductDetail/BusinessShortInfoView.dart';
 import 'package:bunyang/MenuItem/Land/ProductDetail/LocateInfoView.dart';
@@ -17,7 +18,7 @@ class ProductDetail extends StatefulWidget
   ProductDetailView createState() => ProductDetailView(requestPageData);
 }
 
-class ProductDetailView extends State<ProductDetail> with SingleTickerProviderStateMixin
+class ProductDetailView extends State<ProductDetail> with SingleTickerProviderStateMixin implements IErrorCallBack
 {
   ProductDetailView(this.requestPageData);
 

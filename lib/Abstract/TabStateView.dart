@@ -1,4 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:bunyang/Abstract/IErrorCallBack.dart';
+import 'package:bunyang/Abstract/IMakePresenter.dart';
 import 'package:bunyang/Data/Address.dart';
 import 'package:bunyang/Util/Util.dart';
 import 'package:flutter/material.dart';
@@ -25,7 +27,8 @@ abstract class TabStatefull extends StatefulWidget
   }
 }
 
-abstract class TabStateView<T extends TabStatefull> extends State<T> with SingleTickerProviderStateMixin
+abstract class TabStateView<T extends TabStatefull> extends State<T> with SingleTickerProviderStateMixin 
+  implements IErrorCallBack, IMakePresenter
 {
   LoadingState loadingState = LoadingState.LOADING;
 
@@ -49,7 +52,6 @@ abstract class TabStateView<T extends TabStatefull> extends State<T> with Single
     makePresenter();
   }
 
-  @protected
   void makePresenter();
 
   @override

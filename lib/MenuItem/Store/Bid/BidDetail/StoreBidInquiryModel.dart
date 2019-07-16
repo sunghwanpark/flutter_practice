@@ -1,7 +1,4 @@
 import 'package:bunyang/MenuItem/MenuItemModel.dart';
-import 'package:bunyang/Secret/URL.dart';
-import 'package:http/http.dart' as http;
-import 'package:xml/xml.dart' as xml;
 
 class StoreBidInquiryModel extends MenuItemModel
 {
@@ -29,19 +26,6 @@ class StoreBidInquiryModel extends MenuItemModel
   
   Future<Map<String, List<Map<String, String>>>> fetchData(Map<String, String> params) async
   {
-    StringBuffer stringBuffer = new StringBuffer();
-    stringBuffer.write(noticeURL);
-    stringBuffer.write(detailFormAdapter);
-    stringBuffer.write("?&serviceID=");
-    stringBuffer.write(detailFormURL);
-
-    return await http.post
-    (
-      stringBuffer.toString(),
-      headers: {"Content-Type" : "application/xml"},
-      body: generateXmlBody(defaultDetailFormXml, params)
-    ).timeout(const Duration(seconds: 5))
-    .then((res) => xml.parse(res.body))
-    .then((xmlDocument) => setContextData(xmlDocument.findAllElements("Dataset")));
+    return fetch(detailFormURL, defaultDetailFormXml, params);
   }
 }

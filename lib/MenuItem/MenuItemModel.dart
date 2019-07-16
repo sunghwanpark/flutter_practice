@@ -110,8 +110,25 @@ abstract class MenuItemModel
       }
     }
 
-    print(document.toXmlString(pretty: true, indent: '\t'));
     return document.toXmlString(pretty: true, indent: '\t');
+  }
+
+  Future<Map<String, List<Map<String, String>>>> fetch(String requestURL, String xmlForm, Map<String, String> params) async
+  {
+    StringBuffer stringBuffer = new StringBuffer();
+    stringBuffer.write(noticeURL);
+    stringBuffer.write(detailFormAdapter);
+    stringBuffer.write("?&serviceID=");
+    stringBuffer.write(requestURL);
+
+    return await http.post
+    (
+      stringBuffer.toString(),
+      headers: {"Content-Type" : "application/xml"},
+      body: generateXmlBody(xmlForm, params)
+    ).timeout(const Duration(seconds: 5))
+    .then((res) => xml.parse(res.body))
+    .then((xmlDocument) => setContextData(xmlDocument.findAllElements("Dataset")));
   }
 }
 

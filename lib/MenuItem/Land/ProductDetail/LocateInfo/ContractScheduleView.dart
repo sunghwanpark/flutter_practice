@@ -1,3 +1,4 @@
+import 'package:bunyang/Abstract/IErrorCallBack.dart';
 import 'package:bunyang/MenuItem/Land/ProductDetail/LocateInfo/ContractSchedulePresenter.dart';
 import 'package:bunyang/Util/Util.dart';
 import 'package:flutter/material.dart';
@@ -28,7 +29,7 @@ class ContractSchedule extends StatefulWidget
   State<StatefulWidget> createState() => ContractScheduleView(ccrCnntSysDsCd, aisInfSn, lastDt, splXpcAmt);
 }
 
-class ContractScheduleView extends State<ContractSchedule>
+class ContractScheduleView extends State<ContractSchedule> implements IErrorCallBack
 {
   ContractScheduleView(this.ccrCnntSysDsCd, this.aisInfSn, this.lastDt, this.splXpcAmt)
   {

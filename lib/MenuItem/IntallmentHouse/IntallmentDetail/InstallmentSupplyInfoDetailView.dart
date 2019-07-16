@@ -1,13 +1,13 @@
+import 'package:bunyang/Abstract/AbstractSupplyDetailView.dart';
 import 'package:bunyang/Data/Address.dart';
 import 'package:bunyang/MenuItem/IntallmentHouse/IntallmentDetail/InstallmentSupplyInfoDetailPresenter.dart';
-import 'package:bunyang/Util/Util.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:sprintf/sprintf.dart';
 
-class InstallmentSupplyInfoDetail extends StatefulWidget
+class InstallmentSupplyInfoDetail extends AbstractSupplyDetailView
 {
-  InstallmentSupplyInfoDetail(this._datas);
+  InstallmentSupplyInfoDetail(this._datas) : super(params : _datas, code: Notice_Code.installment_house);
 
   final Map<String, String> _datas;
 
@@ -15,18 +15,15 @@ class InstallmentSupplyInfoDetail extends StatefulWidget
   InstallmentSupplyInfoDetailView createState() => InstallmentSupplyInfoDetailView();
 }
 
-class InstallmentSupplyInfoDetailView extends State<InstallmentSupplyInfoDetail>
+class InstallmentSupplyInfoDetailView extends AbstractSupplyDetailWidget<InstallmentSupplyInfoDetail>
 {
-  LoadingState _loadingState = LoadingState.LOADING;
-  
   InstallmentSupplyInfoDetailPresenter _presenter;
 
   List<Map<String, String>> _datas = new List<Map<String, String>>();
 
   @override
-  void initState()
+  void makePresenter()
   {
-    super.initState();
     _presenter = InstallmentSupplyInfoDetailPresenter(this);
     _presenter.onRequestData(
       widget._datas['PAN_ID'],
@@ -42,21 +39,11 @@ class InstallmentSupplyInfoDetailView extends State<InstallmentSupplyInfoDetail>
     _datas.clear();
     _datas.addAll(res['dsHtyAmtList']);
 
-    setState(() {
-     _loadingState = LoadingState.DONE; 
-    });
+    loadingComplete();
   }
 
-  void onError(dynamic err)
-  {
-    print(err);
-    print(StackTrace.current);
-    setState(() {
-     _loadingState = LoadingState.ERROR; 
-    });
-  }
-
-  List<Widget> _getContents()
+  @override
+  List<Widget> getContents()
   {
     List<Widget> widgets = new List<Widget>();
 
@@ -121,103 +108,5 @@ class InstallmentSupplyInfoDetailView extends State<InstallmentSupplyInfoDetail>
     });
     
     return widgets;
-  }
-
-  Widget _getContentSection(BuildContext context)
-  {
-    switch (_loadingState)
-    {
-      case LoadingState.DONE:
-        return SliverList
-        (
-          delegate: SliverChildListDelegate(_getContents())
-        );
-      case LoadingState.ERROR:
-        return SliverList
-        (
-          delegate: SliverChildListDelegate(<Widget>
-          [
-            myText("데이터를 불러오지 못했습니다!")
-          ])
-        );
-      case LoadingState.LOADING:
-        return SliverList
-        (
-          delegate: SliverChildListDelegate(<Widget>
-          [
-            Container
-            (
-              alignment: Alignment.center,
-              child: CircularProgressIndicator(backgroundColor: Colors.white)
-            )
-          ])
-        );
-      default:
-        return SliverList
-        (
-          delegate: SliverChildListDelegate(<Widget>
-          [
-            Container()
-          ])
-        );
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) 
-  {
-    return Scaffold
-    (
-      backgroundColor: Colors.white,
-      body: CustomScrollView
-      (
-        primary: false,
-        slivers: <Widget>
-        [
-          SliverAppBar
-          (
-            expandedHeight: 200,
-            iconTheme: IconThemeData
-            (
-              color: Colors.black
-            ),
-            flexibleSpace: FlexibleSpaceBar
-            (
-              titlePadding: EdgeInsets.only(bottom: 20, left: 80, right: 80),
-              centerTitle: true,
-              title: Text
-              (
-                "공급정보 상세보기",
-                style: TextStyle
-                (
-                  color: Colors.white,
-                  fontFamily: "TmonTium",
-                  fontSize: 25,
-                  fontWeight: FontWeight.w800
-                )
-              ),
-              background: Stack
-              (
-                fit: StackFit.expand,
-                children: <Widget>
-                [
-                  Hero
-                  (
-                    tag: constNoticeCodeMap[Notice_Code.installment_house].code,
-                    child: FadeInImage
-                    (
-                      fit: BoxFit.cover,
-                      placeholder: AssetImage("assets/image/placeholder.jpg"),
-                      image: constNoticeCodeMap[Notice_Code.installment_house].image
-                    )
-                  )
-                ]
-              )
-            ),
-          ),
-          _getContentSection(context)
-        ], 
-      ),
-    );
   }
 }
