@@ -1,4 +1,5 @@
 import 'package:bunyang/Data/OrganizationCode.dart';
+import 'package:bunyang/Splash/Splash.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:bunyang/Menu/SnapMenu.dart';
@@ -17,14 +18,11 @@ class MyApp extends StatelessWidget
 
     return MaterialApp
     (
-      title: '안녕? 분양',
-      theme: ThemeData
-      (
-        backgroundColor: Color.fromARGB(255, 255, 255, 255),
-        scaffoldBackgroundColor: Color.fromARGB(255, 255, 255, 255),
-        fontFamily: "TmonTium"
-      ),
-      home: Scaffold(body : SnapMenu())
+      home: Splash(),
+      routes: <String, WidgetBuilder>
+      {
+        '/SnapMenu': (BuildContext context) => SnapMenu()
+      }
     );
   }
 }
