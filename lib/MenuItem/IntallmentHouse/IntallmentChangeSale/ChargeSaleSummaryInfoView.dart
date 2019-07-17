@@ -1,16 +1,18 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:bunyang/Abstract/AbstractContentsView.dart';
 import 'package:bunyang/Util/PDFViewer.dart';
 import 'package:bunyang/Util/Util.dart';
 import 'package:flutter/material.dart';
 import 'package:sprintf/sprintf.dart';
 
-class ChargeSaleSummaryInfoView extends StatelessWidget
+class ChargeSaleSummaryInfoView extends AbstractContentsView
 {
   ChargeSaleSummaryInfoView(this._defaultData);
 
   final Map<String, List<Map<String, String>>> _defaultData;
 
-  List<Widget> _getContents(BuildContext context)
+  @override
+  List<Widget> getContents(BuildContext context)
   {
     List<Widget> widgets = new List<Widget>();
 
@@ -97,22 +99,5 @@ class ChargeSaleSummaryInfoView extends StatelessWidget
     }
 
     return widgets;
-  }
-
-  @override
-  Widget build(BuildContext context)
-  {
-    return Container
-    (
-      width: MediaQuery.of(context).size.width,
-      child: Padding
-      (
-        padding: EdgeInsets.only(left: 10, right: 10),
-        child: Column
-        (
-          children: _getContents(context)
-        ),
-      )
-    );
   }
 }

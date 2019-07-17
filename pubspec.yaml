@@ -25,7 +25,7 @@ dependencies:
   google_maps_flutter: ^0.5.19
   flutter_pdfview: ^1.0.0+6
   path_provider: ^0.5.0+1
-  url_launcher: ^5.0.3
+  url_launcher: ^5.1.0
   cached_network_image: ^1.1.0
   #flutter_webview_plugin: ^0.3.0+2
 

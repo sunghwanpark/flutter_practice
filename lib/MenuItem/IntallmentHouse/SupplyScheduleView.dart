@@ -1,17 +1,19 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:bunyang/Abstract/AbstractContentsView.dart';
 import 'package:bunyang/Map/MyGoogleMapView.dart';
 import 'package:bunyang/Util/Util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:sprintf/sprintf.dart';
 
-class SupplyScheduleView extends StatelessWidget
+class SupplyScheduleView extends AbstractContentsView
 {
   SupplyScheduleView(this._data);
   
   final Map<String, List<Map<String, String>>> _data;
 
-  List<Widget> _getContents(BuildContext context)
+  @override
+  List<Widget> getContents(BuildContext context)
   {
     List<Widget> widgets = new List<Widget>();
     widgets.add(Row
@@ -167,22 +169,5 @@ class SupplyScheduleView extends StatelessWidget
     }
 
     return widgets;
-  }
-
-  @override
-  Widget build(BuildContext context) 
-  {
-    return Container
-    (
-      width: MediaQuery.of(context).size.width,
-      child: Padding
-      (
-        padding: EdgeInsets.only(left: 10, right: 10),
-        child: Column
-        (
-          children: _getContents(context)
-        ),
-      )
-    );
   }
 }

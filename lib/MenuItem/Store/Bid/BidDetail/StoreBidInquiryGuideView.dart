@@ -4,14 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:sprintf/sprintf.dart';
 
-class InstallmentHouseInquiryGuideView extends AbstractContentsView
+class StoreBidInquiryGuideView extends AbstractContentsView
 {
-  InstallmentHouseInquiryGuideView(this._datas);
+  StoreBidInquiryGuideView(this._datas);
 
   final List<Map<String, String>> _datas;
 
   @override
-  List<Widget> getContents(BuildContext context) 
+  List<Widget> getContents(BuildContext context)
   {
     List<Widget> widgets = new List<Widget>();
 
@@ -21,7 +21,7 @@ class InstallmentHouseInquiryGuideView extends AbstractContentsView
       [
         Icon(Icons.info_outline, color: Colors.black),
         SizedBox(width: 10),
-        Text('주택형 안내', textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 25, fontFamily: 'TmonTium', fontWeight: FontWeight.w500))
+        Text('상가동호 안내', textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 25, fontFamily: 'TmonTium', fontWeight: FontWeight.w500))
       ]
     ));
 
@@ -32,11 +32,11 @@ class InstallmentHouseInquiryGuideView extends AbstractContentsView
 
       var values = 
       [
-        sprintf('· 주택형안내: %s', [map['HTY_NM']]),
-        sprintf('· 전용면적(㎡): %s', [map['RSDN_DDO_AR']]),
-        sprintf('· 세대수: %s', [map['TOT_HSH_CNT']]),
-        sprintf('· 수의계약대상 세대수: %s', [map['PVTC_TRG_HSH_CNT']]),
-        sprintf('· 분양가격(원): %s', [map['SIL_AMT'].isNotEmpty ? f.format(int.parse(map['SIL_AMT'])) : ''])
+        sprintf('· 상가명: %s', [map['HTY_NM']]),
+        sprintf('· 상가호: %s', [map['HO_NM']]),
+        sprintf('· 전용면적(㎡): %s', [map['DDO_AR']]),
+        sprintf('· 분양면적(㎡): %s', [map['SIL_AR']]),
+        sprintf('· 예정가격(원): %s', [map['XPC_PR'].isNotEmpty ? f.format(int.parse(map['XPC_PR'])) : ''])
       ];
 
       values.forEach((str)

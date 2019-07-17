@@ -1,3 +1,4 @@
+import 'package:bunyang/Abstract/AbstractContentsView.dart';
 import 'package:bunyang/MenuItem/Land/ProductDetail/ProductDetailView.dart';
 import 'package:flutter/material.dart';
 import 'package:sprintf/sprintf.dart';
@@ -14,7 +15,7 @@ class DetailPageData
   final String panId;
 }
 
-class SupplyLotOfLandInfoView extends StatelessWidget
+class SupplyLotOfLandInfoView extends AbstractContentsView
 {
   SupplyLotOfLandInfoView(this._isTender, this._data);
 
@@ -33,7 +34,7 @@ class SupplyLotOfLandInfoView extends StatelessWidget
     );
   }
 
-  List<Widget> getLandInfo(BuildContext context)
+  List<Widget> getContents(BuildContext context)
   {
     List<Widget> landInfosCards = new List<Widget>();
 
@@ -141,23 +142,5 @@ class SupplyLotOfLandInfoView extends StatelessWidget
     )});
 
     return landInfosCards;
-  }
-
-  @override
-  Widget build(BuildContext context)
-  {
-    return Container
-    (
-      width: MediaQuery.of(context).size.width,
-      child: Padding
-      (
-        padding: EdgeInsets.only(left: 10, right: 10),
-        child: Column
-        (
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: getLandInfo(context)
-        ),
-      )
-    );
   }
 }

@@ -1,14 +1,21 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:bunyang/Abstract/AbstractContentsView.dart';
 import 'package:bunyang/Util/Util.dart';
 import 'package:flutter/material.dart';
 import 'package:sprintf/sprintf.dart';
 
-class SupplyDateView extends StatelessWidget
+class SupplyDateView extends AbstractContentsView
 {
-  SupplyDateView(bool isTender, Map<String, String> landInfo, List<Map<String, String>> data)
-  {
-    widgets.clear();
+  SupplyDateView(this.isTender, this.landInfo, this.data);
 
+  final bool isTender;
+  final Map<String, String> landInfo;
+  final List<Map<String, String>> data;
+
+  @override
+  List<Widget> getContents(BuildContext context)
+  {
+    List<Widget> widgets = List<Widget>();
     String typeString = isTender ? "입찰" : "추첨";
     
     widgets.add(Row
@@ -163,23 +170,7 @@ class SupplyDateView extends StatelessWidget
           alignment: Alignment.centerLeft,
           child: Text(sprintf('계약체결일정 : %s ~ %s', [getDateFormat(landInfo["CTRT_ST_DT"]), getDateFormat(landInfo["CTRT_ED_DT"])]), textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'TmonTium'))
         ));
-  }
 
-  final List<Widget> widgets = new List<Widget>();
-  @override
-  Widget build(BuildContext context)
-  {
-    return Container
-    (
-      width: MediaQuery.of(context).size.width,
-      child: Padding
-      (
-        child: Column
-        (
-          children: widgets,
-        ),
-        padding: EdgeInsets.only(left: 10, right: 10)
-      )
-    );
+    return widgets;
   }
 }

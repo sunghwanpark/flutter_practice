@@ -1,4 +1,5 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:bunyang/Abstract/AbstractContentsView.dart';
 import 'package:bunyang/Map/MyGoogleMapView.dart';
 import 'package:bunyang/MenuItem/HoneymoonTown/HoneymoonInquiry/HoneymoonInquiryView.dart';
 import 'package:bunyang/MenuItem/IntallmentHouse/InstallmentHouseInquiry/InstallmentHouseInquiryView.dart';
@@ -10,7 +11,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:sprintf/sprintf.dart';
 
-class SupplyInfoView extends StatelessWidget
+class SupplyInfoView extends AbstractContentsView
 {
   SupplyInfoView(this._uppAisTpCd, this._defaultData, this._publicInstallment, this._publicLease, this._publicInstallmentLease, this._honeymoonLease, this._imageData);
 
@@ -22,7 +23,8 @@ class SupplyInfoView extends StatelessWidget
   final List<Map<String, String>> _honeymoonLease;
   final List<Map<String, String>> _imageData;
 
-  List<Widget> _getContents(BuildContext context)
+  @override
+  List<Widget> getContents(BuildContext context)
   {
     List<Widget> widgets = new List<Widget>();
 
@@ -421,23 +423,6 @@ class SupplyInfoView extends StatelessWidget
             children: addContents
           )
         )
-      )
-    );
-  }
-
-  @override
-  Widget build(BuildContext context)
-  {
-    return Container
-    (
-      width: MediaQuery.of(context).size.width,
-      child: Padding
-      (
-        padding: EdgeInsets.only(left: 10, right: 10),
-        child: Column
-        (
-          children: _getContents(context)
-        ),
       )
     );
   }

@@ -1,8 +1,9 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:bunyang/Abstract/AbstractContentsView.dart';
 import 'package:flutter/material.dart';
 import 'package:sprintf/sprintf.dart';
 
-class LeaseRentalSupplyView extends StatelessWidget
+class LeaseRentalSupplyView extends AbstractContentsView
 {
   LeaseRentalSupplyView(this._defaultDatas, this._dsList, this._stTypeList);
   
@@ -10,7 +11,8 @@ class LeaseRentalSupplyView extends StatelessWidget
   final List<Map<String, String>> _dsList;
   final List<Map<String, String>> _stTypeList;
 
-  List<Widget> _getContents(BuildContext context)
+  @override
+  List<Widget> getContents(BuildContext context)
   {
     List<Widget> widgets = new List<Widget>();
 
@@ -119,22 +121,5 @@ class LeaseRentalSupplyView extends StatelessWidget
     }
 
     return widgets;
-  }
-
-  @override
-  Widget build(BuildContext context) 
-  {
-    return Container
-    (
-      width: MediaQuery.of(context).size.width,
-      child: Padding
-      (
-        padding: EdgeInsets.only(left: 10, right: 10),
-        child: Column
-        (
-          children: _getContents(context)
-        ),
-      )
-    );
   }
 }

@@ -1,3 +1,4 @@
+import 'package:bunyang/Abstract/AbstractContentsView.dart';
 import 'package:bunyang/Map/MyGoogleMapView.dart';
 import 'package:bunyang/Util/NetworkImageWidget.dart';
 import 'package:bunyang/Util/Util.dart';
@@ -5,14 +6,15 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:sprintf/sprintf.dart';
 
-class InstallmentHouseInquiryInfoView extends StatelessWidget
+class InstallmentHouseInquiryInfoView extends AbstractContentsView
 {
   InstallmentHouseInquiryInfoView(this._datas, this._imageDatas);
 
   final Map<String, String> _datas;
   final List<Map<String, String>> _imageDatas;
 
-  List<Widget> _getContents(BuildContext context)
+  @override
+  List<Widget> getContents(BuildContext context)
   {
     List<Widget> widgets = new List<Widget>();
 
@@ -82,22 +84,5 @@ class InstallmentHouseInquiryInfoView extends StatelessWidget
     }
 
     return widgets;
-  }
-
-  @override
-  Widget build(BuildContext context)
-  {
-    return Container
-    (
-      width: MediaQuery.of(context).size.width,
-      child: Padding
-      (
-        padding: EdgeInsets.only(left: 10, right: 10),
-        child: Column
-        (
-          children: _getContents(context)
-        ),
-      )
-    );
   }
 }

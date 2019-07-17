@@ -1,3 +1,4 @@
+import 'package:bunyang/Abstract/AbstractContentsView.dart';
 import 'package:bunyang/Map/MyGoogleMapView.dart';
 import 'package:bunyang/MenuItem/Land/ProductDetail/LocateInfo/ContractScheduleView.dart';
 import 'package:bunyang/Util/Util.dart';
@@ -5,11 +6,12 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:sprintf/sprintf.dart';
 
-class LocateInfoView extends StatelessWidget
+class LocateInfoView extends AbstractContentsView
 {
   LocateInfoView(this.cachedData, this.ccrCnntSysDsCd, this.aisInfSn);
 
-  List<Widget> _makeWidgets(BuildContext context)
+  @override
+  List<Widget> getContents(BuildContext context)
   {
     List<Widget> widgets = new List<Widget>();
     
@@ -207,21 +209,4 @@ class LocateInfoView extends StatelessWidget
   final String ccrCnntSysDsCd;
   final String aisInfSn;
   final Map<String, String> cachedData;
-
-  @override
-  Widget build(BuildContext context)
-  {
-    return Container
-    (
-      width: MediaQuery.of(context).size.width,
-      child: Padding
-      (
-        child: Column
-        (
-          children: _makeWidgets(context),
-        ),
-        padding: EdgeInsets.only(left: 10, right: 10)
-      )
-    );
-  }
 }

@@ -22,7 +22,11 @@ class StoreBidInquiryModel extends MenuItemModel
           <Column id="PREVIEW" type="STRING" size="256"  />
           <Column id="HC_BLK_CD" type="STRING" size="256"  />
           <Column id="BZDT_CD" type="STRING" size="256"  />
-		    </ColumnInfo>''';
+          <Column id="PAGE" type="STRING" size="256"  />
+          <Column id="PG_SZ" type="STRING" size="256"  />
+		    </ColumnInfo>
+      </Dataset>
+    </Root>''';
   
   Future<Map<String, List<Map<String, String>>>> fetchData(Map<String, String> params) async
   {

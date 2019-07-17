@@ -1,4 +1,5 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:bunyang/Abstract/AbstractContentsView.dart';
 import 'package:bunyang/Data/OrganizationCode.dart';
 import 'package:bunyang/Util/PDFViewer.dart';
 import 'package:bunyang/Util/Util.dart';
@@ -6,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:sprintf/sprintf.dart';
 import 'package:tuple/tuple.dart';
 
-class SummaryInfoView extends StatelessWidget
+class SummaryInfoView extends AbstractContentsView
 {
   SummaryInfoView(this._data, List<Map<String, String>> attatchDatas)
   {
@@ -62,7 +63,8 @@ class SummaryInfoView extends StatelessWidget
     );
   }
 
-  _getContents(BuildContext context)
+  @override
+  List<Widget> getContents(BuildContext context)
   {
     var panId = _data["PAN_ID"];
     var currPanId = _data["CURR_PAN_ID"];
@@ -203,22 +205,5 @@ class SummaryInfoView extends StatelessWidget
     }
 
     return widgets;
-  }
-
-  @override
-  Widget build(BuildContext context) 
-  {
-    return Container
-    (
-      width: MediaQuery.of(context).size.width,
-      child: Padding
-      (
-        padding: EdgeInsets.only(left: 10, right: 10),
-        child: Column
-        (
-          children: _getContents(context)
-        ),
-      )
-    );
   }
 }

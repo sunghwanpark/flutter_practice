@@ -1,4 +1,5 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:bunyang/Abstract/AbstractContentsView.dart';
 import 'package:bunyang/Map/MyGoogleMapView.dart';
 import 'package:bunyang/MenuItem/Store/Bid/BidDetail/StoreBidInquiryView.dart';
 import 'package:bunyang/MenuItem/Store/Bid/BidSupplyDetail/StoreBidSupplyDetailView.dart';
@@ -9,7 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:sprintf/sprintf.dart';
 
-class StoreBidSupplyView extends StatelessWidget
+class StoreBidSupplyView extends AbstractContentsView
 {
   StoreBidSupplyView(this._defaultData, this._storeList, this._storeImageList, this._storeDetailList, this._uppAisTpCd);
 
@@ -20,7 +21,8 @@ class StoreBidSupplyView extends StatelessWidget
 
   final String _uppAisTpCd;
 
-  List<Widget> _getContents(BuildContext context)
+  @override
+  List<Widget> getContents(BuildContext context)
   {
     List<Widget> widgets = List<Widget>();
 
@@ -197,22 +199,5 @@ class StoreBidSupplyView extends StatelessWidget
     }
     
     return widgets;
-  }
-
-  @override
-  Widget build(BuildContext context)
-  {
-    return Container
-    (
-      width: MediaQuery.of(context).size.width,
-      child: Padding
-      (
-        padding: EdgeInsets.only(left: 10, right: 10),
-        child: Column
-        (
-          children: _getContents(context)
-        ),
-      )
-    );
   }
 }

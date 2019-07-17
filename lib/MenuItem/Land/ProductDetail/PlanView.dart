@@ -1,12 +1,19 @@
+import 'package:bunyang/Abstract/AbstractContentsView.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:sprintf/sprintf.dart';
 
-class PlanView extends StatelessWidget
+class PlanView extends AbstractContentsView
 {
-  PlanView(List<Map<String, String>> data)
+  PlanView(this._datas);
+
+  final List<Map<String, String>> _datas;
+
+  @override
+  List<Widget> getContents(BuildContext context)
   {
-    widgets.clear();
+    List<Widget> widgets = List<Widget>();
+
     widgets.add(
       Row
       (
@@ -19,7 +26,7 @@ class PlanView extends StatelessWidget
       ));
 
     final f = NumberFormat("#,###");
-    data.forEach((map) => 
+    _datas.forEach((map) => 
     {
       widgets.add(Padding
       (
@@ -69,23 +76,7 @@ class PlanView extends StatelessWidget
         )
       )
       )});
-  }
-
-  final List<Widget> widgets = new List<Widget>();
-  @override
-  Widget build(BuildContext context)
-  {
-    return Container
-    (
-      width: MediaQuery.of(context).size.width,
-      child: Padding
-      (
-        child: Column
-        (
-          children: widgets,
-        ),
-        padding: EdgeInsets.only(left: 10, right: 10)
-      )
-    );
+    
+    return widgets;
   }
 }

@@ -1,16 +1,18 @@
+import 'package:bunyang/Abstract/AbstractContentsView.dart';
 import 'package:bunyang/Util/NetworkImageWidget.dart';
 import 'package:bunyang/Util/Util.dart';
 import 'package:flutter/material.dart';
 import 'package:sprintf/sprintf.dart';
 
-class StoreBidImageView extends StatelessWidget
+class StoreBidImageView extends AbstractContentsView
 {
   StoreBidImageView(this._contents, this._imageDatas);
 
   final Map<String, String> _contents;
   final List<Map<String, String>> _imageDatas;
 
-  List<Widget> _getContents(BuildContext context)
+  @override
+  List<Widget> getContents(BuildContext context)
   {
     List<Widget> widgets = List<Widget>();
 
@@ -63,22 +65,5 @@ class StoreBidImageView extends StatelessWidget
     }
 
     return widgets;
-  }
-
-  @override
-  Widget build(BuildContext context)
-  {
-    return Container
-    (
-      width: MediaQuery.of(context).size.width,
-      child: Padding
-      (
-        padding: EdgeInsets.only(left: 10, right: 10),
-        child: Column
-        (
-          children: _getContents(context)
-        ),
-      )
-    );
   }
 }

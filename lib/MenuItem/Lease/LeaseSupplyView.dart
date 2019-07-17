@@ -1,4 +1,5 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:bunyang/Abstract/AbstractContentsView.dart';
 import 'package:bunyang/Map/MyGoogleMapView.dart';
 import 'package:bunyang/Util/Util.dart';
 import 'package:flutter/material.dart';
@@ -7,14 +8,15 @@ import 'package:sprintf/sprintf.dart';
 
 typedef void AddEtcContents(BuildContext context, List<Widget> widgets, Map<String, String> info);
 
-class LeaseSupplyView extends StatelessWidget
+class LeaseSupplyView extends AbstractContentsView
 {
   LeaseSupplyView(this._defaultDatas, this._supplyInfos);
   
   final Map<String, List<Map<String, String>>> _defaultDatas;
   final Map<String, List<Map<String, String>>> _supplyInfos;
 
-  List<Widget> _getContents(BuildContext context)
+  @override
+  List<Widget> getContents(BuildContext context)
   {
     List<Widget> widgets = new List<Widget>();
 
@@ -385,22 +387,5 @@ class LeaseSupplyView extends StatelessWidget
         )
       )
     ));
-  }
-
-  @override
-  Widget build(BuildContext context) 
-  {
-    return Container
-    (
-      width: MediaQuery.of(context).size.width,
-      child: Padding
-      (
-        padding: EdgeInsets.only(left: 10, right: 10),
-        child: Column
-        (
-          children: _getContents(context)
-        ),
-      )
-    );
   }
 }

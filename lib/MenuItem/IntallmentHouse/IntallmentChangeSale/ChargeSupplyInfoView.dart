@@ -1,10 +1,11 @@
+import 'package:bunyang/Abstract/AbstractContentsView.dart';
 import 'package:bunyang/Map/MyGoogleMapView.dart';
 import 'package:bunyang/MenuItem/IntallmentHouse/IntallmentChangeSale/ChargeSupplyInfoDetailView.dart';
 import 'package:bunyang/Util/NetworkImageWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:sprintf/sprintf.dart';
 
-class ChargeSupplyInfoView extends StatelessWidget
+class ChargeSupplyInfoView extends AbstractContentsView
 {
   ChargeSupplyInfoView(this._defaultData, this._detailData, this._imageData);
 
@@ -12,7 +13,8 @@ class ChargeSupplyInfoView extends StatelessWidget
   final List<Map<String, String>> _detailData;
   final List<Map<String, String>> _imageData;
 
-  List<Widget> _getContents(BuildContext context)
+  @override
+  List<Widget> getContents(BuildContext context)
   {
     List<Widget> widgets = new List<Widget>();
 
@@ -198,23 +200,6 @@ class ChargeSupplyInfoView extends StatelessWidget
             children: addContents
           )
         )
-      )
-    );
-  }
-
-  @override
-  Widget build(BuildContext context)
-  {
-    return Container
-    (
-      width: MediaQuery.of(context).size.width,
-      child: Padding
-      (
-        padding: EdgeInsets.only(left: 10, right: 10),
-        child: Column
-        (
-          children: _getContents(context)
-        ),
       )
     );
   }

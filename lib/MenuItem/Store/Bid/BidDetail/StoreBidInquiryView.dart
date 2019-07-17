@@ -1,6 +1,9 @@
 import 'package:bunyang/Abstract/TabStateView.dart';
 import 'package:bunyang/Data/Address.dart';
+import 'package:bunyang/MenuItem/Store/Bid/BidDetail/StoreBidInquiryGuideView.dart';
+import 'package:bunyang/MenuItem/Store/Bid/BidDetail/StoreBidInquiryInfoView.dart';
 import 'package:bunyang/MenuItem/Store/Bid/BidDetail/StoreBidInquiryPresenter.dart';
+import 'package:bunyang/Util/Util.dart';
 import 'package:flutter/material.dart';
 
 enum StoreBidInquiryTabState { Info, Guide }
@@ -43,6 +46,11 @@ class StoreBidInquiryView extends TabStateView<StoreBidInquiry>
 
   void onResponseData(Map<String, List<Map<String, String>>> res)
   {
+    contents[StoreBidInquiryTabState.Info.index].add(StoreBidInquiryInfoView(res['dsSstInf'].first));
+    contents[StoreBidInquiryTabState.Guide.index].add(StoreBidInquiryGuideView(res['dsDhgList']));
 
+    setState(() {
+      loadingState = LoadingState.DONE;
+    });
   }
 }

@@ -1,12 +1,14 @@
+import 'package:bunyang/Abstract/AbstractContentsView.dart';
 import 'package:flutter/material.dart';
 
-class LeaseMoreInfoView extends StatelessWidget
+class LeaseMoreInfoView extends AbstractContentsView
 {
   LeaseMoreInfoView(this._defaultDatas);
 
   final Map<String, List<Map<String, String>>> _defaultDatas;
 
-  List<Widget> _getContents(BuildContext context)
+  @override
+  List<Widget> getContents(BuildContext context)
   {
     List<Widget> widgets = List<Widget>();
 
@@ -102,22 +104,5 @@ class LeaseMoreInfoView extends StatelessWidget
     }
 
     return widgets;
-  }
-
-  @override
-  Widget build(BuildContext context) 
-  {
-    return Container
-    (
-      width: MediaQuery.of(context).size.width,
-      child: Padding
-      (
-        padding: EdgeInsets.only(left: 10, right: 10),
-        child: Column
-        (
-          children: _getContents(context)
-        ),
-      )
-    );
   }
 }

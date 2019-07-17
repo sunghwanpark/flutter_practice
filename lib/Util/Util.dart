@@ -59,6 +59,9 @@ String getDateFormatkr(String dateString)
 
 launchURL(String url) async 
 {
+  if(!url.contains('http://'))
+    url = 'http://$url';
+
   if (await canLaunch(url)) 
   {
     await launch(url);
