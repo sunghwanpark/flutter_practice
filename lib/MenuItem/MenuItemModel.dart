@@ -113,7 +113,7 @@ abstract class MenuItemModel
     return document.toXmlString(pretty: true, indent: '\t');
   }
 
-  Future<Map<String, List<Map<String, String>>>> fetchFirst(Map<String, String> params) async
+  Future<Map<String, List<Map<String, String>>>> fetchDefaultDetailData(Map<String, String> params)
   {
     return fetch(detailFormURL, defaultDetailFormXml, params);
   }
