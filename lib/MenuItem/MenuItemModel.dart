@@ -113,6 +113,11 @@ abstract class MenuItemModel
     return document.toXmlString(pretty: true, indent: '\t');
   }
 
+  Future<Map<String, List<Map<String, String>>>> fetchFirst(Map<String, String> params) async
+  {
+    return fetch(detailFormURL, defaultDetailFormXml, params);
+  }
+
   Future<Map<String, List<Map<String, String>>>> fetch(String requestURL, String xmlForm, Map<String, String> params) async
   {
     StringBuffer stringBuffer = new StringBuffer();
