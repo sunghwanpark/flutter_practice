@@ -38,8 +38,7 @@ class StoreDrawModel extends MenuItemModel
 		    <ColumnInfo>
 			    <Column id="PAN_ID" type="STRING" size="256"  />
           <Column id="CCR_CNNT_SYS_DS_CD" type="STRING" size="256"  />
-          <Column id="PREVIEW" type="STRING" size="256"  />
-          <Column id="PAN_GBN" type="STRING" size="256"  />
+          <Column id="SBD_NM" type="STRING" size="256"  />
 		    </ColumnInfo>
       </Dataset>
     </Root>''';

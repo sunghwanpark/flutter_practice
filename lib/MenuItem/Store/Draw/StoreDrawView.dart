@@ -2,7 +2,12 @@ import 'package:bunyang/Abstract/TabStateView.dart';
 import 'package:bunyang/Menu/Model/MenuModel.dart';
 import 'package:bunyang/MenuItem/IntallmentHouse/SummaryInfoView.dart';
 import 'package:bunyang/MenuItem/Store/Draw/StoreDrawPresenter.dart';
+import 'package:bunyang/MenuItem/Store/StoreCommonNotifyView.dart';
+import 'package:bunyang/MenuItem/Store/StoreCommonScheduleView.dart';
+import 'package:bunyang/MenuItem/Store/StoreCommonSupplyData.dart';
+import 'package:bunyang/MenuItem/Store/StoreCommonSupplyView.dart';
 import 'package:bunyang/Util/Util.dart';
+import 'package:bunyang/Util/WidgetInsideTabBarView.dart';
 import 'package:flutter/material.dart';
 
 enum StoreDrawTabState { Contents, Infos, Schedule }
@@ -36,31 +41,32 @@ class StoreDrawWidgetView extends TabStateView<StoreDrawView>
 
   Map<String, String> _defaultDatas;
   List<Map<String, String>> _attachmentDatas;
-  List<Map<String, String>> _supplyDatas;
-  Map<String, List<Map<String, String>>> _supplyDetailDatas = new Map<String, List<Map<String, String>>>();
+
+  Map<String, StoreCommonSupplyData> _supplyDatas = new Map<String, StoreCommonSupplyData>();
 
   @override
   void makePresenter() 
   {
     _presenter = StoreDrawPresenter(this);
     _presenter.onRequestData({'PAN_ID' : _panId, 'CCR_CNNT_SYS_DS_CD' : _ccrCnntSysDsCd, 'PAN_GBN' : 'LS_SST'});
-    _presenter.onRequestAttachment({'PAN_ID' : _panId, 'CCR_CNNT_SYS_DS_CD' : _ccrCnntSysDsCd, 'PAN_GBN' : 'LS_SST'});
   }
 
   void onResponseData(Map<String, List<Map<String, String>>> res)
   {
     _defaultDatas = res['dsSstInf'].first;
-    _supplyDatas = res['dsSdbList'];
-    if(_supplyDatas.length > 0)
+    if(res['dsSdgList'].length > 0)
     {
-      _supplyDatas.forEach((map)
+      res['dsSdgList'].forEach((map)
       {
-        _presenter.onRequestSupplyData({'PAN_ID' : _panId, 'CCR_CNNT_SYS_DS_CD' : _ccrCnntSysDsCd, 'SBD_NM' : map['SBD_NM']});
+        String key = map['SBD_NM'];
+        _supplyDatas[key] = StoreCommonSupplyData();
+        _supplyDatas[key].defaultData = map;
+        _presenter.onRequestSupplyData({'PAN_ID' : _panId, 'CCR_CNNT_SYS_DS_CD' : _ccrCnntSysDsCd, 'SBD_NM' : key});
       });
     }
     else
     {
-      checkComplete();
+      _presenter.onRequestAttachment({'PAN_ID' : _panId, 'CCR_CNNT_SYS_DS_CD' : _ccrCnntSysDsCd, 'PAN_GBN' : 'LS_SST'});
     }
   }
 
@@ -72,13 +78,11 @@ class StoreDrawWidgetView extends TabStateView<StoreDrawView>
 
   void onResponseSupplyData(Map<String, List<Map<String, String>>> res, String key)
   {
-    if(!_supplyDetailDatas.containsKey(key))
-      _supplyDetailDatas[key] = List<Map<String, String>>();
-    
-    _supplyDetailDatas[key] = res['dsSstDhgList'];
+    _supplyDatas[key].supplyDatas = res['dsSstDhgList'];
+    var completeChecker = _supplyDatas.values.takeWhile((v) => v.supplyDatas != null);
 
-    if(_supplyDatas.length == _supplyDetailDatas.length)
-      checkComplete();
+    if(_supplyDatas.length == completeChecker.length)
+      _presenter.onRequestAttachment({'PAN_ID' : _panId, 'CCR_CNNT_SYS_DS_CD' : _ccrCnntSysDsCd, 'PAN_GBN' : 'LS_SST'});
   }
 
   void checkComplete()
@@ -87,7 +91,17 @@ class StoreDrawWidgetView extends TabStateView<StoreDrawView>
     {
       if(_defaultDatas != null && _attachmentDatas != null)
       {
-        contents[StoreDrawTabState.Infos.index].add(SummaryInfoView(_defaultDatas, _attachmentDatas));
+        contents[StoreDrawTabState.Contents.index].add(SummaryInfoView(_defaultDatas, _attachmentDatas, serialKey: 'AHFL_RGS_SN'));
+        contents[StoreDrawTabState.Infos.index].add(WidgetInsideTabBar
+        (
+          tabNames: List<String>.from(_supplyDatas.keys),
+          contents: List<Widget>.generate(_supplyDatas.length, (index)
+          {
+            return StoreCommonSupplyView(_supplyDatas.entries.elementAt(index).value);
+          })
+        ));
+        contents[StoreDrawTabState.Schedule.index].add(StoreCommonScheduleView(_defaultDatas));
+        contents[StoreDrawTabState.Schedule.index].add(StoreCommonNotifyView(_defaultDatas));
 
         setState(() {
           loadingState = LoadingState.DONE;
@@ -98,7 +112,9 @@ class StoreDrawWidgetView extends TabStateView<StoreDrawView>
     {
       if(_defaultDatas != null && _attachmentDatas != null)
       {
-        contents[StoreDrawTabState.Infos.index].add(SummaryInfoView(_defaultDatas, _attachmentDatas));
+        contents[StoreDrawTabState.Contents.index].add(SummaryInfoView(_defaultDatas, _attachmentDatas, serialKey: 'AHFL_RGS_SN'));
+        contents[StoreDrawTabState.Schedule.index].add(StoreCommonScheduleView(_defaultDatas));
+        contents[StoreDrawTabState.Schedule.index].add(StoreCommonNotifyView(_defaultDatas));
 
         setState(() {
           loadingState = LoadingState.DONE;

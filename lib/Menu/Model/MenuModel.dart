@@ -50,6 +50,8 @@ class MenuData
       return MenuItemType.all_lease;
     else if(subString.contains("0080"))
       return MenuItemType.store_bid;
+    else if(subString.contains("1080"))
+      return MenuItemType.store_draw;
     else if(subString.contains("1200"))
       return MenuItemType.store_evaluation;
 

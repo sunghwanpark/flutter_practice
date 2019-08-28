@@ -12,21 +12,21 @@ version: 1.0.0+2
 dependencies:
   flutter:
     sdk: flutter
-  snaplist: ^0.1.7
+  snaplist: ^0.1.8
   cupertino_icons: ^0.1.2
-  http: ^0.12.0+1
-  sticky_headers: ^0.1.7
-  xml: ^3.3.1
-  sprintf: ^4.0.0
+  http: ^0.12.0+2
+  sticky_headers: ^0.1.8
+  xml: ^3.5.0
+  sprintf: ^4.0.2
   flutter_staggered_grid_view: ^0.2.7
-  auto_size_text: ^1.1.1
+  auto_size_text: ^2.1.0
   tuple: ^1.0.2
-  intl: ^0.15.8
-  google_maps_flutter: ^0.5.19
-  flutter_pdfview: ^1.0.0+6
-  path_provider: ^0.5.0+1
-  url_launcher: ^5.1.0
-  cached_network_image: ^1.1.0
+  intl: ^0.16.0
+  google_maps_flutter: ^0.5.20+6
+  flutter_pdfview: ^1.0.0+9
+  path_provider: ^1.2.0
+  url_launcher: ^5.1.2
+  cached_network_image: ^1.1.1
   #flutter_webview_plugin: ^0.3.0+2
 
 dev_dependencies:

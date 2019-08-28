@@ -41,7 +41,7 @@ class StoreEvaluationViewWidget extends MenuItemPageView<StoreEvaluationView>
     {
 
     });
-    _presenter.onRequestSupplyData({"PAN_ID" : this.panId, "CCR_CNNT_SYS_DS_CD" : this.ccrCnntSysDsCd, "SBD_NM": });
+    //_presenter.onRequestSupplyData({"PAN_ID" : this.panId, "CCR_CNNT_SYS_DS_CD" : this.ccrCnntSysDsCd, "SBD_NM": });
   }
 
   void onResponseSupplyData(Map<String, List<Map<String, String>>> res)

@@ -9,7 +9,10 @@ import 'package:tuple/tuple.dart';
 
 class SummaryInfoView extends AbstractContentsView
 {
-  SummaryInfoView(this._data, List<Map<String, String>> attatchDatas)
+  SummaryInfoView(this._data, List<Map<String, String>> attatchDatas,
+  {
+    String serialKey = 'CMN_AHFL_SN'
+  })
   {
     for(int i = 0; i < attatchDatas.length; i++)
     {
@@ -19,7 +22,7 @@ class SummaryInfoView extends AbstractContentsView
       if(!pdfName.contains('pdf'))
         continue;
 
-      String serialNum = map["CMN_AHFL_SN"];
+      String serialNum = map[serialKey];
       String code = map["SL_PAN_AHFL_DS_CD"];
 
       if(!_attatchmentDatas.containsKey(code))

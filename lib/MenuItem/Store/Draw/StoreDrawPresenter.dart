@@ -14,7 +14,7 @@ class StoreDrawPresenter
   void onRequestData(Map<String, String> params)
   {
     _model
-      .fetchFirst(params)
+      .fetchDefaultDetailData(params)
       .then((res) => _view.onResponseData(res))
       .catchError((err) => _view.onError(err));
   }
@@ -31,7 +31,7 @@ class StoreDrawPresenter
   {
     _model
       .fetchDetail(params)
-      .then((res) => _view.onResponseSupplyData(res))
+      .then((res) => _view.onResponseSupplyData(res, params['SBD_NM']))
       .catchError((err) => _view.onError(err));
   }
 }

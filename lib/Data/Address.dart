@@ -19,6 +19,7 @@ enum MenuItemType
   honeymoon_lease,            // 신혼희망타운
   all_lease,                  // 매입/전세 임대
   store_bid,                  // 상가(입찰)
+  store_draw,                 // 상가(추첨)
   store_evaluation            // 상가(공모,심사)
 }
 
