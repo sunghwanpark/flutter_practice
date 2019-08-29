@@ -1,6 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:bunyang/Abstract/AbstractContentsView.dart';
 import 'package:bunyang/Data/OrganizationCode.dart';
+import 'package:bunyang/Util/HighlightNetworkImageView.dart';
 import 'package:bunyang/Util/PDFViewer.dart';
 import 'package:bunyang/Util/Util.dart';
 import 'package:flutter/material.dart';
@@ -18,8 +19,8 @@ class SummaryInfoView extends AbstractContentsView
     {
       var map = attatchDatas[i];
 
-      String pdfName = map["CMN_AHFL_NM"];
-      if(!pdfName.contains('pdf'))
+      String fileName = map["CMN_AHFL_NM"];
+      if(!fileName.contains('pdf') && !fileName.contains('JPG'))
         continue;
 
       String serialNum = map[serialKey];
@@ -28,7 +29,7 @@ class SummaryInfoView extends AbstractContentsView
       if(!_attatchmentDatas.containsKey(code))
         _attatchmentDatas[code] = new List<Tuple2<String, String>>();
 
-      _attatchmentDatas[code].add(Tuple2(pdfName, serialNum));
+      _attatchmentDatas[code].add(Tuple2(fileName, serialNum));
     }
   }
   
@@ -62,6 +63,42 @@ class SummaryInfoView extends AbstractContentsView
       (
         context,
         MaterialPageRoute(builder: (context) => PDFViewer(pdfFileName, pdfSerialNum))
+      )
+    );
+  }
+
+  _getImageButton(BuildContext context, String imageFileName, String serialNum)
+  {
+    return FlatButton
+    (
+      color: Colors.black.withOpacity(0.1),
+      shape: RoundedRectangleBorder
+      (
+        borderRadius: BorderRadius.circular(10),
+        side: BorderSide(color: Colors.black)
+      ),
+      child: Row
+      (
+        children : <Widget>
+        [
+          Icon(Icons.picture_as_pdf, color: Colors.black),
+          SizedBox(width: 5),
+          Container
+          (
+            width: MediaQuery.of(context).size.width - 100,
+            child: AutoSizeText(imageFileName, maxLines: 1, textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'TmonTium'))
+          )
+        ]
+      ),
+      onPressed: () => Navigator.push
+      (
+        context,
+        MaterialPageRoute(builder: (context) => HighlightNetworkImageView
+        (
+          name: imageFileName, 
+          serialNum: serialNum, 
+          width: MediaQuery.of(context).size.width)
+        )
       )
     );
   }
@@ -180,7 +217,10 @@ class SummaryInfoView extends AbstractContentsView
 
       _attatchmentDatas['02'].forEach((tuple)
       {
-        widgets.add(_getPDFButton(context, tuple.item1, tuple.item2));
+        if(tuple.item1.contains("pdf"))
+          widgets.add(_getPDFButton(context, tuple.item1, tuple.item2));
+        else if(tuple.item1.contains("JPG"))
+          widgets.add(_getImageButton(context, tuple.item1, tuple.item2));
       });
     }
 

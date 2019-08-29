@@ -7,7 +7,7 @@ import 'package:bunyang/MenuItem/IntallmentHouse/IntallmentChangeSale/Installmen
 import 'package:bunyang/Util/Util.dart';
 import 'package:bunyang/Util/WidgetInsideTabBarView.dart';
 import 'package:flutter/material.dart';
-
+ 
 class InstallmentChangeSale extends AbstractInstallmentHouse
 {
   InstallmentChangeSale(MenuData data) : super(data);
