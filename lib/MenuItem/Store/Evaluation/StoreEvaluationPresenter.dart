@@ -23,7 +23,7 @@ class StoreEvaluationPresenter
   {
     _model
       .fetchSupplyData(params)
-      .then((res) => _view.onResponseSupplyData(res))
+      .then((res) => _view.onResponseSupplyData(res, params['SBD_NM']))
       .catchError((err) => _view.onError(err));
   }
 }
