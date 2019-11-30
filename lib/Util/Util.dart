@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import "package:flutter/material.dart";
 import 'package:url_launcher/url_launcher.dart';
 
@@ -62,9 +64,11 @@ launchURL(String url) async
   if(!url.contains('http://'))
     url = 'http://$url';
 
-  if (await canLaunch(url)) 
+  var encodedUrl = Uri.encodeFull(url);
+
+  if (await canLaunch(encodedUrl)) 
   {
-    await launch(url);
+    await launch(encodedUrl);
   } 
   else 
   {
