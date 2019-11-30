@@ -2,6 +2,7 @@ import 'package:bunyang/Secret/URL.dart';
 import 'package:bunyang/Util/Util.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:photo_view/photo_view.dart';
 
 class HighlightNetworkImageView extends StatefulWidget
 {
@@ -70,7 +71,7 @@ class HighlightNetworkImageViewWidget extends State<HighlightNetworkImageView>
       body: Center
       (
         child: _imageLoadingState == LoadingState.DONE ?
-          Image(image: _cachedImageProvider, width: widget._width)
+          PhotoView(imageProvider: _cachedImageProvider)
           : _imageLoadingState == LoadingState.WAITING ?
           CircularProgressIndicator(backgroundColor: Colors.black)
           : _imageLoadingState == LoadingState.ERROR ?

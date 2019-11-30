@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:photo_view/photo_view.dart';
 
 class HighlightImageView extends StatelessWidget 
 {
-  HighlightImageView(this._heroTag, this._heroImage);
+  HighlightImageView(this._heroTag, this._imageProvider);
 
+  final ImageProvider _imageProvider;
   final String _heroTag;
-  final Image _heroImage;
 
   @override
   Widget build(BuildContext context) 
@@ -27,10 +28,10 @@ class HighlightImageView extends StatelessWidget
       ),
       body: Center
       (
-        child: Hero
+        child: PhotoView
         (
-          tag: _heroTag,
-          child: _heroImage
+          imageProvider: _imageProvider,
+          heroAttributes: PhotoViewHeroAttributes(tag: _heroTag)
         )
       ),
     );

@@ -18,6 +18,7 @@ class NetworkImageWidget extends StatefulWidget
 
 class NetworkImageWidgetState extends State<NetworkImageWidget>
 {
+  CachedNetworkImageProvider _cachedNetworkImageProvider;
   Image _image;
   LoadingState _imageLoadingState = LoadingState.WAITING;
 
@@ -27,7 +28,7 @@ class NetworkImageWidgetState extends State<NetworkImageWidget>
     super.initState();
 
     String serialNum = widget._serialNum;
-    var cachedImageProvider = CachedNetworkImageProvider("$imageURL$serialNum", errorListener: ()
+    _cachedNetworkImageProvider = CachedNetworkImageProvider("$imageURL$serialNum", errorListener: ()
     {
       setState(() {
         _imageLoadingState = LoadingState.ERROR; 
@@ -43,11 +44,11 @@ class NetworkImageWidgetState extends State<NetworkImageWidget>
           });
         }
     });
-
-    cachedImageProvider.resolve(new ImageConfiguration()).addListener(imgStreamListener);
+    
+    _cachedNetworkImageProvider.resolve(new ImageConfiguration()).addListener(imgStreamListener);
 
     double width = MediaQuery.of(widget._context).size.width;
-    _image = Image(image: cachedImageProvider, width: width);
+    _image = Image(image: _cachedNetworkImageProvider, width: width);
   }
 
   @override
@@ -63,7 +64,7 @@ class NetworkImageWidgetState extends State<NetworkImageWidget>
       onTap: () => Navigator.push
       (
         context,
-        MaterialPageRoute(builder: (context) => HighlightImageView(widget._serialNum, _image))
+        MaterialPageRoute(builder: (context) => HighlightImageView(widget._serialNum, _cachedNetworkImageProvider))
       )
     ) : _imageLoadingState == LoadingState.LOADING ? CircularProgressIndicator(backgroundColor: Colors.black)
     : _imageLoadingState == LoadingState.ERROR ? myText('이미지 로드 실패') : SizedBox();
