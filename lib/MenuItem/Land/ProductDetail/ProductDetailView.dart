@@ -72,8 +72,13 @@ class ProductDetailView extends State<ProductDetail> with SingleTickerProviderSt
 
   void onError(dynamic err)
   {
-    print(err);
-    print(StackTrace.current);
+    assert(() 
+    {
+      print(err);
+      print(StackTrace.current);
+      return true;
+    }());
+    
     setState(() => loadingState = LoadingState.ERROR);
   }
 

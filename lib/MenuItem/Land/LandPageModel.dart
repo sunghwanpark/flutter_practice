@@ -87,7 +87,11 @@ class LandPageModel extends MenuPanInfoModel
       }
       catch(e)
       {
-        print(e);
+        assert(() 
+        {
+          print(e);
+          return true;
+        }());
       }
     }
     return document.toXmlString(pretty: true, indent: '\t');

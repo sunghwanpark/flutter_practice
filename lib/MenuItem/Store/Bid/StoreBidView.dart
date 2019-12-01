@@ -44,7 +44,7 @@ class StoreBidViewWidget extends MenuItemPageView<StoreBidView>
   {
     presenter = StoreBidPresenter(this);
     (presenter as StoreBidPresenter).onRequestPanInfo(data.type, 
-      {"PAN_ID" : panId, "CCR_CNNT_SYS_DS_CD" : ccrCnntSysDsCd, "TRET_PAN_ID" : panId, "TMP_PAN_SS" : data.panState, "PREVIEW" : "N"});
+      {"PAN_ID" : panId, "CCR_CNNT_SYS_DS_CD" : ccrCnntSysDsCd, "TRET_PAN_ID" : panId, "TMP_PAN_SS" : data.getPanState(), "PREVIEW" : "N"});
   }
 
   @override
@@ -52,12 +52,12 @@ class StoreBidViewWidget extends MenuItemPageView<StoreBidView>
   {
     (presenter as StoreBidPresenter).onRequestDefaultData(
       {"PAN_ID": panInfo["PAN_ID"], "CCR_CNNT_SYS_DS_CD" : panInfo["CCR_CNNT_SYS_DS_CD"], "PAN_KD_CD" : panInfo["PAN_KD_CD"],
-        "OTXT_PAN_ID" : panInfo["OTXT_PAN_ID"], "TRET_PAN_ID" : panInfo['PAN_ID'], "PREVIEW" : 'N', "TMP_PAN_SS" : data.panState}
+        "OTXT_PAN_ID" : panInfo["OTXT_PAN_ID"], "TRET_PAN_ID" : panInfo['PAN_ID'], "PREVIEW" : 'N', "TMP_PAN_SS" : data.getPanState()}
     );
 
     (presenter as StoreBidPresenter).onRequestAttachmentData(
       {"PAN_ID": panInfo["PAN_ID"], "CCR_CNNT_SYS_DS_CD" : panInfo["CCR_CNNT_SYS_DS_CD"], "PAN_KD_CD" : panInfo["PAN_KD_CD"],
-        "OTXT_PAN_ID" : panInfo["OTXT_PAN_ID"], "TRET_PAN_ID" : panInfo['PAN_ID'], "PREVIEW" : 'N', "TMP_PAN_SS" : data.panState}
+        "OTXT_PAN_ID" : panInfo["OTXT_PAN_ID"], "TRET_PAN_ID" : panInfo['PAN_ID'], "PREVIEW" : 'N', "TMP_PAN_SS" : data.getPanState()}
     );
   }
   

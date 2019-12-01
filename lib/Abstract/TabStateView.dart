@@ -65,8 +65,13 @@ abstract class TabStateView<T extends TabStatefull> extends State<T> with Single
 
   void onError(dynamic err)
   {
-    print(err);
-    print(StackTrace.current);
+    assert(() 
+    {
+      print(err);
+      print(StackTrace.current);
+      return true;
+    }());
+    
     setState(() {
       loadingState = LoadingState.ERROR; 
     });

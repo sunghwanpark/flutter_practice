@@ -20,11 +20,13 @@ class InstallmentChangeSaleView extends AbstractInstallmentHouseView<Installment
 {
   InstallmentChangeSaleView(MenuData data) : super(data);
 
-  final Map<String, List<Map<String, String>>> _defaultData = new Map<String, List<Map<String, String>>>();
+  @protected
+  final Map<String, List<Map<String, String>>> defaultData = new Map<String, List<Map<String, String>>>();
   final List<List<Map<String, String>>> _typeofHouseData = new List<List<Map<String, String>>>();
   final List<List<Map<String, String>>> _typeofHouseDataAttachment = new List<List<Map<String, String>>>();
 
-  int _tabLen = 0;
+  @protected
+  int tabLen = 0;
 
   @override
   void makePresenter() 
@@ -37,17 +39,17 @@ class InstallmentChangeSaleView extends AbstractInstallmentHouseView<Installment
   void dispose()
   {
     super.dispose();
-    _defaultData.clear();
+    defaultData.clear();
     _typeofHouseData.clear();
     _typeofHouseDataAttachment.clear();
   }
 
   void onResponseDetail(Map<String, List<Map<String, String>>> res)
   {
-    _defaultData.clear();
-    _defaultData.addAll(res);
-    contents[InstallmentTabState.Contents.index].add(ChargeSaleSummaryInfoView(_defaultData));
-    contents[InstallmentTabState.Schedule.index].add(ChargeScheduleView(_defaultData));
+    defaultData.clear();
+    defaultData.addAll(res);
+    contents[InstallmentTabState.Contents.index].add(ChargeSaleSummaryInfoView(defaultData));
+    contents[InstallmentTabState.Schedule.index].add(ChargeScheduleView(defaultData));
 
     res["dsSbdInf"].forEach((map)
     {
@@ -55,7 +57,7 @@ class InstallmentChangeSaleView extends AbstractInstallmentHouseView<Installment
         panId, ccrCnntSysDsCd, map["SBD_LGO_NO"], map["LTR_NOT"], map["LTR_UNT_NO"], map["SN"]);
     });
 
-    _tabLen = res["dsSbdInf"].length;
+    tabLen = res["dsSbdInf"].length;
   }
 
   void onResponseHouseType(Map<String, List<Map<String, String>>> res)
@@ -67,13 +69,13 @@ class InstallmentChangeSaleView extends AbstractInstallmentHouseView<Installment
   {
     _typeofHouseDataAttachment.add(res["dsSdbAhflInf"].length > 0 ? res["dsSdbAhflInf"] : null);
 
-    if(_typeofHouseData.length == _tabLen && _typeofHouseDataAttachment.length == _tabLen)
+    if(_typeofHouseData.length == tabLen && _typeofHouseDataAttachment.length == tabLen)
     {
-      if(_tabLen == 1)
+      if(tabLen == 1)
       {
         contents[InstallmentTabState.Infos.index].add(ChargeSupplyInfoView
         (
-          _defaultData["dsSbdInf"].first,
+          defaultData["dsSbdInf"].first,
           _typeofHouseData.first,
           _typeofHouseDataAttachment.first
         ));
@@ -82,12 +84,12 @@ class InstallmentChangeSaleView extends AbstractInstallmentHouseView<Installment
       {
         contents[InstallmentTabState.Infos.index].add(WidgetInsideTabBar
         (
-          tabNames: _defaultData["dsSbdInf"].map((map) => map['LCC_NT_NM']).toList(),
-          contents: List<Widget>.generate(_tabLen, (index)
+          tabNames: defaultData["dsSbdInf"].map((map) => map['LCC_NT_NM']).toList(),
+          contents: List<Widget>.generate(tabLen, (index)
           {
             return ChargeSupplyInfoView
             (
-              _defaultData['dsSbdInf'].elementAt(index),
+              defaultData['dsSbdInf'].elementAt(index),
               _typeofHouseData.elementAt(index),
               _typeofHouseDataAttachment.elementAt(index)
             ); 

@@ -106,7 +106,11 @@ abstract class MenuItemModel
       }
       catch(e)
       {
-        print(e);
+        assert(() 
+        {
+          print(e);
+          return true;
+        }());
       }
     }
 

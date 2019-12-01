@@ -35,7 +35,7 @@ class LandPageView extends MenuItemPageView<LandPage>
   {
     presenter = new LandPagePresenter(this);
     presenter.onRequestPanInfo(type, 
-      {"PAN_ID" : panId, "CCR_CNNT_SYS_DS_CD" : ccrCnntSysDsCd, "PREVIEW" : "N", 'TMP_PAN_SS' : data.panState,
+      {"PAN_ID" : panId, "CCR_CNNT_SYS_DS_CD" : ccrCnntSysDsCd, "PREVIEW" : "N", 'TMP_PAN_SS' : data.getPanState(),
         "PAN_LOLD_TYPE" : ccrCnntSysDsCd, "TRET_PAN_ID": panId});
   }
 

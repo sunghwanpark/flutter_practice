@@ -37,8 +37,13 @@ abstract class AbstractSupplyDetailWidget<T extends AbstractSupplyDetailView> ex
 
   void onError(dynamic err)
   {
-    print(err);
-    print(StackTrace.current);
+    assert(() 
+    {
+      print(err);
+      print(StackTrace.current);
+      return true;
+    }());
+    
     setState(() {
      _loadingState = LoadingState.ERROR; 
     });

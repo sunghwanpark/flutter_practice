@@ -16,6 +16,7 @@ enum MenuItemType
   installment_house,          // 분양주택분양공고상세내역
   installment_change_sale,    // 분양전환일반매각공고상세내역
   lease_house_installment,    // 임대주택 공공임대
+  lease_house_children,       // 임대주택 가정어린이집
   honeymoon_lease,            // 신혼희망타운
   all_lease,                  // 매입/전세 임대
   store_bid,                  // 상가(입찰)

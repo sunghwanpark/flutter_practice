@@ -70,8 +70,13 @@ class ContractScheduleView extends State<ContractSchedule> implements IErrorCall
 
   void onError(dynamic err)
   {
-    print(err);
-    print(StackTrace.current);
+    assert(() 
+    {
+      print(err);
+      print(StackTrace.current);
+      return true;
+    }());
+    
     setState(() {
      _loadingState = LoadingState.ERROR; 
     });

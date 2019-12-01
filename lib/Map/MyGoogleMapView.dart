@@ -61,8 +61,13 @@ class MyGoogleMapView extends State<MyGoogleMap> implements IErrorCallBack
 
   void onError(dynamic err)
   {
-    print(err);
-    print(StackTrace.current);
+    assert(() 
+    {
+      print(err);
+      print(StackTrace.current);
+      return true;
+    }());
+    
     setState(() => loadingState = LoadingState.ERROR);
   }
 

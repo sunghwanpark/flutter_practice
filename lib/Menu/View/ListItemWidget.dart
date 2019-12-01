@@ -67,7 +67,7 @@ class ListItemWidget extends StatelessWidget
               [
                 Text
                 (
-                  item.detailNoticeCode,
+                  item.getDetailNoticeCode(),
                   textAlign: TextAlign.center,
                   style: TextStyle
                   (
@@ -86,7 +86,7 @@ class ListItemWidget extends StatelessWidget
                   (
                     child: AutoSizeText
                     (
-                      item.panName,
+                      item.getPanName(),
                       maxLines: 4,
                       style: TextStyle
                       (

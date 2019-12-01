@@ -14,7 +14,7 @@ enum StoreDrawTabState { Contents, Infos, Schedule }
 
 class StoreDrawView extends TabStatefull
 {
-  StoreDrawView(this._data) : super(noticeCode : _data.type, appBarTitle : _data.panName);
+  StoreDrawView(this._data) : super(noticeCode : _data.type, appBarTitle : _data.getPanName());
 
   final MenuData _data;
 

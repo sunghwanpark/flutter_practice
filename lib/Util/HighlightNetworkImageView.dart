@@ -7,11 +7,10 @@ import 'package:photo_view/photo_view.dart';
 class HighlightNetworkImageView extends StatefulWidget
 {
   HighlightNetworkImageView({ @required String name, @required String serialNum, double width })
-    : _imageName = name, _serialNum = serialNum, _width = width;
+    : _imageName = name, _serialNum = serialNum;
   
   final String _imageName;
   final String _serialNum;
-  final double _width;
 
   @override
   HighlightNetworkImageViewWidget createState() => HighlightNetworkImageViewWidget();

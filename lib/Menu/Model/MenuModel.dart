@@ -7,33 +7,26 @@ import 'package:http/http.dart' as http;
 class MenuData
 {
   Notice_Code type;
-  String typeString;
-  String startDate;
-  String closeDate;
-  String panState;
-  String panName;
-  String locateName;
-  String detailNoticeCode;
-  String detailURL;
-  String rNum;
+  Map<String, String> _dataMap;
 
   factory MenuData(Map jsonMap) =>
       MenuData._internalFromJson(jsonMap);
 
   MenuData._internalFromJson(Map jsonMap)
-      : type = getNoticeType(jsonMap['UPP_AIS_TP_NM']),
-      typeString = jsonMap['UPP_AIS_TP_NM'],
-      startDate = jsonMap['PAN_NT_ST_DT'],
-      closeDate = jsonMap['CLSG_DT'],
-      panState = jsonMap['PAN_SS'],
-      panName = jsonMap['PAN_NM'],
-      locateName = jsonMap['CNP_CD_NM'],
-      detailNoticeCode = jsonMap['AIS_TP_CD_NM'],
-      detailURL = jsonMap['DTL_URL'],
-      rNum = jsonMap['RNUM'];
+  {
+    type = getNoticeType(jsonMap['UPP_AIS_TP_NM']);
+    _dataMap = Map.from(jsonMap);
+  }
 
   MenuItemType getServiceType()
   {
+    if(getUppAisTPCD() == '06')
+    {
+      if(_dataMap['AIS_TP_CD'] == '40' && _dataMap['CCR_CNNT_SYS_DS_CD'] == '03')
+        return MenuItemType.lease_house_children;
+    }
+    String detailURL = _dataMap['DTL_URL'];
+
     int findIdx = detailURL.lastIndexOf("gv_url=");
     String subString = detailURL.substring(findIdx, findIdx + 30);
     if(subString.contains("0040"))
@@ -60,6 +53,8 @@ class MenuData
 
   getParameter(String param)
   {
+    String detailURL = _dataMap['DTL_URL'];
+
     int findIdx = detailURL.lastIndexOf("gv_param=");
     String subString = detailURL.substring(findIdx);
     var splitData = subString.split(',');
@@ -74,15 +69,22 @@ class MenuData
 
   getUppAisTPCD()
   {
-    return constNoticeCodeMap[this.type].code;
-    /*assert(detailURL.contains('gv_menuId'));
+    return _dataMap['UPP_AIS_TP_CD'];
+  }
 
-    var menuId = detailURL.split('&')
-    .firstWhere((str) => str.contains('gv_menuId'))
-    .split('=')
-    .toList()[1];
+  getDetailNoticeCode()
+  {
+    return _dataMap['AIS_TP_CD_NM'];
+  }
 
-    return menuId == '1010202' ? "05" : "06";*/
+  getPanName()
+  {
+    return _dataMap['PAN_NM'];
+  }
+
+  getPanState()
+  {
+    return _dataMap['PAN_SS'];
   }
 }
 

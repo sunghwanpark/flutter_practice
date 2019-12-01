@@ -3,6 +3,7 @@ import 'package:bunyang/MenuItem/HoneymoonTown/HoneymoonTownView.dart';
 import 'package:bunyang/MenuItem/IntallmentHouse/InstallmentHouseView.dart';
 import 'package:bunyang/MenuItem/Land/LandPageView.dart';
 import 'package:bunyang/MenuItem/Lease/LeaseView.dart';
+import 'package:bunyang/MenuItem/LeaseHouse/Children/LeaseHouseChildrenView.dart';
 import 'package:bunyang/MenuItem/LeaseHouse/PublicLeaseView.dart';
 import 'package:bunyang/MenuItem/Store/Bid/StoreBidView.dart';
 import 'package:bunyang/MenuItem/Store/Draw/StoreDrawView.dart';
@@ -34,6 +35,8 @@ class NoticeElementRouteFactory
         return StoreBidView(item);
       case MenuItemType.store_draw:
         return StoreDrawView(item);
+      case MenuItemType.lease_house_children:
+        return LeaseHouseChildrenView(item);
       default:
         return myText('아직 개발중이야~');
     }

@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 
 abstract class MenuItemPage extends TabStatefull
 {
-  MenuItemPage(this.data) : super(noticeCode: data.type, appBarTitle: data.panName);
+  MenuItemPage(this.data) : super(noticeCode: data.type, appBarTitle: data.getPanName());
 
   final MenuData data;
 
@@ -23,7 +23,7 @@ abstract class MenuItemPageView<T extends MenuItemPage> extends TabStateView<T>
     type = this.data.type;
     panId = this.data.getParameter("PAN_ID");
     ccrCnntSysDsCd = this.data.getParameter("CCR_CNNT_SYS_DS_CD");
-    appBarTitle = this.data.panName;
+    appBarTitle = this.data.getPanName();
   }
 
   final MenuData data;
