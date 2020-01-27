@@ -52,6 +52,13 @@ class NetworkImageWidgetState extends State<NetworkImageWidget>
   }
 
   @override
+  void dispose()
+  {
+    super.dispose();
+    _cachedNetworkImageProvider.cacheManager.emptyCache();
+  }
+
+  @override
   Widget build(BuildContext context) 
   {
     return _imageLoadingState == LoadingState.DONE ? InkWell

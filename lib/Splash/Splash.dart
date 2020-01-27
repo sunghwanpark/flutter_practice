@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:bunyang/Data/OrganizationCode.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
@@ -16,6 +17,13 @@ class SplashWidget extends State<Splash>
   {
     super.initState();
     startTimer();
+  }
+
+  @override
+  void dispose()
+  {
+    OrganizationCode().parseXmlFromAssets();
+    super.dispose();
   }
 
   Future<Timer> startTimer() async

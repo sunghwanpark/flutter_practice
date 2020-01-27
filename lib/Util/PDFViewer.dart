@@ -23,6 +23,8 @@ class PDFViewerWidget extends State<PDFViewer>
 
   String _filePath;
   bool _isDownloadComplete = false;
+  File _file;
+
   @override
   void initState()
   {
@@ -38,15 +40,25 @@ class PDFViewerWidget extends State<PDFViewer>
     });
   }
 
+  @override
+  void dispose()
+  {
+    super.dispose();
+    if(_file != null)
+      _file.delete();
+  }
+
   Future<File> _downloadFile(String url, String filename) async 
   {
     http.Client client = new http.Client();
     var req = await client.get(Uri.parse(url));
+    client.close();
+
     var bytes = req.bodyBytes;
     String dir = (await getApplicationDocumentsDirectory()).path;
-    File file = new File('$dir/$filename');
-    await file.writeAsBytes(bytes);
-    return file;
+    _file = new File('$dir/$filename');
+    await _file.writeAsBytes(bytes);
+    return _file;
   }
 
   @override

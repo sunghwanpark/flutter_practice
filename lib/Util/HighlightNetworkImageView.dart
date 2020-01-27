@@ -49,6 +49,13 @@ class HighlightNetworkImageViewWidget extends State<HighlightNetworkImageView>
   }
 
   @override
+  void dispose()
+  {
+    super.dispose();
+    _cachedImageProvider.cacheManager.emptyCache();
+  }
+
+  @override
   Widget build(BuildContext context) 
   {
     return Scaffold
