@@ -2,6 +2,8 @@ import 'dart:async';
 import 'package:bunyang/Abstract/IErrorCallBack.dart';
 import 'package:bunyang/Map/MyGoogleMapPresenter.dart';
 import 'package:bunyang/Util/Util.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart';
 import 'package:tuple/tuple.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -32,6 +34,7 @@ class MyGoogleMapView extends State<MyGoogleMap> implements IErrorCallBack
   final String title;
   final String address;
   final Completer<GoogleMapController> _controller = Completer();
+  GoogleMapController _googleMapController;
   final Set<Marker> _markers = {};
 
   MyGoogleMapPresenter _presenter;
@@ -54,7 +57,8 @@ class MyGoogleMapView extends State<MyGoogleMap> implements IErrorCallBack
     (
       markerId: MarkerId(_center.toString()),
       position: _center,
-      icon: BitmapDescriptor.defaultMarker
+      icon: BitmapDescriptor.defaultMarker,
+      consumeTapEvents: true
     ));
     setState(() => loadingState = LoadingState.DONE);
   }
@@ -74,6 +78,7 @@ class MyGoogleMapView extends State<MyGoogleMap> implements IErrorCallBack
   void _onMapCreated(GoogleMapController controller) 
   {
     _controller.complete(controller);
+    _googleMapController = controller;
   }
 
   @override
@@ -116,8 +121,41 @@ class MyGoogleMapView extends State<MyGoogleMap> implements IErrorCallBack
                   (
                     target: _center,
                     zoom: 16.0,
-                  )
+                  ),
+                  gestureRecognizers: <Factory<OneSequenceGestureRecognizer>>
+                  [
+                    new Factory<OneSequenceGestureRecognizer>(() => new EagerGestureRecognizer(),),
+                  ].toSet(),
+                  mapToolbarEnabled: false,
+                  scrollGesturesEnabled: true,
+                  myLocationButtonEnabled: false
                 )
+              ),
+              Align
+              (
+                alignment: Alignment.topCenter,
+                child: IconButton
+                (
+                  icon: Icon(Icons.location_on, color: Colors.red, semanticLabel: "원래위치로"),
+                  alignment: Alignment.topRight,
+                  onPressed: ()
+                  {
+                    if(_controller.isCompleted)
+                    {
+                      _googleMapController.animateCamera
+                      (
+                        CameraUpdate.newCameraPosition
+                        (
+                          CameraPosition
+                          (
+                            target: _center,
+                            zoom: 16.0
+                          ),
+                        )
+                      );
+                    }
+                  },
+                ),
               )
             ],
           )
@@ -150,7 +188,8 @@ class MyGoogleMapViewLatLtd extends StatelessWidget
     (
       markerId: MarkerId(_latLng.toString()),
       position: _latLng,
-      icon: BitmapDescriptor.defaultMarker
+      icon: BitmapDescriptor.defaultMarker,
+      consumeTapEvents: true
     ));
   }
 
@@ -159,11 +198,13 @@ class MyGoogleMapViewLatLtd extends StatelessWidget
   final LatLng _latLng;
   final double _mapTitleSize;
   final Completer<GoogleMapController> _controller = Completer();
+  GoogleMapController _googleMapController;
   final Set<Marker> _markers = {};
 
   void _onMapCreated(GoogleMapController controller) 
   {
     _controller.complete(controller);
+    _googleMapController = controller;
   }
 
   @override
@@ -205,8 +246,41 @@ class MyGoogleMapViewLatLtd extends StatelessWidget
                 (
                   target: _latLng,
                   zoom: 10.0,
-                )
+                ),
+                gestureRecognizers: <Factory<OneSequenceGestureRecognizer>>
+                [
+                  new Factory<OneSequenceGestureRecognizer>(() => new EagerGestureRecognizer(),),
+                ].toSet(),
+                mapToolbarEnabled: false,
+                scrollGesturesEnabled: true,
+                myLocationButtonEnabled: false
               )
+            ),
+            Align
+            (
+              alignment: Alignment.topCenter,
+              child: IconButton
+              (
+                icon: Icon(Icons.location_on, color: Colors.red, semanticLabel: "원래위치로"),
+                alignment: Alignment.topRight,
+                onPressed: ()
+                {
+                  if(_controller.isCompleted)
+                  {
+                    _googleMapController.animateCamera
+                    (
+                      CameraUpdate.newCameraPosition
+                      (
+                        CameraPosition
+                        (
+                          target: _latLng,
+                          zoom: 10.0
+                        ),
+                      )
+                    );
+                  }
+                },
+              ),
             )
           ]
         )
@@ -223,17 +297,20 @@ class MyGoogleMapWidget extends StatelessWidget
     (
       markerId: MarkerId(_latLng.toString()),
       position: _latLng,
-      icon: BitmapDescriptor.defaultMarker
+      icon: BitmapDescriptor.defaultMarker,
+      consumeTapEvents: true
     ));
   }
 
   final LatLng _latLng;
   final Completer<GoogleMapController> _controller = Completer();
+  GoogleMapController _googleMapController;
   final Set<Marker> _markers = {};
 
   void _onMapCreated(GoogleMapController controller) 
   {
     _controller.complete(controller);
+    _googleMapController = controller;
   }
 
   @override
@@ -245,19 +322,58 @@ class MyGoogleMapWidget extends StatelessWidget
       child: Padding
       (
         padding: EdgeInsets.only(left: 10, right: 10),
-        child: Container
+        child: Row
         (
-          height: 500,
-          child: GoogleMap
-          (
-            onMapCreated: _onMapCreated,
-            markers: _markers,
-            initialCameraPosition: CameraPosition
+          children : <Widget>
+          [
+            Container
             (
-              target: _latLng,
-              zoom: 15.0,
+              height: 500,
+              child: GoogleMap
+              (
+                onMapCreated: _onMapCreated,
+                markers: _markers,
+                initialCameraPosition: CameraPosition
+                (
+                  target: _latLng,
+                  zoom: 15.0,
+                ),
+                gestureRecognizers: <Factory<OneSequenceGestureRecognizer>>
+                [
+                  new Factory<OneSequenceGestureRecognizer>(() => new EagerGestureRecognizer(),),
+                ].toSet(),
+                mapToolbarEnabled: false,
+                scrollGesturesEnabled: true,
+                myLocationButtonEnabled: false
+              )
+            ),
+            Align
+            (
+              alignment: Alignment.topCenter,
+              child: IconButton
+              (
+                icon: Icon(Icons.location_on, color: Colors.red, semanticLabel: "원래위치로"),
+                alignment: Alignment.topRight,
+                onPressed: ()
+                {
+                  if(_controller.isCompleted)
+                  {
+                    _googleMapController.animateCamera
+                    (
+                      CameraUpdate.newCameraPosition
+                      (
+                        CameraPosition
+                        (
+                          target: _latLng,
+                          zoom: 15.0
+                        ),
+                      )
+                    );
+                  }
+                },
+              ),
             )
-          )
+          ]
         )
       )
     );
