@@ -52,7 +52,8 @@ class HighlightNetworkImageViewWidget extends State<HighlightNetworkImageView>
   void dispose()
   {
     super.dispose();
-    _cachedImageProvider.cacheManager.emptyCache();
+    if(_cachedImageProvider.cacheManager != null)
+      _cachedImageProvider.cacheManager.emptyCache();
   }
 
   @override

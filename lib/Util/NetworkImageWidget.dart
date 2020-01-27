@@ -55,7 +55,8 @@ class NetworkImageWidgetState extends State<NetworkImageWidget>
   void dispose()
   {
     super.dispose();
-    _cachedNetworkImageProvider.cacheManager.emptyCache();
+    if(_cachedNetworkImageProvider.cacheManager != null)
+      _cachedNetworkImageProvider.cacheManager.emptyCache();
   }
 
   @override
