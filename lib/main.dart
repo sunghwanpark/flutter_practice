@@ -2,9 +2,11 @@ import 'package:bunyang/Splash/Splash.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:bunyang/Menu/SnapMenu.dart';
+import 'package:bunyang/Notification/NotificationManager.dart';
 
 void main()
 {
+  NotificationManager().initialize();
   runApp(MyApp());
 }
 

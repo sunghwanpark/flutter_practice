@@ -110,5 +110,11 @@ class StoreEvaluationViewWidget extends MenuItemPageView<StoreEvaluationView>
   }
 
   @override
+  void onPressedNotification()
+  {
+    
+  }
+
+  @override
   void onResponseSuccessPanInfo(Map<String, String> panInfo) {}
 }

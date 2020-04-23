@@ -171,4 +171,10 @@ class InstallmentHouseView extends AbstractInstallmentHouseView<InstallmentHouse
       loadingState = LoadingState.DONE;
     });
   }
+
+  @override
+  void onPressedNotification()
+  {
+    
+  }
 }

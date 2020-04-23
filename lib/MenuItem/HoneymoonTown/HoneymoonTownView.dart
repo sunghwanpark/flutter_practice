@@ -130,4 +130,10 @@ class HoneymoonTownWidget extends AbstractInstallmentHouseView<HoneymoonTownView
       loadingState = LoadingState.DONE;
     });
   }
+
+  @override
+  void onPressedNotification()
+  {
+
+  }
 }

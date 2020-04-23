@@ -59,6 +59,7 @@ class ListItemWidget extends StatelessWidget
           ),
           child: Container
           (
+            margin: EdgeInsets.only(top: 20, bottom: 20, left: 0, right: 0),
             child: Column
             (
               mainAxisAlignment: MainAxisAlignment.center,

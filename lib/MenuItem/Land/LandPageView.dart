@@ -82,4 +82,10 @@ class LandPageView extends MenuItemPageView<LandPage>
 
     setState(() => loadingState = LoadingState.DONE);
   }
+
+  @override
+  void onPressedNotification()
+  {
+    
+  }
 }

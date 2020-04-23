@@ -104,5 +104,11 @@ class InstallmentChangeSaleView extends AbstractInstallmentHouseView<Installment
   }
 
   @override
+  void onPressedNotification()
+  {
+    
+  }
+
+  @override
   void onResponseSuccessPanInfo(Map<String, String> panInfo) {}
 }

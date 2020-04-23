@@ -84,5 +84,11 @@ class LeaseViewWidget extends MenuItemPageView<LeaseView>
   }
 
   @override
+  void onPressedNotification()
+  {
+    
+  }
+
+  @override
   void onResponseSuccessPanInfo(Map<String, String> panInfo) {}  
 }

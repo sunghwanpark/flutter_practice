@@ -17,7 +17,7 @@ class SupplyDateView extends AbstractContentsView
   {
     List<Widget> widgets = List<Widget>();
     String typeString = isTender ? "입찰" : "추첨";
-    
+
     widgets.add(Row
     (
       children : <Widget>

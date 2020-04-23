@@ -41,6 +41,8 @@ class NotificationManager
 
   Future<void> initialize() async
   {
+    WidgetsFlutterBinding.ensureInitialized();
+
     if(Platform.isIOS)
     {
       _requestIOSPermissions();

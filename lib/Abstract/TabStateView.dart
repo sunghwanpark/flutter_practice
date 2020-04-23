@@ -96,6 +96,11 @@ abstract class TabStateView<T extends TabStatefull> extends State<T> with Single
     }
   }
 
+  Widget notifyIcon()
+  {
+    return SizedBox();
+  }
+
   @override
   Widget build(BuildContext context)
   {
@@ -153,6 +158,7 @@ abstract class TabStateView<T extends TabStatefull> extends State<T> with Single
                 indicatorWeight: 5,
                 indicatorColor: Colors.black26,
               ),
+              title: notifyIcon(),
               expandedHeight: widget._expandedHeight,
               iconTheme: IconThemeData
               (
