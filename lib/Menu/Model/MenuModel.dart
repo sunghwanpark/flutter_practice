@@ -9,6 +9,8 @@ class MenuData
   Notice_Code type;
   Map<String, String> _dataMap;
 
+  int get panIdHashCode => _dataMap['PAN_ID'].hashCode;
+
   factory MenuData(Map jsonMap) =>
       MenuData._internalFromJson(jsonMap);
 

@@ -9,7 +9,7 @@ import 'package:sprintf/sprintf.dart';
 class SupplyScheduleView extends AbstractContentsView
 {
   SupplyScheduleView(this._data);
-  
+
   final Map<String, List<Map<String, String>>> _data;
 
   @override
@@ -47,6 +47,7 @@ class SupplyScheduleView extends AbstractContentsView
         String rmk = inet == "Y" && sppb == "N" ? "인터넷접수" :
           inet == "N" && sppb == "Y" ? "현장접수" :
           inet == "Y" && sppb == "Y" ? "인터넷접수,현장접수" : "";
+
         rows.add(TableRow
         (
           children: <Widget>

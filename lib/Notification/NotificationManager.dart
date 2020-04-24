@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
-class ReceivedNotification {
+class ReceivedNotification 
+{
   final int id;
   final String title;
   final String body;

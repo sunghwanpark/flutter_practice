@@ -171,10 +171,4 @@ class StoreBidViewWidget extends MenuItemPageView<StoreBidView>
       }
     }
   }
-
-  @override
-  void onPressedNotification()
-  {
-    
-  }
 }
